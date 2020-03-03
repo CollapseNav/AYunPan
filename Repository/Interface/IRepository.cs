@@ -4,40 +4,38 @@ using System.Linq;
 using System.Linq.Expressions;
 using Repository.Core;
 
-namespace Repository.Interface
-{
-    public interface IRepository<T> where T : BaseEntity
-    {
-        void Add(T entity);
+namespace Repository.Interface {
+    public interface IRepository<T> where T : BaseEntity {
+        void Add (T entity);
 
-        void AddRange(List<T> entityList);
+        void AddRange (List<T> entityList);
 
-        void Delete(T entity);
+        void Delete (T entity);
 
-        void Delete(Expression<Func<T, bool>> exp);
+        void Delete (Expression<Func<T, bool>> exp);
 
-        void DeleteByID(string id);
+        void DeleteByID (string id);
 
-        void Update(T entity);
+        void Update (T entity);
 
-        void Update(Expression<Func<T, bool>> where, Expression<Func<T, T>> entity);
+        void Update (Expression<Func<T, bool>> where, Expression<Func<T, T>> entity);
 
-        T FindSingle(Expression<Func<T, bool>> exp = null);
+        T FindSingle (Expression<Func<T, bool>> exp = null);
 
-        T FindByID(string id);
+        T FindByID (string id);
 
-        IQueryable<T> FindAll(Expression<Func<T, bool>> exp = null);
+        IQueryable<T> FindAll (Expression<Func<T, bool>> exp = null);
 
-        IQueryable<T> FindPage<TKey>(out int total, int pageindex = 1, int pageSize = 15, bool isAsc = true, Expression<Func<T, bool>> exp = null, Expression<Func<T, TKey>> orderBy = null);
+        IQueryable<T> FindPage<TKey> (out int total, int pageindex = 1, int pageSize = 15, bool isAsc = true, Expression<Func<T, bool>> exp = null, Expression<Func<T, TKey>> orderBy = null);
 
-        bool IsExist(Expression<Func<T, bool>> exp);
+        bool IsExist (Expression<Func<T, bool>> exp);
 
-        int Count(Expression<Func<T, bool>> exp = null);
+        int Count (Expression<Func<T, bool>> exp = null);
 
-        void Save();
+        void Save ();
 
-        int ExeSql(string sql);
+        int ExeSql (string sql);
 
-        BaseContext GetContext();
+        BaseContext GetContext ();
     }
 }
