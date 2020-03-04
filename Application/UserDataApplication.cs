@@ -1,5 +1,5 @@
 using System;
-using Application.ReceiveData;
+using Application.RequestData;
 using Repository.Domain;
 using Repository.Interface;
 
@@ -7,7 +7,7 @@ namespace Application {
     public class UserDataApplication : BaseApplication<UserDataInfo> {
         public UserDataApplication (IRepository<UserDataInfo> user) : base (user) { }
 
-        public UserDataInfo SignIn (SignData sd, out bool IsExist) {
+        public UserDataInfo SignIn (ReqSignData sd, out bool IsExist) {
             IsExist = true;
             // 先通过account尝试获取userdatainfo，用于判断是否存在用户
             var item = GetUserDataByASignData (sd);
@@ -21,7 +21,7 @@ namespace Application {
             return item;
         }
 
-        private UserDataInfo GetUserDataByASignData (SignData sd) {
+        private UserDataInfo GetUserDataByASignData (ReqSignData sd) {
             UserDataInfo item = null;
             if (!string.IsNullOrEmpty (sd.UserName))
                 item = rep.FindSingle (m => m.UserAccount == sd.UserAccount);
@@ -30,7 +30,7 @@ namespace Application {
             return item;
         }
 
-        public bool SignUp (SignData sd) {
+        public bool SignUp (ReqSignData sd) {
             UserDataInfo u = sd.ConvertData ();
             if (GetUserDataByASignData (sd) != null)
                 return false;
@@ -45,7 +45,7 @@ namespace Application {
             return true;
         }
 
-        public bool EditUserData (UserInfoEditData data) {
+        public bool EditUserData (ReqUserInfoEditData data) {
             try {
                 rep.Update (model => model.Id == data.UserId, data.GetConvertExpressions ());
             } catch (Exception ex) {

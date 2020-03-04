@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Application;
-using Application.ReceiveData;
+using Application.RequestData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -19,7 +19,7 @@ namespace Api.Controllers {
         public SignController (UserDataApplication _app) => app = _app;
 
         [HttpPost, Route ("[action]")]
-        public IActionResult SignUp (SignData data) {
+        public IActionResult SignUp (ReqSignData data) {
             if (string.IsNullOrEmpty (data.UserAccount) && string.IsNullOrEmpty (data.PassWord))
                 return BadRequest ();
             if (!app.SignUp (data))
@@ -28,7 +28,7 @@ namespace Api.Controllers {
         }
 
         [HttpPost, Route ("[action]")]
-        public IActionResult SignIn (SignData data) {
+        public IActionResult SignIn (ReqSignData data) {
             var item = app.SignIn (data, out bool isExist);
             if (!isExist)
                 return Unauthorized ("233");
@@ -57,7 +57,7 @@ namespace Api.Controllers {
         }
 
         [HttpPost, Route ("[action]")]
-        public IActionResult EditUserData (UserInfoEditData data) {
+        public IActionResult EditUserData (ReqUserInfoEditData data) {
             if (!app.EditUserData (data))
                 return BadRequest ();
             return Ok (true);

@@ -2,14 +2,14 @@
  * @Author: CollapseNav
  * @Date: 2019-12-30 22:15:28
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-04 00:59:04
+ * @LastEditTime: 2020-03-04 18:43:04
  * @Description: 
  */
-using Application.Core.BaseReceiveData;
+using Application.Core.BaseRequestData;
 using Repository.Domain;
 
-namespace Application.ReceiveData {
-    public class SignData : IBaseData {
+namespace Application.RequestData {
+    public class ReqSignData : IRequestData<UserDataInfo> {
         public string UserAccount { get; set; }
 
         public string UserName { get; set; }
