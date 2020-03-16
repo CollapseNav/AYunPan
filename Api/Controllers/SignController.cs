@@ -1,22 +1,21 @@
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+using System.IO;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using Application;
+using Application.Core;
 using Application.RequestData;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Controllers {
     [ApiController]
-    [Route ("[controller]")]
+    [Route ("api/[controller]")]
     public class SignController : ControllerBase {
         private readonly UserDataApplication app;
-        public SignController (UserDataApplication _app) => app = _app;
+        private readonly UserFileApplication file;
+        public SignController (UserDataApplication _app, UserFileApplication _file) => app = _app;
 
         [HttpPost, Route ("[action]")]
         public IActionResult SignUp (ReqSignData data) {
@@ -31,11 +30,9 @@ namespace Api.Controllers {
         public IActionResult SignIn (ReqSignData data) {
             var item = app.SignIn (data, out bool isExist);
             if (!isExist)
-                return Unauthorized ("233");
+                return Unauthorized (new { msg = "账户不存在！" });
             if (item == null)
                 return Unauthorized ();
-
-            item.PassWord = "";
 
             var claims = new [] {
                 new Claim (JwtRegisteredClaimNames.Sub, data.UserAccount)
@@ -50,17 +47,11 @@ namespace Api.Controllers {
                 signingCredentials : new SigningCredentials (key, SecurityAlgorithms.HmacSha256)
             );
             return Ok (new {
-                token = new JwtSecurityTokenHandler ().WriteToken (tokens),
+                msg = "Success!",
+                    token = new JwtSecurityTokenHandler ().WriteToken (tokens),
                     expiration = tokens.ValidTo,
-                    user = item,
+                    userData = item,
             });
-        }
-
-        [HttpPost, Route ("[action]")]
-        public IActionResult EditUserData (ReqUserInfoEditData data) {
-            if (!app.EditUserData (data))
-                return BadRequest ();
-            return Ok (true);
         }
     }
 }
