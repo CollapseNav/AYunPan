@@ -1,0 +1,21 @@
+<div class="sidebar-wrapper">
+  <div class="logo">
+    <a routerLink="/infoboard" class="simple-text logo-mini">
+      <!-- <div class="logo-image-small">
+        <img src="assets/img/angular2-logo.png">
+      </div> -->
+      <h3 style="font-size: 1.75em;margin: 0;line-height: 1.2;">A</h3>
+    </a>
+    <a routerLink="/infoboard" class="simple-text logo-normal">
+      YunPan
+    </a>
+  </div>
+  <ul class="nav">
+    <li *ngFor="let menuItem of menuItems" routerLinkActive="active" class="{{menuItem.class}}">
+      <a [routerLink]="[menuItem.path]">
+        <i class="nc-icon {{menuItem.icon}}"></i>
+        <p>{{menuItem.title}}</p>
+      </a>
+    </li>
+  </ul>
+</div>

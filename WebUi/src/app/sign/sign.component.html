@@ -1,0 +1,60 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-03-08 22:43:03
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-03-12 21:16:09
+ * @Description:
+ -->
+
+<div [class]="flipStyle">
+  <form (ngSubmit)="signIn()" class="form-box front" [formGroup]="signForm">
+    <div>
+      <h1 class="weight-h1" style="margin-top: 20px;">
+        SignIn
+      </h1>
+    </div>
+    <div>
+      <input type="text" class="input-radius" formControlName="userAccount" placeholder="UserAccount" />
+    </div>
+    <div>
+      <input type="password" class="input-radius" formControlName="password" placeholder="PassWord" />
+    </div>
+    <div>
+      <button type="submit" class="btn btn-primary btn-round btn-submit" [disabled]="signForm.invalid">
+        SignIn
+      </button>
+    </div>
+    <div style="text-align: center;">
+      <p style="margin-top: 40px">If you don't have account.Please</p>
+      <p>
+        Click here to
+        <a routerLink="/index" (click)="flipForm()" id="login" style="color: #007bff;">Sign Up</a>
+      </p>
+    </div>
+  </form>
+  <form (ngSubmit)="signUp()" class="form-box back" [formGroup]="signForm">
+    <div>
+      <h1 class="weight-h1" style="margin-top: 20px;">
+        SignUp
+      </h1>
+    </div>
+    <div>
+      <input type="text" class="input-radius" formControlName="userAccount" placeholder="UserAccount" />
+    </div>
+    <div>
+      <input type="password" class="input-radius" formControlName="password" placeholder="PassWord" />
+    </div>
+    <div>
+      <button type="submit" class="btn btn-primary btn-round btn-submit" [disabled]="signForm.invalid">
+        SignUp
+      </button>
+    </div>
+    <div style="text-align: center;">
+      <p style="margin-top: 40px">Have a account ? You can</p>
+      <p>
+        Click here to
+        <a routerLink="/index" (click)="flipForm()" id="login" style="color: #007bff;">Sign in</a>
+      </p>
+    </div>
+  </form>
+</div>

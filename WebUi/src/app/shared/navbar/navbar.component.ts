@@ -6,7 +6,7 @@
  * @Description:
  */
 import { Component, OnInit, Renderer, ViewChild, ElementRef } from '@angular/core';
-import { ROUTES } from '../../sidebar/sidebar.component';
+import { ROUTES } from '../sidebar/sidebar.component';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 

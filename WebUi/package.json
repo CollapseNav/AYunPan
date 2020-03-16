@@ -33,7 +33,10 @@
     "express": "4.17.1",
     "jquery": "3.4.1",
     "moment": "2.24.0",
+    "ng2-charts": "^2.3.0",
+    "ng2-file-upload": "^1.4.0",
     "ngx-toastr": "10.0.4",
+    "ngx-uploader": "^8.0.0",
     "rxjs": "6.5.2",
     "tslib": "1.9.0",
     "zone.js": "0.9.1"

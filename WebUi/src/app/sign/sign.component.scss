@@ -1,0 +1,85 @@
+.logreg-body {
+  height: 440px;
+  width: 380px;
+  // margin: 0;
+  // padding: 0;
+  border-radius: 24px;
+}
+
+.middle {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.btn-submit {
+  // width: 80px;
+  margin: 0 auto;
+  // font-size: 18px;
+  font-weight: 500;
+  border: 0;
+  display: block;
+  transition: 0.5s;
+}
+
+.weight-h1 {
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.input-radius {
+  &[type="text"],
+  &[type="password"] {
+    width: 220px;
+    height: 38px;
+    margin: 30px auto;
+    padding: 0;
+    text-align: center;
+    border-radius: 20px;
+    outline: none;
+    display: block;
+    transition: 0.3s;
+    border: 1px solid #9b9b9b;
+  }
+
+  &[type="text"]:focus,
+  &[type="password"]:focus {
+    width: 320px;
+  }
+}
+
+.form-box {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  border-radius: 40px;
+  border: solid rgb(194, 191, 191) 2px;
+}
+
+.front {
+  transform: perspective(600px) rotateY(0deg);
+  overflow: hidden;
+  position: absolute;
+  backface-visibility: hidden;
+  transition: 0.3s linear;
+}
+
+.back {
+  transform: perspective(600px) rotateY(-180deg);
+  overflow: hidden;
+  position: absolute;
+  backface-visibility: hidden;
+  transition: 0.3s linear;
+}
+
+.middle-flip {
+  .front {
+    transform: perspective(600px) rotateY(180deg);
+  }
+
+  .back {
+    transform: perspective(600px) rotateY(0deg);
+  }
+}

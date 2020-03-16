@@ -1,0 +1,259 @@
+<div class="row">
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div class="icon-big icon-warning">
+              <i class="nc-icon nc-box text-warning"></i>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Capacity</p>
+              <p class="card-title">150GB
+                <p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer ">
+        <hr>Maybe a chart
+        <!-- <div class="stats">
+          <div style="display: block;">
+            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+              [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+            </canvas>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div class="icon-big icon-warning">
+              <i class="nc-icon nc-bullet-list-67 text-success"></i>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Files</p>
+              <p class="card-title">233
+                <p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer ">
+        <hr>Maybe a chart
+        <!-- <div class="stats">
+          <div style="display: block;">
+            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+              [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+            </canvas>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div class="icon-big icon-warning">
+              <i class="nc-icon nc-share-66 text-danger"></i>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Shared</p>
+              <p class="card-title">23
+                <p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer ">
+        <hr>Maybe a chart
+        <!-- <div class="stats">
+          <div style="display: block;">
+            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+              [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+            </canvas>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card card-user">
+      <div class="image">
+        <img src="assets/img/card_bg.png" alt="...">
+      </div>
+      <div class="card-body">
+        <div class="author">
+          <img class="avatar border-gray" src="assets/img/card_face.jpg" alt="...">
+          <h5 class="title">{{userData.userName}}</h5>
+        </div>
+        <p class="description text-center">
+          Email : {{userData.email}}
+          <br>Phone : {{userData.phone}}
+          <br>Gender :
+          <ng-container *ngIf="userData.gender == '1'">
+            Male
+          </ng-container>
+          <ng-container *ngIf="userData.gender == '0'">
+            Female
+          </ng-container>
+          <ng-container *ngIf="userData.gender == null">
+            NaN
+          </ng-container>
+          <br>Age : {{userData.age}}
+          <br>{{userData.remark}}
+        </p>
+      </div>
+      <!-- <div class="card-footer">
+    <hr>
+    <div class="button-container">
+     <div class="row">
+      <div class="col-lg-3 col-md-6 col-6 ml-auto">
+       <h5>233
+        <br>
+        <small>Files</small>
+       </h5>
+      </div>
+      <div class="col-lg-4 col-md-6 col-6 ml-auto mr-auto">
+       <h5>2GB
+        <br>
+        <small>Used</small>
+       </h5>
+      </div>
+      <div class="col-lg-3 mr-auto">
+       <h5>23
+        <br>
+        <small>Shared</small>
+       </h5>
+      </div>
+     </div>
+    </div>
+   </div> -->
+    </div>
+
+    <!-- <div class="card ">
+   <div class="card-header ">
+    <h5 class="card-title">Email Statistics</h5>
+    <p class="card-category">Last Campaign Performance</p>
+   </div>
+   <div class="card-body ">
+    <canvas id="chartEmail"></canvas>
+   </div>
+   <div class="card-footer ">
+    <div class="legend">
+     <i class="fa fa-circle text-primary"></i> Opened
+     <i class="fa fa-circle text-warning"></i> Read
+     <i class="fa fa-circle text-danger"></i> Deleted
+     <i class="fa fa-circle text-gray"></i> Unopened
+    </div>
+    <hr>
+    <div class="stats">
+     <i class="fa fa-calendar"></i> Number of emails sent
+    </div>
+   </div>
+  </div> -->
+  </div>
+
+  <div class="col-md-8">
+    <div class="card card-user">
+      <div class="card-header">
+        <h5 class="card-title">Edit UserInfo</h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-4 pm-1 ">
+              <div class="form-group">
+                <label>Username</label>
+                <input type="text" class="form-control" placeholder="Username" formControlName="userName">
+              </div>
+            </div>
+            <div class="col-md-4 pm-1 ">
+              <div class="form-group">
+                <label>Email address</label>
+                <input type="text" class="form-control" placeholder="Email address" formControlName="email">
+              </div>
+            </div>
+            <div class="col-md-4 pm-1 ">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Phone</label>
+                <input type="email" class="form-control" placeholder="Phone" formControlName="phone">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 pm-1 ">
+              <div class="form-group">
+                <label>Gender</label>
+                <div ngbRadioGroup formControlName="gender" class="btn-group btn-group-toggle btn-block">
+                  <label ngbButtonLabel class="btn-success " style="margin-top: 0;">
+                    <input type="radio" ngbButton [value]="1">
+                    male
+                  </label>
+                  <label ngbButtonLabel class="btn-success " style="margin-top: 0;">
+                    <input type="radio" ngbButton [value]="0">
+                    female
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 pm-1 ">
+              <div class="form-group">
+                <label>Age</label>
+                <input type="text" class="form-control" placeholder="Age" formControlName="age">
+              </div>
+            </div>
+            <div class="col-md-5 pm-1 ">
+              <div class="form-group">
+                <label>JoinDate</label>
+                <input type="text" class="form-control" placeholder="JoinDate" formControlName="joinDate">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>About Me</label>
+                <textarea class="form-control textarea" formControlName="remark"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="update ml-auto mr-auto">
+              <button type="submit" (click)="initModal(info)" class="btn btn-primary btn-round"
+                [disabled]="editForm.invalid">Update</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #info let-info>
+  <div class="card card-stats" style="margin-bottom: 0;">
+    <div class="card-body">
+      <h3>{{modalInfo}}</h3>
+    </div>
+    <div class="card-footer">
+      <div class="row">
+        <hr><button type="button" class="btn btn-primary btn-round col-3" (click)="info.close()">I Know</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

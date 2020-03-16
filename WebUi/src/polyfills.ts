@@ -1,3 +1,10 @@
+/*
+ * @Author: CollapseNav
+ * @Date: 2020-03-01 15:57:09
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-03-08 23:11:31
+ * @Description:
+ */
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.
@@ -55,7 +62,7 @@
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import "zone.js/dist/zone"; // Included with Angular CLI.
+import 'zone.js/dist/zone'; // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

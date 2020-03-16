@@ -1,22 +1,20 @@
 /*
  * @Author: CollapseNav
- * @Date: 2020-03-01 16:40:22
+ * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-16 15:56:13
+ * @LastEditTime: 2020-03-16 17:20:05
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserFile, FileTypes } from 'app/unit/userFiles';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserFilesService } from 'app/services/userfiles/userFiles.service';
-import { FileUploader, FileItem } from 'ng2-file-upload';
-import { UploadInput } from 'ngx-uploader';
+import { UserFile } from 'app/unit/userFiles';
 
 @Component({
-  selector: 'app-userfiles',
-  templateUrl: './userfiles.component.html',
+  selector: 'app-sharedfiles',
+  templateUrl: './sharedfiles.component.html',
 })
-export class UserfilesComponent implements OnInit {
+export class SharedfilesComponent implements OnInit {
   tableThead = [
     { content: 'FileName', per: '25%' },
     { content: 'FileType', per: '20%' },
@@ -25,28 +23,16 @@ export class UserfilesComponent implements OnInit {
     { content: 'Be', per: '15%' },
   ];
   tableData: UserFile[] = [];
+
   folderList: UserFile[] = [];
+
   storeData: UserFile;
+
   tableRouter = [{ id: '', folder: '' }];
+
   delFile = { id: '', fileName: '' };
-  uploader: FileUploader;
 
-  uploadInput: UploadInput;
-
-  constructor(
-    private modalService: NgbModal,
-    private fileService: UserFilesService) {
-    this.uploader = fileService.uploader;
-  }
-
-  createNewFolder() {
-
-  }
-
-  uploadFile(file: FileItem) {
-    file.withCredentials = false;
-    file.upload();
-  }
+  constructor(private modalService: NgbModal, private fileService: UserFilesService) { }
 
   turnBackTo(id: string) {
     if (id === this.storeData.id) {
@@ -56,10 +42,6 @@ export class UserfilesComponent implements OnInit {
       this.tableData = folder.fileContains;
     }
     this.tableRouter = this.tableRouter.slice(0, this.tableRouter.findIndex(item => item.id === id) + 1);
-  }
-
-  openUploadModal(modal) {
-    this.modalService.open(modal, { centered: true, size: 'lg' });
   }
 
   onDelete(modal: NgbModal, item: UserFile) {

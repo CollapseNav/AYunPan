@@ -2,40 +2,49 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 15:57:08
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-02 02:40:58
+ * @LastEditTime: 2020-03-09 00:19:03
  * @Description:
  */
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 
-import { SidebarModule } from './sidebar/sidebar.module';
-import { FooterModule } from './shared/footer/footer.module';
-import { NavbarModule } from './shared/navbar/navbar.module';
-import { FixedPluginModule } from './shared/fixedplugin/fixedplugin.module';
-
 import { AppComponent } from './app.component';
-import { AppRoutes } from './app.routing';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { SignComponent } from './sign/sign.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app.routing.module';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AdminLayoutModule } from './layouts/admin-layout/admin-layout.module';
+import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { FooterComponent } from './shared/footer/footer.component';
+import { FixedPluginComponent } from './shared/fixedplugin/fixedplugin.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminLayoutComponent
+    SignComponent,
+    AdminLayoutComponent,
+    PageNotFoundComponent,
+
+    SidebarComponent,
+    NavbarComponent,
+    FooterComponent,
+    FixedPluginComponent,
   ],
   imports: [
     BrowserAnimationsModule,
-    RouterModule.forRoot(AppRoutes, {
-      useHash: true
-    }),
-    SidebarModule,
-    NavbarModule,
+    HttpClientModule,
     ToastrModule.forRoot(),
-    FooterModule,
-    FixedPluginModule
+    ReactiveFormsModule,
+    NgbModule,
+    AdminLayoutModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
