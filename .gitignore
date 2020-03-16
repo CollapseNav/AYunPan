@@ -398,3 +398,8 @@ Api/SQlite.db
 ZRest/EditUserData.http
 WebUi/src/app/services/user.service.ts
 WebUi/ISSUE_TEMPLATE.md
+Api/Migrations/20200315132837_Init_1.cs
+Api/Migrations/20200315132837_Init_1.Designer.cs
+WebUi/src/app/mock/mock_rand.ts
+WebUi/src/app/mock/mock_userdata.ts
+WebUi/src/app/mock/mock_userfiles.ts
