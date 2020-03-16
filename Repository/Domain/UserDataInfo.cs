@@ -18,8 +18,8 @@ namespace Repository.Domain
         [MinLength(6), MaxLength(20), Required]
         public string PassWord { get; set; }
 
-        [MaxLength(10)]
-        public string UserType { get; set; }
+        // [MaxLength(10)]
+        // public string UserType { get; set; }
 
         [MaxLength(200), Required]
         public string FolderPath { get; set; }
@@ -42,7 +42,5 @@ namespace Repository.Domain
 
         [MaxLength(64)]
         public string Stored { get; set; }
-
-        public virtual ICollection<FileInfo> UserFiles { get; set; }
     }
 }

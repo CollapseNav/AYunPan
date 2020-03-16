@@ -22,8 +22,8 @@ namespace Repository.Domain
         [MaxLength(20), Required]
         public string FileSize { get; set; }
 
-        [MaxLength(40)]
-        public string HashCode { get; set; }
+        // [MaxLength(40)]
+        // public string HashCode { get; set; }
 
         [MaxLength(1024), Required]
         public string MapPath { get; set; }
@@ -34,11 +34,6 @@ namespace Repository.Domain
         [MaxLength(40), Required]
         public string OwnerName { get; set; }
 
-        [ForeignKey("OwnerId")]
-        public virtual UserDataInfo Owner { get; set; }
-
         public int Shared { get; set; }
-
-        public virtual ICollection<SharedFileInfo> SharedFiles { get; set; }
     }
 }
