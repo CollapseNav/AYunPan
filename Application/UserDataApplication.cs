@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using Application.RequestData;
+using Application.ResponseData;
 using Repository.Domain;
 using Repository.Interface;
 
@@ -7,7 +9,7 @@ namespace Application {
     public class UserDataApplication : BaseApplication<UserDataInfo> {
         public UserDataApplication (IRepository<UserDataInfo> user) : base (user) { }
 
-        public UserDataInfo SignIn (ReqSignData sd, out bool IsExist) {
+        public ResUserData SignIn (ReqSignData sd, out bool IsExist) {
             IsExist = true;
             // 先通过account尝试获取userdatainfo，用于判断是否存在用户
             var item = GetUserDataByASignData (sd);
@@ -18,20 +20,12 @@ namespace Application {
             else if (item.PassWord != sd.PassWord) {
                 return null;
             }
-            return item;
-        }
-
-        private UserDataInfo GetUserDataByASignData (ReqSignData sd) {
-            UserDataInfo item = null;
-            if (!string.IsNullOrEmpty (sd.UserName))
-                item = rep.FindSingle (m => m.UserAccount == sd.UserAccount);
-            else if (!string.IsNullOrEmpty (sd.UserAccount))
-                item = rep.FindSingle (m => m.UserName == sd.UserName);
-            return item;
+            return new ResUserData (item);
         }
 
         public bool SignUp (ReqSignData sd) {
             UserDataInfo u = sd.ConvertData ();
+            u.UserName = u.UserAccount;
             if (GetUserDataByASignData (sd) != null)
                 return false;
             u.FolderPath = "/" + u.UserName;
@@ -42,7 +36,21 @@ namespace Application {
             } catch {
                 return false;
             }
+            Directory.CreateDirectory (Directory.GetCurrentDirectory () + u.FolderPath);
             return true;
+        }
+
+        public ResUserData GetUserdataById (string Id) => new ResUserData (rep.FindSingle (model => model.Id == Id));
+
+        public UserDataInfo GetFullUserDataById (string Id) => rep.FindSingle (model => model.Id == Id);
+
+        private UserDataInfo GetUserDataByASignData (ReqSignData sd) {
+            UserDataInfo item = null;
+            if (!string.IsNullOrEmpty (sd.UserName))
+                item = rep.FindSingle (m => m.UserName == sd.UserName);
+            else if (!string.IsNullOrEmpty (sd.UserAccount))
+                item = rep.FindSingle (m => m.UserAccount == sd.UserAccount);
+            return item;
         }
 
         public bool EditUserData (ReqUserInfoEditData data) {
@@ -54,6 +62,5 @@ namespace Application {
             }
             return true;
         }
-
     }
 }
