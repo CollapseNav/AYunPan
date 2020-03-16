@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:47:05
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-03 22:14:10
+ * @LastEditTime: 2020-03-16 17:21:20
  * @Description: 
  */
 using System.Text;
@@ -49,7 +49,7 @@ namespace Api {
             services.AddCors (options => {
                 options.AddPolicy ("angular",
                     builder => builder.WithOrigins ("http://localhost:4200")
-                    .AllowAnyHeader ().AllowAnyMethod ().WithExposedHeaders ());
+                    .AllowAnyHeader ().AllowAnyMethod ().WithExposedHeaders ().AllowCredentials ());
             });
 
             services.AddControllers ().AddControllersAsServices ();
