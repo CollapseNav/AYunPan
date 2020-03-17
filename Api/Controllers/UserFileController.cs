@@ -67,9 +67,7 @@ namespace Api.Controllers {
         [HttpGet, Route ("[action]")]
         public IActionResult GetUserFiles (string id) {
             var item = app.GetFilesById (id);
-            return Ok (new {
-                userFile = item
-            });
+            return Ok (item);
         }
 
         [HttpPost, Route ("[action]")]
@@ -90,6 +88,28 @@ namespace Api.Controllers {
                 return BadRequest (ex.Message);
             }
             return Ok ();
+        }
+
+        [HttpPost, Route ("[action]")]
+        public IActionResult ShareFile (ReqEditShareFile data) {
+            data.IsShare = 1;
+            string mes;
+            if ((mes = app.UpdateFileInfo (data)) == "Success")
+                return Ok (true);
+            else {
+                return BadRequest (mes);
+            }
+        }
+
+        [HttpPost, Route ("[action]")]
+        public IActionResult DeleteFile (ReqEditDeleteFile data) {
+            data.IsDelete = 1;
+            string mes;
+            if ((mes = app.UpdateFileInfo (data)) == "Success")
+                return Ok (true);
+            else {
+                return BadRequest (mes);
+            }
         }
     }
 }
