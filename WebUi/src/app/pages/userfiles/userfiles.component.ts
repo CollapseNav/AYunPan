@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-16 22:03:20
+ * @LastEditTime: 2020-03-17 21:52:13
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -18,6 +18,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   templateUrl: './userfiles.component.html',
 })
 export class UserfilesComponent implements OnInit {
+  // 主要定一下table各个col的占比
   tableThead = [
     { content: 'FileName', per: '25%' },
     { content: 'FileType', per: '20%' },
@@ -25,16 +26,18 @@ export class UserfilesComponent implements OnInit {
     { content: 'AddDate', per: '20%' },
     { content: 'Be', per: '15%' },
   ];
+  // 可能有点多余的一个formgroup，主要是存一下新建文件夹时输入的名称，后面可能会加点什么东西吧
   newFolderForm: FormGroup;
-
+  // 当前显示的table中的数据，基本上是取自上一个文件夹的filecontains
   tableData: UserFile[] = [];
+  // 主要存打开过的文件夹，面包屑导航会用，大概用stack的逻辑会更好，但是，懒
   folderList: UserFile[] = [];
+  // 所有文件
   storeData: UserFile;
+  // 面包屑导航需要用
   tableRouter = [{ id: '', folder: '' }];
-  delFile = { id: '', fileName: '' };
+  file = { id: '', fileName: '' };
   uploader: FileUploader;
-
-  uploadInput: UploadInput;
 
   constructor(
     private modalService: NgbModal,
@@ -42,6 +45,7 @@ export class UserfilesComponent implements OnInit {
     private build: FormBuilder) {
   }
 
+  // 新建文件夹
   createNewFolder() {
     // tslint:disable-next-line:max-line-length
     this.fileService.createNewFolder({ 'folderName': this.newFolderForm.value['folderName'], 'rootId': this.tableRouter.slice(-1)[0].id }).subscribe(result => {
@@ -49,23 +53,14 @@ export class UserfilesComponent implements OnInit {
     })
   }
 
+  // 文件上传部分
   uploadFile(file: FileItem) {
-    file.withCredentials = false;
-    this.uploader.options.headers = [
-      { name: 'Id', value: localStorage.getItem('Id') },
-      { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },
-    ];
+    // file.withCredentials = false;
+    // this.uploader.options.headers = [
+    //   { name: 'Id', value: localStorage.getItem('Id') },
+    //   { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },
+    // ];
     file.upload();
-  }
-
-  turnBackTo(id: string) {
-    if (id === this.storeData.id) {
-      this.tableData = this.storeData.fileContains;
-    } else {
-      const folder = this.folderList.filter(item => item.id === id)[0];
-      this.tableData = folder.fileContains;
-    }
-    this.tableRouter = this.tableRouter.slice(0, this.tableRouter.findIndex(item => item.id === id) + 1);
   }
 
   openUploadModal(modal) {
@@ -77,16 +72,36 @@ export class UserfilesComponent implements OnInit {
     this.modalService.open(modal, { centered: true });
   }
 
-  onDelete(modal: NgbModal, item: UserFile) {
-    this.delFile = { id: item.id, fileName: item.fileName };
+  onBe(modal: NgbModal, item: UserFile) {
+    this.file = { id: item.id, fileName: item.fileName };
     this.modalService.open(modal, { centered: true });
   }
 
-  onDelCheck(modal: NgbActiveModal, id: string) {
-    this.tableData.splice(this.tableData.findIndex(item => item.id === id), 1);
+  deleteFile(modal: NgbActiveModal, id: string) {
+    const file = this.tableData.filter(item => item.id === this.file.id)[0];
+    this.fileService.deleteFile(id).subscribe(result => {
+      if (result) {
+        file.isDeleted = '1';
+      } else {
+        console.log(result);
+      }
+    })
     modal.close();
   }
 
+  shareFile(modal: NgbActiveModal, id: string) {
+    const file = this.tableData.filter(item => item.id === id)[0];
+    this.fileService.shareFile(id).subscribe(result => {
+      if (result) {
+        file.isShared = '1';
+      } else {
+        console.log(result);
+      }
+    })
+    modal.close();
+  }
+
+  // 这边的folderlist用stack的逻辑做可能会简单很多吧，但我懒，暂时不想改了
   private addToFolderList(folder: UserFile) {
     if (this.folderList.filter(item => item.id === folder.id).length > 0) {
       return;
@@ -94,7 +109,8 @@ export class UserfilesComponent implements OnInit {
     this.folderList.push(folder);
   }
 
-  onDbClick(id: string) {
+  // 双击文件夹事件
+  onDbClick(id: string) {// 找到对应的文件夹并且添加到folderlist中
     const folder = this.tableData.filter(val => val.id === id)[0];
     this.addToFolderList(folder);
     this.tableRouter.push({ id: folder.id, folder: folder.fileName });
@@ -105,34 +121,39 @@ export class UserfilesComponent implements OnInit {
     ];
   }
 
+  // 面包屑导航
+  turnBackTo(id: string) {
+    if (id === this.storeData.id) {
+      this.tableData = this.storeData.fileContains;
+    } else {
+      const folder = this.folderList.filter(item => item.id === id)[0];
+      this.tableData = folder.fileContains;
+    }
+    this.tableRouter = this.tableRouter.slice(0, this.tableRouter.findIndex(item => item.id === id) + 1);
+  }
+
   ngOnInit() {
-
-    // this.storeData = this.fileService.files;
-    // this.tableData = this.storeData.fileContains;
-    // this.storeData.fileName = 'root';
-    // this.tableRouter = [
-    //   { id: this.storeData.id, folder: this.storeData.fileName }
-    // ]
-
     this.uploader = this.fileService.uploader;
-    if (this.fileService.files == null) {
-      this.fileService.ofiles.subscribe(item => {
-        this.storeData = item['userFile'];
+    // 拿到所有的文件目录数据
+    if (this.fileService.getFiles() == null) {
+      this.fileService.getUserFiles().subscribe(item => {
+        this.storeData = item;
+        this.fileService.files = this.storeData;
         this.tableData = this.storeData.fileContains;
         this.storeData.fileName = 'root';
         this.tableRouter = [
           { id: this.storeData.id, folder: this.storeData.fileName }
         ]
       });
-    } else {
-      this.storeData = this.fileService.files;
+    } else {// 做这个else主要是为了减少请求的次数，把事情都在客户端做掉
+      this.storeData = this.fileService.getFiles();
       this.tableData = this.storeData.fileContains;
       this.storeData.fileName = 'root';
       this.tableRouter = [
         { id: this.storeData.id, folder: this.storeData.fileName }
       ]
     }
-
+    // 感觉这个formgroup暂时有点多余
     this.newFolderForm = this.build.group({
       folderName: '',
     });

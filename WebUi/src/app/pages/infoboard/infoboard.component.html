@@ -246,13 +246,15 @@
   </div>
 </div>
 <ng-template #info let-info>
-  <div class="card card-stats" style="margin-bottom: 0;">
+  <div class="card card-stats pm-1" style="margin-bottom: 0;">
     <div class="card-body">
-      <h3>{{modalInfo}}</h3>
-    </div>
-    <div class="card-footer">
       <div class="row">
-        <hr><button type="button" class="btn btn-primary btn-round col-3" (click)="info.close()">I Know</button>
+        <h3 class="card-header">{{modalInfo}}</h3>
+      </div>
+      <div class="card-footer">
+        <div class="row">
+          <hr><button type="button" class="btn btn-primary btn-round col-3" (click)="info.close()">I Know</button>
+        </div>
       </div>
     </div>
   </div>

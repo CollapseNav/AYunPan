@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-16 21:32:26
+ * @LastEditTime: 2020-03-17 17:27:00
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -69,13 +69,22 @@ export class SharedfilesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fileService.ofiles.subscribe(item => {
-      this.storeData = item['userFile'];
+    if (this.fileService.getFiles() == null) {
+      this.fileService.getUserFiles().subscribe(item => {
+        this.storeData = item;
+        this.tableData = this.storeData.fileContains;
+        this.storeData.fileName = 'root';
+        this.tableRouter = [
+          { id: this.storeData.id, folder: this.storeData.fileName }
+        ]
+      });
+    } else {
+      this.storeData = this.fileService.getFiles();
       this.tableData = this.storeData.fileContains;
       this.storeData.fileName = 'root';
       this.tableRouter = [
         { id: this.storeData.id, folder: this.storeData.fileName }
       ]
-    })
+    }
   }
 }

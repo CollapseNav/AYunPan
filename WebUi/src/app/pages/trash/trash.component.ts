@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:30
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-16 15:56:21
+ * @LastEditTime: 2020-03-17 21:22:48
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -76,13 +76,23 @@ export class TrashComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.fileService.files.subscribe(item => {
-    //   this.storeData = item['userFile'];
-    //   this.tableData = this.storeData.fileContains;
-    //   this.storeData.fileName = 'root';
-    //   this.tableRouter = [
-    //     { id: this.storeData.id, folder: this.storeData.fileName }
-    //   ]
-    // })
+    if (this.fileService.getFiles() == null) {
+      this.fileService.getUserFiles().subscribe(item => {
+        this.storeData = item;
+        this.tableData = this.storeData.fileContains;
+        this.storeData.fileName = 'root';
+        this.tableRouter = [
+          { id: this.storeData.id, folder: this.storeData.fileName }
+        ]
+      });
+    } else {
+      this.storeData = this.fileService.getFiles();
+      this.tableData = this.storeData.fileContains;
+      this.storeData.fileName = 'root';
+      this.tableRouter = [
+        { id: this.storeData.id, folder: this.storeData.fileName }
+      ]
+    }
+    console.log(this.storeData);
   }
 }

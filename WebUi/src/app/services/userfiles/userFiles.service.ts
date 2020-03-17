@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-07 13:45:37
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-16 22:00:08
+ * @LastEditTime: 2020-03-17 21:50:15
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -22,7 +22,7 @@ export class UserFilesService {
 
   baseUrl: string;
   files: UserFile = null;
-  ofiles: Observable<UserFile>;
+  // ofiles: Observable<UserFile>;
   uploader: FileUploader;
 
   constructor(private mock: MockUserFiles, private http: HttpClient, @Inject('BASE_URL') baseurl: string) {
@@ -34,12 +34,8 @@ export class UserFilesService {
       isHTML5: true,
       autoUpload: false,
     });
-    this.ofiles = this.getUserFiles();
     // this.getUserFiles().subscribe(result => {
     //   this.files = result['userFile'];
-    //   // this.ofiles = of(result['userFile']);
-    //   // console.log(this.files);
-    //   // console.log(this.ofiles);
     // });
   }
 
@@ -54,6 +50,14 @@ export class UserFilesService {
   getUserFiles() {
     return this.http.get<UserFile>(this.baseUrl + UserFileApi.GetUserFiles, { params: { id: localStorage.getItem('Id') } }).pipe(
     );
+  }
+
+  shareFile(id: string) {
+    return this.http.post(this.baseUrl + UserFileApi.ShareFile, { id: id }).pipe();
+  }
+
+  deleteFile(id: string) {
+    return this.http.post(this.baseUrl + UserFileApi.DeleteFile, { id: id }).pipe();
   }
 
   initUserFiles(files: UserFile[]) {
