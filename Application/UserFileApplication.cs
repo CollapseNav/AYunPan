@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Application.Core;
+using Application.Core.BaseRequestData;
 using Application.RequestData;
 using Application.ResponseData;
 using Repository.Domain;
@@ -16,6 +17,15 @@ namespace Application {
         }
 
         public FileInfo GetFileByFileId (string id) => rep.FindSingle (model => model.Id == id);
+
+        public string UpdateFileInfo (IRequestEditData<FileInfo> data) {
+            try {
+                rep.Update (model => model.Id == data.Id, data.GetConvertExpressions ());
+            } catch (Exception ex) {
+                return ex.Message;
+            }
+            return "Success";
+        }
 
         public ResUserFiles GetFilesById (string id) {
             var filelist = rep.FindAll (model => model.OwnerId == id).ToList ();

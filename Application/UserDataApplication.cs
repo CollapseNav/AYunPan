@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Application.Core.BaseRequestData;
 using Application.RequestData;
 using Application.ResponseData;
 using Repository.Domain;
@@ -53,9 +54,9 @@ namespace Application {
             return item;
         }
 
-        public bool EditUserData (ReqUserInfoEditData data) {
+        public bool EditUserData (IRequestEditData<UserDataInfo> data) {
             try {
-                rep.Update (model => model.Id == data.UserId, data.GetConvertExpressions ());
+                rep.Update (model => model.Id == data.Id, data.GetConvertExpressions ());
             } catch (Exception ex) {
                 Console.WriteLine (ex.Message);
                 return false;
