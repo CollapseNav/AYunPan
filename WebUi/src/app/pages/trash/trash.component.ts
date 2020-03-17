@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:30
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-17 21:22:48
+ * @LastEditTime: 2020-03-17 22:30:42
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -37,11 +37,11 @@ export class TrashComponent implements OnInit {
 
   folderList: UserFile[] = [];
 
+  file = { id: '', fileName: '' };
   storeData: UserFile;
 
   tableRouter = [{ id: '', folder: '' }];
 
-  delFile = { id: '', fileName: '' };
   constructor(private modalService: NgbModal, private fileService: UserFilesService) { }
   turnBackTo(id: string) {
     if (id === this.storeData.id) {
@@ -53,13 +53,23 @@ export class TrashComponent implements OnInit {
     this.tableRouter = this.tableRouter.slice(0, this.tableRouter.findIndex(item => item.id === id) + 1);
   }
 
-  onDelete(modal) {
+  onBe(modal: NgbModal, item: UserFile) {
+    this.file = { id: item.id, fileName: item.fileName };
     this.modalService.open(modal, { centered: true });
   }
 
-  onDelCheck(modal: NgbActiveModal) {
+  unDelete(modal: NgbActiveModal, id: string) {
+    const file = this.tableData.filter(item => item.id === this.file.id)[0];
+    this.fileService.unDeleteFile(id).subscribe(result => {
+      if (result) {
+        file.isDeleted = '0';
+      } else {
+        console.log(result);
+      }
+    })
     modal.close();
   }
+
 
   addToFolderList(folder: UserFile) {
     if (this.folderList.filter(item => item.id === folder.id).length > 0) {
@@ -79,6 +89,7 @@ export class TrashComponent implements OnInit {
     if (this.fileService.getFiles() == null) {
       this.fileService.getUserFiles().subscribe(item => {
         this.storeData = item;
+        this.fileService.files = this.storeData;
         this.tableData = this.storeData.fileContains;
         this.storeData.fileName = 'root';
         this.tableRouter = [
@@ -93,6 +104,5 @@ export class TrashComponent implements OnInit {
         { id: this.storeData.id, folder: this.storeData.fileName }
       ]
     }
-    console.log(this.storeData);
   }
 }

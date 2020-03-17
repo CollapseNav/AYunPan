@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-07 13:45:37
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-17 21:50:15
+ * @LastEditTime: 2020-03-17 22:11:27
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -58,6 +58,14 @@ export class UserFilesService {
 
   deleteFile(id: string) {
     return this.http.post(this.baseUrl + UserFileApi.DeleteFile, { id: id }).pipe();
+  }
+
+  unShareFile(id: string) {
+    return this.http.post(this.baseUrl + UserFileApi.UnShareFile, { id: id }).pipe();
+  }
+
+  unDeleteFile(id: string) {
+    return this.http.post(this.baseUrl + UserFileApi.UnDeleteFile, { id: id }).pipe();
   }
 
   initUserFiles(files: UserFile[]) {

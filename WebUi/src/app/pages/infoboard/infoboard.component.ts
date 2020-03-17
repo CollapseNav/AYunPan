@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:44:01
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-17 21:38:09
+ * @LastEditTime: 2020-03-17 22:30:29
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -55,7 +55,6 @@ export class InfoboardComponent implements OnInit {
   }
   onSubmit() {
     this.userDataService.editUserData(this.editForm.value).subscribe(result => {
-      // console.log(result);
       if (result) {
         this.modalInfo = '成功';
       } else {

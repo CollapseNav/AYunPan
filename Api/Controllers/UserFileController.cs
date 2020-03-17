@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application;
 using Application.Core;
+using Application.Core.BaseRequestData;
 using Application.RequestData;
 using Application.ResponseData;
 using Microsoft.AspNetCore.Cors;
@@ -90,9 +91,7 @@ namespace Api.Controllers {
             return Ok ();
         }
 
-        [HttpPost, Route ("[action]")]
-        public IActionResult ShareFile (ReqEditShareFile data) {
-            data.IsShare = 1;
+        private IActionResult Edit (IRequestEditData<Repository.Domain.FileInfo> data) {
             string mes;
             if ((mes = app.UpdateFileInfo (data)) == "Success")
                 return Ok (true);
@@ -102,14 +101,27 @@ namespace Api.Controllers {
         }
 
         [HttpPost, Route ("[action]")]
+        public IActionResult ShareFile (ReqEditShareFile data) {
+            data.IsShare = 1;
+            return Edit (data);
+        }
+
+        [HttpPost, Route ("[action]")]
         public IActionResult DeleteFile (ReqEditDeleteFile data) {
             data.IsDelete = 1;
-            string mes;
-            if ((mes = app.UpdateFileInfo (data)) == "Success")
-                return Ok (true);
-            else {
-                return BadRequest (mes);
-            }
+            return Edit (data);
+        }
+
+        [HttpPost, Route ("[action]")]
+        public IActionResult UnShareFile (ReqEditShareFile data) {
+            data.IsShare = 0;
+            return Edit (data);
+        }
+
+        [HttpPost, Route ("[action]")]
+        public IActionResult UnDeleteFile (ReqEditDeleteFile data) {
+            data.IsDelete = 0;
+            return Edit (data);
         }
     }
 }

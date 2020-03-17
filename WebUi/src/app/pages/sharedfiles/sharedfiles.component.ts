@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-17 17:27:00
+ * @LastEditTime: 2020-03-17 22:31:31
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -30,7 +30,7 @@ export class SharedfilesComponent implements OnInit {
 
   tableRouter = [{ id: '', folder: '' }];
 
-  delFile = { id: '', fileName: '' };
+  file = { id: '', fileName: '' };
 
   constructor(private modalService: NgbModal, private fileService: UserFilesService) { }
 
@@ -44,13 +44,32 @@ export class SharedfilesComponent implements OnInit {
     this.tableRouter = this.tableRouter.slice(0, this.tableRouter.findIndex(item => item.id === id) + 1);
   }
 
-  onDelete(modal: NgbModal, item: UserFile) {
-    this.delFile = { id: item.id, fileName: item.fileName };
+  onBe(modal: NgbModal, item: UserFile) {
+    this.file = { id: item.id, fileName: item.fileName };
     this.modalService.open(modal, { centered: true });
   }
 
-  onDelCheck(modal: NgbActiveModal, id: string) {
-    this.tableData.splice(this.tableData.findIndex(item => item.id === id), 1);
+  unShare(modal: NgbActiveModal, id: string) {
+    const file = this.tableData.filter(item => item.id === this.file.id)[0];
+    this.fileService.unShareFile(id).subscribe(result => {
+      if (result) {
+        file.isShared = '0';
+      } else {
+        console.log(result);
+      }
+    })
+    modal.close();
+  }
+
+  deleteFile(modal: NgbActiveModal, id: string) {
+    const file = this.tableData.filter(item => item.id === this.file.id)[0];
+    this.fileService.deleteFile(id).subscribe(result => {
+      if (result) {
+        file.isDeleted = '1';
+      } else {
+        console.log(result);
+      }
+    })
     modal.close();
   }
 
@@ -72,6 +91,7 @@ export class SharedfilesComponent implements OnInit {
     if (this.fileService.getFiles() == null) {
       this.fileService.getUserFiles().subscribe(item => {
         this.storeData = item;
+        this.fileService.files = this.storeData;
         this.tableData = this.storeData.fileContains;
         this.storeData.fileName = 'root';
         this.tableRouter = [

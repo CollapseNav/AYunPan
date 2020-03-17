@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-13 20:05:31
+ * @LastEditTime: 2020-03-17 22:25:46
  * @Description:
  -->
 <div class="row">
@@ -45,11 +45,11 @@
                   <td>{{item.fileSize}}</td>
                   <td>{{item.addDate}}</td>
                   <td>
-                    <button class="btn  btn-round btn-danger btn-icon" (click)="onDelete(del)" ngbTooltip="Delete"
+                    <button class="btn  btn-round btn-danger btn-icon" (click)="onBe(undel,item)" ngbTooltip="Delete"
                       triggers="hover">
                       <i class="nc-icon nc-simple-remove"></i>
                     </button>
-                    <button class="btn  btn-round btn-primary btn-icon" (click)="onDelete(del)" ngbTooltip="Revert"
+                    <button class="btn  btn-round btn-primary btn-icon" (click)="onBe(undel,item)" ngbTooltip="UnDelete"
                       triggers="hover">
                       <i class="nc-icon nc-refresh-69"></i>
                     </button>
@@ -64,12 +64,12 @@
     </div>
   </div>
 </div>
-<ng-template #del let-del>
+<ng-template #undel let-undel>
   <div class="modal-body">
-    <p>One fine body</p>
+    <p>{{file.fileName}}</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-light" (click)="onDelCheck(del)">Yes</button>
-    <button type="button" class="btn btn-light" (click)="del.close()">No</button>
+    <button type="button" class="btn btn-warning" (click)="unDelete(undel,file.id)">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="undel.close()">No</button>
   </div>
 </ng-template>
