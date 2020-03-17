@@ -107,11 +107,11 @@
           Email : {{userData.email}}
           <br>Phone : {{userData.phone}}
           <br>Gender :
-          <ng-container *ngIf="userData.gender == '1'">
-            Male
-          </ng-container>
-          <ng-container *ngIf="userData.gender == '0'">
+          <ng-container *ngIf="userData.gender === '0'">
             Female
+          </ng-container>
+          <ng-container *ngIf="userData.gender === '1'">
+            Male
           </ng-container>
           <ng-container *ngIf="userData.gender == null">
             NaN
@@ -176,7 +176,7 @@
         <h5 class="card-title">Edit UserInfo</h5>
       </div>
       <div class="card-body">
-        <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="editForm" (submit)="onSubmit()">
           <div class="row">
             <div class="col-md-4 pm-1 ">
               <div class="form-group">

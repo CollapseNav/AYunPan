@@ -15,13 +15,11 @@ namespace Application {
             rep.Add (file);
         }
 
+        public FileInfo GetFileByFileId (string id) => rep.FindSingle (model => model.Id == id);
+
         public ResUserFiles GetFilesById (string id) {
             var filelist = rep.FindAll (model => model.OwnerId == id).ToList ();
             Dictionary<string, ResUserFiles> folderlist = new Dictionary<string, ResUserFiles> ();
-            // Console.WriteLine (EFileType.doc.ToString ());
-            // Console.WriteLine (filelist.First ().FileType);
-            // Console.WriteLine (filelist.First ().FileType == EFileType.doc.ToString ());
-            // Console.WriteLine (FileType.ValueMapToType (filelist.First ().FileType) == EFileType.doc);
             foreach (var item in filelist.Where (model => FileType.ValueMapToType (model.FileType) == EFileType.folder)) {
                 folderlist.Add (item.MapPath + "/" + item.FileName, new ResUserFiles (item));
             }

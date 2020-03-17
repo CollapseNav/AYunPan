@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:44:01
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-16 16:51:04
+ * @LastEditTime: 2020-03-16 21:23:05
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -65,7 +65,6 @@ export class InfoboardComponent implements OnInit {
     });
   }
   ngOnInit() {
-
     this.userDataService.getUserData(localStorage.getItem('Id')).subscribe(user => {
       this.userData = user['userData'];
       this.editForm = this.builder.group({

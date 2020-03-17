@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-16 15:56:13
+ * @LastEditTime: 2020-03-16 22:03:20
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -11,6 +11,7 @@ import { UserFile, FileTypes } from 'app/unit/userFiles';
 import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 import { FileUploader, FileItem } from 'ng2-file-upload';
 import { UploadInput } from 'ngx-uploader';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-userfiles',
@@ -24,6 +25,8 @@ export class UserfilesComponent implements OnInit {
     { content: 'AddDate', per: '20%' },
     { content: 'Be', per: '15%' },
   ];
+  newFolderForm: FormGroup;
+
   tableData: UserFile[] = [];
   folderList: UserFile[] = [];
   storeData: UserFile;
@@ -35,16 +38,23 @@ export class UserfilesComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private fileService: UserFilesService) {
-    this.uploader = fileService.uploader;
+    private fileService: UserFilesService,
+    private build: FormBuilder) {
   }
 
   createNewFolder() {
-
+    // tslint:disable-next-line:max-line-length
+    this.fileService.createNewFolder({ 'folderName': this.newFolderForm.value['folderName'], 'rootId': this.tableRouter.slice(-1)[0].id }).subscribe(result => {
+      console.log(result);
+    })
   }
 
   uploadFile(file: FileItem) {
     file.withCredentials = false;
+    this.uploader.options.headers = [
+      { name: 'Id', value: localStorage.getItem('Id') },
+      { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },
+    ];
     file.upload();
   }
 
@@ -60,6 +70,11 @@ export class UserfilesComponent implements OnInit {
 
   openUploadModal(modal) {
     this.modalService.open(modal, { centered: true, size: 'lg' });
+  }
+  // 上下两个可以合并，但我偏不！
+  // 实际上还是有点区别的
+  openNewFolder(modal) {
+    this.modalService.open(modal, { centered: true });
   }
 
   onDelete(modal: NgbModal, item: UserFile) {
@@ -84,16 +99,45 @@ export class UserfilesComponent implements OnInit {
     this.addToFolderList(folder);
     this.tableRouter.push({ id: folder.id, folder: folder.fileName });
     this.tableData = folder.fileContains;
+    this.uploader.options.headers = [
+      { name: 'Id', value: localStorage.getItem('Id') },
+      { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },
+    ];
   }
 
   ngOnInit() {
-    this.fileService.files.subscribe(item => {
-      this.storeData = item['userFile'];
+
+    // this.storeData = this.fileService.files;
+    // this.tableData = this.storeData.fileContains;
+    // this.storeData.fileName = 'root';
+    // this.tableRouter = [
+    //   { id: this.storeData.id, folder: this.storeData.fileName }
+    // ]
+
+    this.uploader = this.fileService.uploader;
+    if (this.fileService.files == null) {
+      this.fileService.ofiles.subscribe(item => {
+        this.storeData = item['userFile'];
+        this.tableData = this.storeData.fileContains;
+        this.storeData.fileName = 'root';
+        this.tableRouter = [
+          { id: this.storeData.id, folder: this.storeData.fileName }
+        ]
+      });
+    } else {
+      this.storeData = this.fileService.files;
       this.tableData = this.storeData.fileContains;
       this.storeData.fileName = 'root';
       this.tableRouter = [
         { id: this.storeData.id, folder: this.storeData.fileName }
       ]
-    })
+    }
+
+    this.newFolderForm = this.build.group({
+      folderName: '',
+    });
+    this.uploader.options.headers = [
+      { name: 'Id', value: localStorage.getItem('Id') },
+    ];
   }
 }

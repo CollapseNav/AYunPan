@@ -14,8 +14,7 @@ namespace Api.Controllers {
     [Route ("api/[controller]")]
     public class SignController : ControllerBase {
         private readonly UserDataApplication app;
-        private readonly UserFileApplication file;
-        public SignController (UserDataApplication _app, UserFileApplication _file) => app = _app;
+        public SignController (UserDataApplication _app) => app = _app;
 
         [HttpPost, Route ("[action]")]
         public IActionResult SignUp (ReqSignData data) {

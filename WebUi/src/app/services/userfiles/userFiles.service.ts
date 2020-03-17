@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-07 13:45:37
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-16 15:52:32
+ * @LastEditTime: 2020-03-16 22:00:08
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -12,7 +12,8 @@ import { FileUploader } from 'ng2-file-upload';
 import { HttpClient } from '@angular/common/http';
 import { UserFileApi } from './userfileApi';
 import { tap } from 'rxjs/operators';
-import { Observable, observable, of } from 'rxjs';
+import { Observable, observable, of, from } from 'rxjs';
+import { NewFolderData } from '../../unit/newFolderData';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ import { Observable, observable, of } from 'rxjs';
 export class UserFilesService {
 
   baseUrl: string;
-  files: Observable<UserFile>;
+  files: UserFile = null;
+  ofiles: Observable<UserFile>;
   uploader: FileUploader;
 
   constructor(private mock: MockUserFiles, private http: HttpClient, @Inject('BASE_URL') baseurl: string) {
@@ -31,13 +33,18 @@ export class UserFilesService {
       method: 'POST',
       isHTML5: true,
       autoUpload: false,
-      headers: [{ name: 'Id', value: localStorage.getItem('Id') }]
     });
-    this.files = this.getUserFiles();
+    this.ofiles = this.getUserFiles();
+    // this.getUserFiles().subscribe(result => {
+    //   this.files = result['userFile'];
+    //   // this.ofiles = of(result['userFile']);
+    //   // console.log(this.files);
+    //   // console.log(this.ofiles);
+    // });
   }
 
-  createNewFolder(folderName: string, folderPath: string) {
-
+  createNewFolder(data: NewFolderData) {
+    return this.http.post(this.baseUrl + UserFileApi.CreateNewFolder, data).pipe();
   }
 
   getFiles() {

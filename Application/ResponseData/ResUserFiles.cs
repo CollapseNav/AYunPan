@@ -18,7 +18,7 @@ namespace Application.ResponseData {
             Id = file.Id;
             var extindex = file.FileName.LastIndexOf ('.');
             FileName = file.FileName.Substring (0, extindex > 0 ? extindex : file.FileName.Length);
-            FileExt = file.FileName.Split (".") [ ^ 1];
+            FileExt = file.FileType == EFileType.folder.ToString () ? EFileType.folder.ToString () : file.FileName.Split ('.') [ ^ 1];
             FileTypes = FileType.ValueMapToType (file.FileType);
             FileSize = file.FileSize;
             AddDate = file.CreateDate.ToString ();

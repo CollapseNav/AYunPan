@@ -2,19 +2,26 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-16 16:46:31
+ * @LastEditTime: 2020-03-16 21:44:22
  * @Description:
  -->
 <div class="row">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title"> {{tableRouter[tableRouter.length-1].folder}}</h4>
+        <h4 class="card-title" *ngIf="tableRouter[0].id"> {{tableRouter[tableRouter.length-1].folder}}</h4>
         <nav aria-label="breadcrumb" role="navigation">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item" *ngFor="let item of tableRouter">
-              <a href="javascript:void(0)" (click)="turnBackTo(item.id)">{{item.folder}}</a>
-            </li>
+            <ng-container *ngIf="tableRouter[0].id;else emptyRouter">
+              <li class="breadcrumb-item" *ngFor="let item of tableRouter">
+                <a href="javascript:void(0)" (click)="turnBackTo(item.id)">{{item.folder}}</a>
+              </li>
+            </ng-container>
+            <ng-template #emptyRouter>
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0)">Empty</a>
+              </li>
+            </ng-template>
           </ol>
         </nav>
       </div>
@@ -22,7 +29,7 @@
         <button class="btn btn-warning btn-round btn-icon" (click)="openUploadModal(upload)" ngbTooltip="OpenUpload"
           triggers="hover">
           <i class="nc-icon nc-cloud-upload-94"></i></button>
-        <button class="btn btn-primary btn-round btn-icon" (click)="openUploadModal(upload)"
+        <button class="btn btn-primary btn-round btn-icon" (click)="openNewFolder(newfolder)"
           ngbTooltip="CreateNewFolder" triggers="hover">
           <i class="nc-icon nc-simple-add"></i></button>
       </div>
@@ -157,7 +164,26 @@
 
 
 <ng-template #newfolder let-newfolder>
-  <div class="card card-stats">
-
+  <div class="card card-stats pm-1" style="margin-bottom: 0;">
+    <h3 class="card-header">Create New Folder</h3>
+    <div class="card-body">
+      <form [formGroup]="newFolderForm" (submit)="createNewFolder()" class="form-group">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Folder Name</label>
+              <input type="text" class="form-control form-control-lg " formControlName="folderName" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <button class="btn btn-primary btn-round" [disabled]="!newFolderForm.value['folderName']">Create</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </ng-template>

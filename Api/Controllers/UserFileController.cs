@@ -32,18 +32,22 @@ namespace Api.Controllers {
         public IActionResult UploadFile () {
             var file = Request.Form.Files[0];
             var id = Request.Headers["Id"].ToString ();
+            var rootId = Request.Headers["rootId"].ToString ();
             var udata = user.GetFullUserDataById (id);
+            var rootFolder = app.GetFileByFileId (rootId);
+            // 若用户目录不存在，则新建一个
             if (!Directory.Exists (Directory.GetCurrentDirectory () + udata.FolderPath)) {
-                app.AddFile (new Repository.Domain.FileInfo {
+                rootFolder = new Repository.Domain.FileInfo {
                     FileName = udata.UserAccount,
-                        FileType = EFileType.folder.ToString (),
-                        FileSize = "0",
-                        OwnerId = udata.Id,
-                        OwnerName = udata.UserName,
-                        FilePath = udata.FolderPath,
-                        MapPath = "",
-                        Shared = 0
-                });
+                    FileType = EFileType.folder.ToString (),
+                    FileSize = "0",
+                    OwnerId = udata.Id,
+                    OwnerName = udata.UserName,
+                    FilePath = udata.FolderPath,
+                    MapPath = "",
+                    Shared = 0
+                };
+                app.AddFile (rootFolder);
                 Directory.CreateDirectory (Directory.GetCurrentDirectory () + udata.FolderPath);
             }
             var data = new Repository.Domain.FileInfo {
@@ -52,8 +56,8 @@ namespace Api.Controllers {
                 FileSize = file.Length.ToString (),
                 OwnerId = udata.Id,
                 OwnerName = udata.UserName,
-                FilePath = udata.FolderPath + "/" + file.FileName,
-                MapPath = udata.FolderPath,
+                FilePath = rootFolder.FilePath + "/" + file.FileName,
+                MapPath = rootFolder.FilePath,
                 Shared = 0
             };
             app.AddFile (data);
@@ -69,7 +73,22 @@ namespace Api.Controllers {
         }
 
         [HttpPost, Route ("[action]")]
-        public IActionResult CreateNewFolder () {
+        public IActionResult CreateNewFolder (ReqNewFolder folder) {
+            var root = app.GetFileByFileId (folder.RootId);
+            try {
+                app.AddFile (new Repository.Domain.FileInfo {
+                    FileName = folder.FolderName,
+                        FilePath = root.FilePath + '/' + folder.FolderName,
+                        MapPath = root.FilePath,
+                        FileType = EFileType.folder.ToString (),
+                        FileSize = "0",
+                        OwnerId = root.OwnerId,
+                        OwnerName = root.OwnerName,
+                        Shared = 0
+                });
+            } catch (Exception ex) {
+                return BadRequest (ex.Message);
+            }
             return Ok ();
         }
     }

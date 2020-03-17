@@ -76,13 +76,13 @@ export class TrashComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fileService.files.subscribe(item => {
-      this.storeData = item['userFile'];
-      this.tableData = this.storeData.fileContains;
-      this.storeData.fileName = 'root';
-      this.tableRouter = [
-        { id: this.storeData.id, folder: this.storeData.fileName }
-      ]
-    })
+    // this.fileService.files.subscribe(item => {
+    //   this.storeData = item['userFile'];
+    //   this.tableData = this.storeData.fileContains;
+    //   this.storeData.fileName = 'root';
+    //   this.tableRouter = [
+    //     { id: this.storeData.id, folder: this.storeData.fileName }
+    //   ]
+    // })
   }
 }
