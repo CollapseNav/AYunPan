@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-17 22:21:42
+ * @LastEditTime: 2020-03-18 20:05:40
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -50,16 +50,14 @@ export class UserfilesComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.fileService.createNewFolder({ 'folderName': this.newFolderForm.value['folderName'], 'rootId': this.tableRouter.slice(-1)[0].id }).subscribe(result => {
       console.log(result);
+      // const resfile = JSON.parse(result);
+      this.tableData.push(result);
     })
   }
 
   // 文件上传部分
   uploadFile(file: FileItem) {
     // file.withCredentials = false;
-    // this.uploader.options.headers = [
-    //   { name: 'Id', value: localStorage.getItem('Id') },
-    //   { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },
-    // ];
     file.upload();
   }
 
@@ -134,6 +132,11 @@ export class UserfilesComponent implements OnInit {
 
   ngOnInit() {
     this.uploader = this.fileService.uploader;
+    // 成功之后直接修改客户端的 files，不需要从服务器请求大量数据(这种事情第一次加载的时候做就好了)
+    this.uploader.onSuccessItem = (item, res) => {
+      const resfile = JSON.parse(res);
+      this.tableData.push(resfile);
+    }
     // 拿到所有的文件目录数据
     if (this.fileService.getFiles() == null) {
       this.fileService.getUserFiles().subscribe(item => {
@@ -143,7 +146,11 @@ export class UserfilesComponent implements OnInit {
         this.storeData.fileName = 'root';
         this.tableRouter = [
           { id: this.storeData.id, folder: this.storeData.fileName }
-        ]
+        ];
+        this.uploader.options.headers = [
+          { name: 'Id', value: localStorage.getItem('Id') },
+          { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },
+        ];
       });
     } else {// 做这个else主要是为了减少请求的次数，把事情都在客户端做掉
       this.storeData = this.fileService.getFiles();
@@ -151,14 +158,15 @@ export class UserfilesComponent implements OnInit {
       this.storeData.fileName = 'root';
       this.tableRouter = [
         { id: this.storeData.id, folder: this.storeData.fileName }
-      ]
+      ];
+      this.uploader.options.headers = [
+        { name: 'Id', value: localStorage.getItem('Id') },
+        { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },
+      ];
     }
     // 感觉这个formgroup暂时有点多余
     this.newFolderForm = this.build.group({
       folderName: '',
     });
-    this.uploader.options.headers = [
-      { name: 'Id', value: localStorage.getItem('Id') },
-    ];
   }
 }

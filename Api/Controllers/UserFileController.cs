@@ -30,7 +30,7 @@ namespace Api.Controllers {
         }
 
         [HttpPost, Route ("[action]")]
-        public IActionResult UploadFile () {
+        public async Task<IActionResult> UploadFile () {
             var file = Request.Form.Files[0];
             var id = Request.Headers["Id"].ToString ();
             var rootId = Request.Headers["rootId"].ToString ();
@@ -51,18 +51,25 @@ namespace Api.Controllers {
                 app.AddFile (rootFolder);
                 Directory.CreateDirectory (Directory.GetCurrentDirectory () + udata.FolderPath);
             }
-            var data = new Repository.Domain.FileInfo {
-                FileName = file.FileName,
-                FileType = FileType.ExtMapToType (file.FileName.Split ('.') [ ^ 1]).ToString (),
-                FileSize = file.Length.ToString (),
-                OwnerId = udata.Id,
-                OwnerName = udata.UserName,
-                FilePath = rootFolder.FilePath + "/" + file.FileName,
-                MapPath = rootFolder.FilePath,
-                Shared = 0
-            };
-            app.AddFile (data);
-            return Ok ();
+            try {
+                var data = new Repository.Domain.FileInfo {
+                    FileName = file.FileName,
+                    FileType = FileType.ExtMapToType (file.FileName.Split ('.') [ ^ 1]).ToString (),
+                    FileSize = file.Length.ToString (),
+                    OwnerId = udata.Id,
+                    OwnerName = udata.UserName,
+                    FilePath = rootFolder.FilePath + "/" + file.FileName,
+                    MapPath = rootFolder.FilePath,
+                    Shared = 0
+                };
+                using FileStream fs = new FileStream (Directory.GetCurrentDirectory () + "/" + data.FilePath, FileMode.CreateNew);
+                await file.CopyToAsync (fs);
+                app.AddFile (data);
+                return Ok (new ResUserFiles (data));
+            } catch (Exception ex) {
+                Console.WriteLine (ex.Message);
+                return BadRequest ();
+            }
         }
 
         [HttpGet, Route ("[action]")]
@@ -75,20 +82,22 @@ namespace Api.Controllers {
         public IActionResult CreateNewFolder (ReqNewFolder folder) {
             var root = app.GetFileByFileId (folder.RootId);
             try {
-                app.AddFile (new Repository.Domain.FileInfo {
+                var data = new Repository.Domain.FileInfo {
                     FileName = folder.FolderName,
-                        FilePath = root.FilePath + '/' + folder.FolderName,
-                        MapPath = root.FilePath,
-                        FileType = EFileType.folder.ToString (),
-                        FileSize = "0",
-                        OwnerId = root.OwnerId,
-                        OwnerName = root.OwnerName,
-                        Shared = 0
-                });
+                    FilePath = root.FilePath + '/' + folder.FolderName,
+                    MapPath = root.FilePath,
+                    FileType = EFileType.folder.ToString (),
+                    FileSize = "0",
+                    OwnerId = root.OwnerId,
+                    OwnerName = root.OwnerName,
+                    Shared = 0
+                };
+                app.AddFile (data);
+                Directory.CreateDirectory (Directory.GetCurrentDirectory () + root.FilePath + '/' + folder.FolderName);
+                return Ok (new ResUserFiles (data) { FileContains = new List<ResUserFiles> () });
             } catch (Exception ex) {
                 return BadRequest (ex.Message);
             }
-            return Ok ();
         }
 
         private IActionResult Edit (IRequestEditData<Repository.Domain.FileInfo> data) {

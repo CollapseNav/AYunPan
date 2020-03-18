@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-02-17 17:22:43
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-17 22:06:16
+ * @LastEditTime: 2020-03-17 22:34:01
  * @Description:
  -->
 
@@ -36,7 +36,7 @@
   - 直接把文件的目录结构读出来了
   - 主要是为了方便后续的使用
 - [X] 分享文件
-  - 还没做取消分享
+  - ~~还没做取消分享~~
 - [X] 删除文件(伪)
   - 真的删除需要做到trash里面
 - [ ] 修改头像

@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-07 13:45:37
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-17 22:11:27
+ * @LastEditTime: 2020-03-18 19:54:05
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -33,14 +33,20 @@ export class UserFilesService {
       method: 'POST',
       isHTML5: true,
       autoUpload: false,
+      headers: [
+        { name: 'Id', value: localStorage.getItem('Id') },
+      ],
     });
-    // this.getUserFiles().subscribe(result => {
-    //   this.files = result['userFile'];
-    // });
   }
 
   createNewFolder(data: NewFolderData) {
-    return this.http.post(this.baseUrl + UserFileApi.CreateNewFolder, data).pipe();
+    return this.http.post<UserFile>(this.baseUrl + UserFileApi.CreateNewFolder, data).pipe();
+  }
+
+  updateFiles() {
+    this.getUserFiles().subscribe(result => {
+      this.files = result;
+    })
   }
 
   getFiles() {
@@ -68,39 +74,39 @@ export class UserFilesService {
     return this.http.post(this.baseUrl + UserFileApi.UnDeleteFile, { id: id }).pipe();
   }
 
-  initUserFiles(files: UserFile[]) {
-    const tfiles = files.filter(item => item.isDeleted === '0');
-    const userfiles: UserFile[] = [];
-    tfiles.forEach(item => {
-      if (item.fileType === FileTypes.folder) {
-        item.fileContains = this.initUserFiles(item.fileContains);
-      }
-      userfiles.push(item);
-    });
-    return userfiles;
-  }
+  // initUserFiles(files: UserFile[]) {
+  //   const tfiles = files.filter(item => item.isDeleted === '0');
+  //   const userfiles: UserFile[] = [];
+  //   tfiles.forEach(item => {
+  //     if (item.fileType === FileTypes.folder) {
+  //       item.fileContains = this.initUserFiles(item.fileContains);
+  //     }
+  //     userfiles.push(item);
+  //   });
+  //   return userfiles;
+  // }
 
-  initDeletedFiles(files: UserFile[]) {
-    const tfiles = files.filter(item => item.isDeleted === '1');
-    const deletedfiles: UserFile[] = [];
-    tfiles.forEach(item => {
-      if (item.fileType === FileTypes.folder) {
-        item.fileContains = this.initDeletedFiles(item.fileContains);
-      }
-      deletedfiles.push(item);
-    });
-    return deletedfiles;
-  }
+  // initDeletedFiles(files: UserFile[]) {
+  //   const tfiles = files.filter(item => item.isDeleted === '1');
+  //   const deletedfiles: UserFile[] = [];
+  //   tfiles.forEach(item => {
+  //     if (item.fileType === FileTypes.folder) {
+  //       item.fileContains = this.initDeletedFiles(item.fileContains);
+  //     }
+  //     deletedfiles.push(item);
+  //   });
+  //   return deletedfiles;
+  // }
 
-  initSharedFiles(files: UserFile[]) {
-    const tfiles = files.filter(item => item.isShared === '1' && item.isDeleted === '0');
-    const sharedlist: UserFile[] = [];
-    tfiles.forEach(item => {
-      if (item.fileType === FileTypes.folder) {
-        item.fileContains = this.initSharedFiles(item.fileContains);
-      }
-      sharedlist.push(item);
-    });
-    return sharedlist;
-  }
+  // initSharedFiles(files: UserFile[]) {
+  //   const tfiles = files.filter(item => item.isShared === '1' && item.isDeleted === '0');
+  //   const sharedlist: UserFile[] = [];
+  //   tfiles.forEach(item => {
+  //     if (item.fileType === FileTypes.folder) {
+  //       item.fileContains = this.initSharedFiles(item.fileContains);
+  //     }
+  //     sharedlist.push(item);
+  //   });
+  //   return sharedlist;
+  // }
 }
