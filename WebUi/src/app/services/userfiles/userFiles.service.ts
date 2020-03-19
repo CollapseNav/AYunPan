@@ -2,19 +2,18 @@
  * @Author: CollapseNav
  * @Date: 2020-03-07 13:45:37
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-18 19:54:05
+ * @LastEditTime: 2020-03-19 23:57:06
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
 import { UserFile, FileTypes } from 'app/unit/userFiles';
 import { MockUserFiles } from 'app/mock/mock_userfiles';
 import { FileUploader } from 'ng2-file-upload';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponseBase } from '@angular/common/http';
 import { UserFileApi } from './userfileApi';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { Observable, observable, of, from } from 'rxjs';
 import { NewFolderData } from '../../unit/newFolderData';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -54,8 +53,15 @@ export class UserFilesService {
   }
 
   getUserFiles() {
-    return this.http.get<UserFile>(this.baseUrl + UserFileApi.GetUserFiles, { params: { id: localStorage.getItem('Id') } }).pipe(
-    );
+    // tslint:disable-next-line:max-line-length
+    return this.http.get<UserFile>(this.baseUrl + UserFileApi.GetUserFiles, { params: { id: localStorage.getItem('Id') }, }).pipe();
+  }
+
+  downloadFile(id: string) {
+    return this.http.post(this.baseUrl + UserFileApi.DownloadFile, { id: id }, { responseType: 'blob', observe: 'response' })
+      .pipe();
+    // return this.http.post(this.baseUrl + UserFileApi.DownloadFile2, { id: id })
+    //   .pipe();
   }
 
   shareFile(id: string) {

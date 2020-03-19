@@ -2,16 +2,16 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-18 20:05:40
+ * @LastEditTime: 2020-03-20 00:15:25
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserFile, FileTypes } from 'app/unit/userFiles';
+import { UserFile } from 'app/unit/userFiles';
 import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 import { FileUploader, FileItem } from 'ng2-file-upload';
-import { UploadInput } from 'ngx-uploader';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-userfiles',
@@ -45,19 +45,24 @@ export class UserfilesComponent implements OnInit {
     private build: FormBuilder) {
   }
 
+  downloadFile(id: string) {
+    this.fileService.downloadFile(id).subscribe(result => {
+      const filename = result.headers.get('filename');
+      const file: Blob = new Blob([result.body]);
+      saveAs(file, filename);
+    })
+  }
+
   // 新建文件夹
   createNewFolder() {
     // tslint:disable-next-line:max-line-length
     this.fileService.createNewFolder({ 'folderName': this.newFolderForm.value['folderName'], 'rootId': this.tableRouter.slice(-1)[0].id }).subscribe(result => {
-      console.log(result);
-      // const resfile = JSON.parse(result);
       this.tableData.push(result);
     })
   }
 
   // 文件上传部分
   uploadFile(file: FileItem) {
-    // file.withCredentials = false;
     file.upload();
   }
 
