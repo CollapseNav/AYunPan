@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:47:05
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-16 17:21:20
+ * @LastEditTime: 2020-03-19 23:55:54
  * @Description: 
  */
 using System.Text;
@@ -47,9 +47,12 @@ namespace Api {
             });
 
             services.AddCors (options => {
-                options.AddPolicy ("angular",
+                options.AddPolicy ("Base",
                     builder => builder.WithOrigins ("http://localhost:4200")
-                    .AllowAnyHeader ().AllowAnyMethod ().WithExposedHeaders ().AllowCredentials ());
+                    .AllowAnyHeader ().AllowAnyMethod ().AllowCredentials ());
+                options.AddPolicy ("File",
+                    builder => builder.WithOrigins ("http://localhost:4200")
+                    .AllowAnyHeader ().AllowAnyMethod ().AllowCredentials ().WithExposedHeaders ("FileName"));
             });
 
             services.AddControllers ().AddControllersAsServices ();
@@ -79,7 +82,7 @@ namespace Api {
 
             app.UseRouting ();
 
-            app.UseCors ("angular");
+            app.UseCors ("Base");
 
             app.UseAuthorization ();
 
