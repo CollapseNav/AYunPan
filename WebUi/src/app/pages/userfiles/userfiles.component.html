@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-19 21:11:06
+ * @LastEditTime: 2020-03-20 18:32:58
  * @Description:
  -->
 <div class="row">
@@ -24,14 +24,31 @@
             </ng-template>
           </ol>
         </nav>
-      </div>
-      <div class="col-md-4 ">
-        <button class="btn btn-warning btn-round btn-icon" (click)="openUploadModal(upload)" ngbTooltip="OpenUpload"
-          triggers="hover">
-          <i class="nc-icon nc-cloud-upload-94"></i></button>
-        <button class="btn btn-primary btn-round btn-icon" (click)="openNewFolder(newfolder)"
-          ngbTooltip="CreateNewFolder" triggers="hover">
-          <i class="nc-icon nc-simple-add"></i></button>
+        <div class="row">
+          <div class="col-md-2">
+            <button class="btn btn-warning btn-round btn-icon" (click)="openUploadModal(upload)" ngbTooltip="OpenUpload"
+              triggers="hover">
+              <i class="nc-icon nc-cloud-upload-94"></i></button>
+            <button class="btn btn-primary btn-round btn-icon" (click)="openNewFolder(newfolder)"
+              ngbTooltip="CreateNewFolder" triggers="hover">
+              <i class="nc-icon nc-simple-add"></i></button>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group no-border">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="nc-icon nc-zoom-split " style="cursor: pointer;" (click)="searchFile(searchvalue)"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" (keyup)="searchWaitEnter($event)" #searchvalue />
+              <div class="input-group-append no-border">
+                <div class="input-group-text no-border">
+                  <i class="nc-icon nc-simple-remove " style="cursor: pointer;" (click)="clearSearch(searchvalue)"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="card-body">
         <div class="table">
@@ -61,8 +78,8 @@
                       triggers="hover">
                       <i class="nc-icon nc-simple-remove"></i>
                     </button>
-                    <button class="btn  btn-round btn-primary btn-icon " (click)="downloadFile(item.id)" ngbTooltip="Download"
-                      triggers="hover">
+                    <button class="btn  btn-round btn-primary btn-icon " (click)="downloadFile(item.id)"
+                      ngbTooltip="Download" triggers="hover">
                       <i class="nc-icon nc-cloud-download-93"></i>
                     </button>
                     <ng-container *ngIf="item.isShared==='1';else notShared">
@@ -71,8 +88,8 @@
                       </button>
                     </ng-container>
                     <ng-template #notShared>
-                      <button class="btn  btn-round btn-warning btn-icon " (click)="onBe(share,item)"
-                        ngbTooltip="Share" triggers="hover">
+                      <button class="btn  btn-round btn-warning btn-icon " (click)="onBe(share,item)" ngbTooltip="Share"
+                        triggers="hover">
                         <i class="nc-icon nc-share-66"></i>
                       </button>
                     </ng-template>

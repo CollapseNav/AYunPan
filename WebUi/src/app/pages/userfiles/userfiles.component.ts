@@ -2,15 +2,15 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-20 00:15:25
+ * @LastEditTime: 2020-03-20 18:45:49
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserFile } from 'app/unit/userFiles';
+import { UserFile, FileTypes } from 'app/unit/userFiles';
 import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 import { FileUploader, FileItem } from 'ng2-file-upload';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { saveAs } from 'file-saver';
 
 @Component({
@@ -51,6 +51,36 @@ export class UserfilesComponent implements OnInit {
       const file: Blob = new Blob([result.body]);
       saveAs(file, filename);
     })
+  }
+
+  searchWaitEnter(event: KeyboardEvent) {
+    if (event.key.toLowerCase() === 'enter') {
+      this.searchFile(event.target);
+    }
+  }
+
+  searchFile(control) {
+    // tslint:disable-next-line:max-line-length
+    const searchlist: UserFile[] = this.filterFile(this.folderList.filter(item => item.id === this.tableRouter.slice(-1)[0].id), control.value);
+    this.tableData = searchlist;
+  }
+
+  clearSearch(control) {
+    control.value = '';
+    this.turnBackTo(this.tableRouter.slice(-1)[0].id);
+  }
+
+  filterFile(folders: UserFile[], filter: string) {
+    const list = folders.filter(item => item.fileName.toLowerCase().indexOf(filter) >= 0);
+    folders = folders.filter(item => item.fileExt === 'folder')
+    folders.forEach(item => {
+      if (item.fileContains != null) {
+        this.filterFile(item.fileContains, filter).forEach(file => {
+          list.push(file);
+        })
+      }
+    });
+    return list;
   }
 
   // 新建文件夹
@@ -126,12 +156,8 @@ export class UserfilesComponent implements OnInit {
 
   // 面包屑导航
   turnBackTo(id: string) {
-    if (id === this.storeData.id) {
-      this.tableData = this.storeData.fileContains;
-    } else {
-      const folder = this.folderList.filter(item => item.id === id)[0];
-      this.tableData = folder.fileContains;
-    }
+    const folder = this.folderList.filter(item => item.id === id)[0];
+    this.tableData = folder.fileContains;
     this.tableRouter = this.tableRouter.slice(0, this.tableRouter.findIndex(item => item.id === id) + 1);
   }
 
@@ -156,6 +182,7 @@ export class UserfilesComponent implements OnInit {
           { name: 'Id', value: localStorage.getItem('Id') },
           { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },
         ];
+        this.folderList.push(this.storeData);
       });
     } else {// 做这个else主要是为了减少请求的次数，把事情都在客户端做掉
       this.storeData = this.fileService.getFiles();
@@ -168,10 +195,12 @@ export class UserfilesComponent implements OnInit {
         { name: 'Id', value: localStorage.getItem('Id') },
         { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },
       ];
+      this.folderList.push(this.storeData);
     }
     // 感觉这个formgroup暂时有点多余
     this.newFolderForm = this.build.group({
       folderName: '',
     });
+
   }
 }
