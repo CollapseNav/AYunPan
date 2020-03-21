@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-11 17:28:28
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-12 22:00:14
+ * @LastEditTime: 2020-03-21 14:49:12
  * @Description:
  */
 import { Injectable, Inject, OnInit } from '@angular/core';
@@ -30,7 +30,6 @@ export class UserdataService {
     );
   }
   editUserData(data: UserData) {
-    console.log(data);
     return this.http.post(this.baseUrl + UserDataApi.EditUserData, data).pipe(
       retry(1),
       catchError(error => {

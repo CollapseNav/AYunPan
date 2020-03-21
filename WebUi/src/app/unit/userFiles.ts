@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 21:26:27
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-07 20:43:36
+ * @LastEditTime: 2020-03-21 15:02:30
  * @Description:
  */
 export enum FileTypes {
@@ -28,7 +28,7 @@ export class UserFile {
     public id: string,
     public fileName: string,
     public fileExt: string,
-    public fileType: FileTypes,
+    public fileTypes: FileTypes,
     public fileSize: string,
     public addDate: string,
     public isShared: string,

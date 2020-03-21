@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2019-12-30 20:18:00
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-12 21:42:26
+ * @LastEditTime: 2020-03-21 14:49:04
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -52,7 +52,6 @@ export class SignService {
         localStorage.setItem('jwt', tokens['token']);
         this.userDataService.userData = tokens['userData'];
         localStorage.setItem('Id', this.userDataService.userData.id);
-        console.log(this.userDataService.userData.id);
       }),
       mapTo(true),
       catchError(error => {
