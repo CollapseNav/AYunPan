@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-13 17:57:40
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-19 23:00:17
+ * @LastEditTime: 2020-03-21 21:56:01
  * @Description:
  */
 
@@ -12,8 +12,7 @@ export const UserFileApi = {
   CreateNewFolder: 'api/UserFile/CreateNewFolder',
   ShareFile: 'api/UserFile/ShareFile',
   DeleteFile: 'api/UserFile/DeleteFile',
-  UnShareFile: 'api/UserFile/UnShareFile',
-  UnDeleteFile: 'api/UserFile/UnDeleteFile',
   DownloadFile: 'api/UserFile/DownloadFile',
-  DownloadFile2: 'api/UserFile/DownloadFile2',
+  ShareFolder: 'api/UserFile/ShareFolder',
+  DeleteFolder: 'api/UserFile/DeleteFolder',
 }

@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 19:00:46
+ * @LastEditTime: 2020-03-21 22:02:08
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -12,6 +12,10 @@ import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 import { FileUploader, FileItem } from 'ng2-file-upload';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { saveAs } from 'file-saver';
+import { ShareFolder } from 'app/unit/shareFolder';
+import { ShareFile } from 'app/unit/shareFile';
+import { DeleteFile } from 'app/unit/deleteFile';
+import { DeleteFolder } from 'app/unit/deleteFolder';
 
 @Component({
   selector: 'app-userfiles',
@@ -45,14 +49,7 @@ export class UserfilesComponent implements OnInit {
     private build: FormBuilder) {
   }
 
-  downloadFile(id: string) {
-    this.fileService.downloadFile(id).subscribe(result => {
-      const filename = result.headers.get('filename');
-      const file: Blob = new Blob([result.body]);
-      saveAs(file, filename);
-    })
-  }
-
+  //#region  头部工具栏
   searchWaitEnter(event: KeyboardEvent) {
     if (event.key.toLowerCase() === 'enter') {
       this.searchFile(event.target);
@@ -71,7 +68,7 @@ export class UserfilesComponent implements OnInit {
     this.turnBackTo(this.tableRouter.slice(-1)[0].id);
   }
 
-  filterFile(folders: UserFile[], filter: string) {
+  private filterFile(folders: UserFile[], filter: string) {
     const list = folders.filter(item => item.fileName.toLowerCase().indexOf(filter) >= 0 && item.fileTypes !== FileTypes.folder);
     folders = folders.filter(item => item.fileTypes === FileTypes.folder);
     folders.forEach(item => {
@@ -105,6 +102,17 @@ export class UserfilesComponent implements OnInit {
   openNewFolder(modal) {
     this.modalService.open(modal, { centered: true });
   }
+  //#endregion
+
+  //#region table 方法
+
+  downloadFile(id: string) {
+    this.fileService.downloadFile(id).subscribe(result => {
+      const filename = result.headers.get('filename');
+      const file: Blob = new Blob([result.body]);
+      saveAs(file, filename);
+    })
+  }
 
   onBe(modal: NgbModal, item: UserFile) {
     this.file = { id: item.id, fileName: item.fileName };
@@ -112,27 +120,81 @@ export class UserfilesComponent implements OnInit {
   }
 
   deleteFile(modal: NgbActiveModal, id: string) {
-    const file = this.tableData.filter(item => item.id === this.file.id)[0];
-    this.fileService.deleteFile(id).subscribe(result => {
-      if (result) {
-        file.isDeleted = '1';
-      } else {
-        console.log(result);
-      }
-    })
+    const file = this.tableData.filter(item => item.id === id)[0];
+    if (file.fileTypes === FileTypes.folder) {
+      let path = '/' + this.storeData.fileName;
+      this.tableRouter.forEach(item => {
+        if (item.folder !== 'root') {
+          path += '/' + item.folder;
+        }
+      })
+      path += '/' + file.fileName;
+      this.fileService.deleteFolder(new DeleteFolder(file.id, path, 1)).subscribe(result => {
+        if (result) {
+          this.setFolderDelete(file);
+        }
+      })
+    } else {
+      this.fileService.deleteFile(new DeleteFile(file.id, 1)).subscribe(result => {
+        if (result) {
+          file.isDeleted = '1';
+        } else {
+          console.log(result);
+        }
+      })
+    }
     modal.close();
   }
 
   shareFile(modal: NgbActiveModal, id: string) {
     const file = this.tableData.filter(item => item.id === id)[0];
-    this.fileService.shareFile(id).subscribe(result => {
-      if (result) {
-        file.isShared = '1';
-      } else {
-        console.log(result);
-      }
-    })
+    if (file.fileTypes === FileTypes.folder) {
+      let path = '/' + this.storeData.fileName;
+      this.tableRouter.forEach(item => {
+        if (item.folder !== 'root') {
+          path += '/' + item.folder;
+        }
+      })
+      path += '/' + file.fileName;
+      this.fileService.shareFolder(new ShareFolder(file.id, path, 1)).subscribe(result => {
+        if (result) {
+          this.setFolderShare(file);
+        }
+      })
+    } else {
+      this.fileService.shareFile(new ShareFile(file.id, 1)).subscribe(result => {
+        if (result) {
+          file.isShared = '1';
+        } else {
+          console.log(result);
+        }
+      })
+    }
     modal.close();
+  }
+
+  private setFolderShare(folder: UserFile) {
+    folder.isShared = '1';
+    if (folder.fileContains != null) {
+      folder.fileContains.forEach(item => {
+        item.isShared = '1';
+        if (item.fileTypes === FileTypes.folder) {
+          this.setFolderShare(item);
+        }
+      })
+    }
+  }
+
+  private setFolderDelete(folder: UserFile) {
+    folder.isDeleted = '1';
+    if (folder.fileContains != null) {
+      folder.fileContains.forEach(item => {
+        item.isDeleted = '1';
+        if (item.fileTypes === FileTypes.folder) {
+          this.setFolderDelete(item);
+        }
+      })
+    }
   }
 
   // 这边的folderlist用stack的逻辑做可能会简单很多吧，但我懒，暂时不想改了
@@ -155,6 +217,9 @@ export class UserfilesComponent implements OnInit {
     ];
   }
 
+
+  //#endregion
+
   // 面包屑导航
   turnBackTo(id: string) {
     const folder = this.folderList.filter(item => item.id === id)[0];
@@ -175,9 +240,8 @@ export class UserfilesComponent implements OnInit {
         this.storeData = item;
         this.fileService.files = this.storeData;
         this.tableData = this.storeData.fileContains;
-        this.storeData.fileName = 'root';
         this.tableRouter = [
-          { id: this.storeData.id, folder: this.storeData.fileName }
+          { id: this.storeData.id, folder: 'root' }
         ];
         this.uploader.options.headers = [
           { name: 'Id', value: localStorage.getItem('Id') },
@@ -188,9 +252,8 @@ export class UserfilesComponent implements OnInit {
     } else {// 做这个else主要是为了减少请求的次数，把事情都在客户端做掉
       this.storeData = this.fileService.getFiles();
       this.tableData = this.storeData.fileContains;
-      this.storeData.fileName = 'root';
       this.tableRouter = [
-        { id: this.storeData.id, folder: this.storeData.fileName }
+        { id: this.storeData.id, folder: 'root' }
       ];
       this.uploader.options.headers = [
         { name: 'Id', value: localStorage.getItem('Id') },

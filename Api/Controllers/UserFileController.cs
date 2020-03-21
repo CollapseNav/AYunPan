@@ -13,8 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 
-namespace Api.Controllers
-{
+namespace Api.Controllers {
     [ApiController]
     [Route ("api/[controller]")]
     public class UserFileController : ControllerBase {
@@ -121,6 +120,28 @@ namespace Api.Controllers
             }
         }
 
+        #region 此处只是简单的修改一个字段
+
+        [HttpPost, Route ("[action]")]
+        public IActionResult ShareFolder (ReqEditShareFolder data) {
+            return Edit (data);
+        }
+
+        [HttpPost, Route ("[action]")]
+        public IActionResult ShareFile (ReqEditShareFile data) {
+            return Edit (data);
+        }
+
+        [HttpPost, Route ("[action]")]
+        public IActionResult DeleteFolder (ReqEditDeleteFolder data) {
+            return Edit (data);
+        }
+
+        [HttpPost, Route ("[action]")]
+        public IActionResult DeleteFile (ReqEditDeleteFile data) {
+            return Edit (data);
+        }
+
         private IActionResult Edit (IRequestEditData<Repository.Domain.FileInfo> data) {
             string mes;
             if ((mes = app.UpdateFileInfo (data)) == "Success")
@@ -130,34 +151,6 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPost, Route ("[action]")]
-        public IActionResult ShareFolder (ReqEditShareFolder data) {
-            data.IsShare = 1;
-            return null;
-        }
-
-        [HttpPost, Route ("[action]")]
-        public IActionResult ShareFile (ReqEditShareFile data) {
-            data.IsShare = 1;
-            return Edit (data);
-        }
-
-        [HttpPost, Route ("[action]")]
-        public IActionResult DeleteFile (ReqEditDeleteFile data) {
-            data.IsDelete = 1;
-            return Edit (data);
-        }
-
-        [HttpPost, Route ("[action]")]
-        public IActionResult UnShareFile (ReqEditShareFile data) {
-            data.IsShare = 0;
-            return Edit (data);
-        }
-
-        [HttpPost, Route ("[action]")]
-        public IActionResult UnDeleteFile (ReqEditDeleteFile data) {
-            data.IsDelete = 0;
-            return Edit (data);
-        }
+        #endregion
     }
 }

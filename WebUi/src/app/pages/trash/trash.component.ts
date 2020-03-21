@@ -2,13 +2,14 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:30
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-17 22:30:42
+ * @LastEditTime: 2020-03-21 21:44:21
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 import { UserFile } from 'app/unit/userFiles';
+import { DeleteFile } from 'app/unit/deleteFile';
 declare interface DataItem {
   ID: string;
   FileName: string;
@@ -60,7 +61,7 @@ export class TrashComponent implements OnInit {
 
   unDelete(modal: NgbActiveModal, id: string) {
     const file = this.tableData.filter(item => item.id === this.file.id)[0];
-    this.fileService.unDeleteFile(id).subscribe(result => {
+    this.fileService.deleteFile(new DeleteFile(file.id, 0)).subscribe(result => {
       if (result) {
         file.isDeleted = '0';
       } else {
@@ -91,17 +92,15 @@ export class TrashComponent implements OnInit {
         this.storeData = item;
         this.fileService.files = this.storeData;
         this.tableData = this.storeData.fileContains;
-        this.storeData.fileName = 'root';
         this.tableRouter = [
-          { id: this.storeData.id, folder: this.storeData.fileName }
+          { id: this.storeData.id, folder: 'root' }
         ]
       });
     } else {
       this.storeData = this.fileService.getFiles();
       this.tableData = this.storeData.fileContains;
-      this.storeData.fileName = 'root';
       this.tableRouter = [
-        { id: this.storeData.id, folder: this.storeData.fileName }
+        { id: this.storeData.id, folder: 'root' }
       ]
     }
   }

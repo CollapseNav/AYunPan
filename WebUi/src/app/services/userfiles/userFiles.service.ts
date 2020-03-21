@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-07 13:45:37
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 19:18:12
+ * @LastEditTime: 2020-03-21 21:55:44
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -14,6 +14,10 @@ import { UserFileApi } from './userfileApi';
 import { tap, map } from 'rxjs/operators';
 import { Observable, observable, of, from } from 'rxjs';
 import { NewFolderData } from '../../unit/newFolderData';
+import { ShareFolder } from 'app/unit/shareFolder';
+import { ShareFile } from 'app/unit/shareFile';
+import { DeleteFile } from 'app/unit/deleteFile';
+import { DeleteFolder } from 'app/unit/deleteFolder';
 @Injectable({
   providedIn: 'root'
 })
@@ -60,59 +64,22 @@ export class UserFilesService {
   downloadFile(id: string) {
     return this.http.post(this.baseUrl + UserFileApi.DownloadFile, { id: id }, { responseType: 'blob', observe: 'response' })
       .pipe();
-    // return this.http.post(this.baseUrl + UserFileApi.DownloadFile2, { id: id })
-    //   .pipe();
   }
 
-  shareFile(id: string) {
-    return this.http.post(this.baseUrl + UserFileApi.ShareFile, { id: id }).pipe();
+  shareFile(data: ShareFile) {
+    return this.http.post(this.baseUrl + UserFileApi.ShareFile, data).pipe();
   }
 
-  deleteFile(id: string) {
-    return this.http.post(this.baseUrl + UserFileApi.DeleteFile, { id: id }).pipe();
+  shareFolder(data: ShareFolder) {
+    return this.http.post(this.baseUrl + UserFileApi.ShareFolder, data).pipe();
   }
 
-  unShareFile(id: string) {
-    return this.http.post(this.baseUrl + UserFileApi.UnShareFile, { id: id }).pipe();
+  deleteFile(data: DeleteFile) {
+    return this.http.post(this.baseUrl + UserFileApi.DeleteFile, data).pipe();
   }
 
-  unDeleteFile(id: string) {
-    return this.http.post(this.baseUrl + UserFileApi.UnDeleteFile, { id: id }).pipe();
+  deleteFolder(data: DeleteFolder) {
+    return this.http.post(this.baseUrl + UserFileApi.DeleteFolder, data).pipe();
   }
 
-  // initUserFiles(files: UserFile[]) {
-  //   const tfiles = files.filter(item => item.isDeleted === '0');
-  //   const userfiles: UserFile[] = [];
-  //   tfiles.forEach(item => {
-  //     if (item.fileType === FileTypes.folder) {
-  //       item.fileContains = this.initUserFiles(item.fileContains);
-  //     }
-  //     userfiles.push(item);
-  //   });
-  //   return userfiles;
-  // }
-
-  // initDeletedFiles(files: UserFile[]) {
-  //   const tfiles = files.filter(item => item.isDeleted === '1');
-  //   const deletedfiles: UserFile[] = [];
-  //   tfiles.forEach(item => {
-  //     if (item.fileType === FileTypes.folder) {
-  //       item.fileContains = this.initDeletedFiles(item.fileContains);
-  //     }
-  //     deletedfiles.push(item);
-  //   });
-  //   return deletedfiles;
-  // }
-
-  // initSharedFiles(files: UserFile[]) {
-  //   const tfiles = files.filter(item => item.isShared === '1' && item.isDeleted === '0');
-  //   const sharedlist: UserFile[] = [];
-  //   tfiles.forEach(item => {
-  //     if (item.fileType === FileTypes.folder) {
-  //       item.fileContains = this.initSharedFiles(item.fileContains);
-  //     }
-  //     sharedlist.push(item);
-  //   });
-  //   return sharedlist;
-  // }
 }

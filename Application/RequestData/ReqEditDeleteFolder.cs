@@ -4,16 +4,17 @@ using Application.Core.BaseRequestData;
 using Repository.Domain;
 
 namespace Application.RequestData {
-    public class ReqEditShareFolder : IRequestEditData<FileInfo> {
+    public class ReqEditDeleteFolder : IRequestEditData<FileInfo> {
         public string Id { get; set; }
         public string Path { get; set; }
-        public int IsShare { get; set; }
+        public int IsDelete { get; set; }
 
         public Expression<Func<FileInfo, FileInfo>> GetConvertExpressions () {
             return u => new FileInfo {
-                Shared = IsShare,
+                IsDeleted = IsDelete,
             };
         }
+
         public Expression<Func<FileInfo, bool>> GetWhereExpression () {
             return model => model.FilePath.Contains (Path);
         }
