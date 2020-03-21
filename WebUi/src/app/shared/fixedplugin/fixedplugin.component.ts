@@ -2,13 +2,13 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 15:57:08
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-01 16:49:46
+ * @LastEditTime: 2020-03-21 17:49:17
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  moduleId: module.id,
+  // tslint:disable-next-line:component-selector
   selector: 'fixedplugin-cmp',
   templateUrl: 'fixedplugin.component.html'
 })

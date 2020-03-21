@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 15:57:08
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-01 16:30:59
+ * @LastEditTime: 2020-03-21 17:54:56
  * @Description:
  */
 import { Component, OnInit, Renderer, ViewChild, ElementRef } from '@angular/core';
@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
-  moduleId: module.id,
   // tslint:disable-next-line:component-selector
   selector: 'navbar-cmp',
   templateUrl: 'navbar.component.html'
@@ -41,17 +40,19 @@ export class NavbarComponent implements OnInit {
       this.sidebarClose();
     });
   }
-  getTitle() {
+  getTitle(): String {
     let titlee = this.location.prepareExternalUrl(this.location.path());
-    if (titlee.charAt(0) === '#') {
+    if (titlee.charAt(0) === '/') {
       titlee = titlee.slice(1);
     }
-    for (let item = 0; item < this.listTitles.length; item++) {
-      if (this.listTitles[item].path === titlee) {
-        return this.listTitles[item].title;
+    let rst: String;
+    const st = titlee.split('/');
+    this.listTitles.forEach(item => {
+      if (String(item.path).indexOf(st[st.length - 1]) > 0) {
+        rst = String(item.title);
       }
-    }
-    return 'Dashboard';
+    });
+    return rst;
   }
   sidebarToggle() {
     if (this.sidebarVisible === false) {
