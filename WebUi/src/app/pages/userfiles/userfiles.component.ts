@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-20 18:45:49
+ * @LastEditTime: 2020-03-21 17:05:17
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -60,6 +60,7 @@ export class UserfilesComponent implements OnInit {
   }
 
   searchFile(control) {
+    if (control.value === '') { return }
     // tslint:disable-next-line:max-line-length
     const searchlist: UserFile[] = this.filterFile(this.folderList.filter(item => item.id === this.tableRouter.slice(-1)[0].id), control.value);
     this.tableData = searchlist;
@@ -71,8 +72,8 @@ export class UserfilesComponent implements OnInit {
   }
 
   filterFile(folders: UserFile[], filter: string) {
-    const list = folders.filter(item => item.fileName.toLowerCase().indexOf(filter) >= 0);
-    folders = folders.filter(item => item.fileExt === 'folder')
+    const list = folders.filter(item => item.fileName.toLowerCase().indexOf(filter) >= 0 && item.fileTypes !== FileTypes.folder);
+    folders = folders.filter(item => item.fileTypes === FileTypes.folder);
     folders.forEach(item => {
       if (item.fileContains != null) {
         this.filterFile(item.fileContains, filter).forEach(file => {
