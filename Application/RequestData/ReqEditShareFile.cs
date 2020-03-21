@@ -13,5 +13,8 @@ namespace Application.RequestData {
                 Shared = IsShare,
             };
         }
+        public Expression<Func<FileInfo, bool>> GetWhereExpression () {
+            return model => model.Id == Id;
+        }
     }
 }

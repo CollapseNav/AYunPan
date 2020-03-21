@@ -16,19 +16,19 @@ namespace Application {
             rep.Add (file);
         }
 
-        public FileInfo GetFileByFileId (string id) => rep.FindSingle (model => model.Id == id);
+        public FileInfo GetFileByFileId (IRequestFindData<FileInfo> data) => rep.FindSingle (data.GetWhereExpression ());
 
         public string UpdateFileInfo (IRequestEditData<FileInfo> data) {
             try {
-                rep.Update (model => model.Id == data.Id, data.GetConvertExpressions ());
+                rep.Update (data.GetWhereExpression (), data.GetConvertExpressions ());
             } catch (Exception ex) {
                 return ex.Message;
             }
             return "Success";
         }
 
-        public ResUserFiles GetFilesById (string id) {
-            var filelist = rep.FindAll (model => model.OwnerId == id).ToList ();
+        public ResUserFiles GetFiles (IRequestFindData<FileInfo> data) {
+            var filelist = rep.FindAll (data.GetWhereExpression ()).ToList ();
             Dictionary<string, ResUserFiles> folderlist = new Dictionary<string, ResUserFiles> ();
             foreach (var item in filelist.Where (model => FileType.ValueMapToType (model.FileType) == EFileType.folder)) {
                 folderlist.Add (item.MapPath + "/" + item.FileName, new ResUserFiles (item));

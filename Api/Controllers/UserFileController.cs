@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Application;
@@ -12,19 +9,12 @@ using Application.Core.BaseRequestData;
 using Application.RequestData;
 using Application.ResponseData;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using Repository.Domain;
 
-namespace Api.Controllers {
-    public class test {
-        public string id { get; set; }
-    }
-
+namespace Api.Controllers
+{
     [ApiController]
     [Route ("api/[controller]")]
     public class UserFileController : ControllerBase {
@@ -45,8 +35,8 @@ namespace Api.Controllers {
             var file = Request.Form.Files[0];
             var id = Request.Headers["Id"].ToString ();
             var rootId = Request.Headers["rootId"].ToString ();
-            var udata = user.GetFullUserDataById (id);
-            var rootFolder = app.GetFileByFileId (rootId);
+            var udata = user.GetFullUserData (new ReqFindUserData { Id = id });
+            var rootFolder = app.GetFileByFileId (new ReqFindFile { Id = rootId });
             // 若用户目录不存在，则新建一个
             if (!Directory.Exists (DirectoryPath + udata.FolderPath)) {
                 rootFolder = new Repository.Domain.FileInfo {
@@ -88,15 +78,15 @@ namespace Api.Controllers {
             }
         }
 
-        [HttpGet, Route ("[action]")]
-        public IActionResult GetUserFiles (string id) {
-            var item = app.GetFilesById (id);
+        [HttpPost, Route ("[action]")]
+        public IActionResult GetUserFiles (ReqFindFile data) {
+            var item = app.GetFiles (data);
             return Ok (item);
         }
 
         [HttpPost, Route ("[action]"), EnableCors ("File")]
-        public IActionResult DownloadFile (ReqDownload data) {
-            var file = app.GetFileByFileId (data.Id);
+        public IActionResult DownloadFile (ReqFindDownload data) {
+            var file = app.GetFileByFileId (data);
             var ext = file.FileName.Split ('.') [ ^ 1];
             Response.Headers.Add ("FileName",
                 System.Web.HttpUtility.UrlEncode (file.FileName, Encoding.UTF8));
@@ -104,8 +94,8 @@ namespace Api.Controllers {
         }
 
         [HttpPost, Route ("[action]")]
-        public IActionResult CreateNewFolder (ReqNewFolder folder) {
-            var root = app.GetFileByFileId (folder.RootId);
+        public IActionResult CreateNewFolder (ReqFindNewFolder folder) {
+            var root = app.GetFileByFileId (folder);
             try {
                 string folderpath = root.FilePath + '/' + folder.FolderName;
                 string truepath = DirectoryPath + folderpath;
@@ -138,6 +128,12 @@ namespace Api.Controllers {
             else {
                 return BadRequest (mes);
             }
+        }
+
+        [HttpPost, Route ("[action]")]
+        public IActionResult ShareFolder (ReqEditShareFolder data) {
+            data.IsShare = 1;
+            return null;
         }
 
         [HttpPost, Route ("[action]")]

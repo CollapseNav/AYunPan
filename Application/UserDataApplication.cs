@@ -41,9 +41,9 @@ namespace Application {
             return true;
         }
 
-        public ResUserData GetUserdataById (string Id) => new ResUserData (rep.FindSingle (model => model.Id == Id));
+        public ResUserData GetUserdata (IRequestFindData<UserDataInfo> data) => new ResUserData (rep.FindSingle (data.GetWhereExpression ()));
 
-        public UserDataInfo GetFullUserDataById (string Id) => rep.FindSingle (model => model.Id == Id);
+        public UserDataInfo GetFullUserData (IRequestFindData<UserDataInfo> data) => rep.FindSingle (data.GetWhereExpression ());
 
         private UserDataInfo GetUserDataByASignData (ReqSignData sd) {
             UserDataInfo item = null;
@@ -56,7 +56,7 @@ namespace Application {
 
         public bool EditUserData (IRequestEditData<UserDataInfo> data) {
             try {
-                rep.Update (model => model.Id == data.Id, data.GetConvertExpressions ());
+                rep.Update (data.GetWhereExpression (), data.GetConvertExpressions ());
             } catch (Exception ex) {
                 Console.WriteLine (ex.Message);
                 return false;

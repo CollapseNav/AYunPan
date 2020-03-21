@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-07 13:45:37
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-19 23:57:06
+ * @LastEditTime: 2020-03-21 19:18:12
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -54,7 +54,7 @@ export class UserFilesService {
 
   getUserFiles() {
     // tslint:disable-next-line:max-line-length
-    return this.http.get<UserFile>(this.baseUrl + UserFileApi.GetUserFiles, { params: { id: localStorage.getItem('Id') }, }).pipe();
+    return this.http.post<UserFile>(this.baseUrl + UserFileApi.GetUserFiles, { id: localStorage.getItem('Id') }).pipe();
   }
 
   downloadFile(id: string) {

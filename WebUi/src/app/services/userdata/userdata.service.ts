@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-11 17:28:28
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 14:49:12
+ * @LastEditTime: 2020-03-21 19:31:36
  * @Description:
  */
 import { Injectable, Inject, OnInit } from '@angular/core';
@@ -25,7 +25,7 @@ export class UserdataService {
   }
 
   getUserData(id: string) {
-    return this.http.get<UserData>(this.baseUrl + UserDataApi.GetUserData, { params: { id: id } }).pipe(
+    return this.http.post<UserData>(this.baseUrl + UserDataApi.GetUserData, { id: id }).pipe(
       retry(1),
     );
   }

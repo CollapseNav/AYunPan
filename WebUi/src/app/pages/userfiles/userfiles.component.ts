@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 17:05:17
+ * @LastEditTime: 2020-03-21 19:00:46
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -87,7 +87,7 @@ export class UserfilesComponent implements OnInit {
   // 新建文件夹
   createNewFolder() {
     // tslint:disable-next-line:max-line-length
-    this.fileService.createNewFolder({ 'folderName': this.newFolderForm.value['folderName'], 'rootId': this.tableRouter.slice(-1)[0].id }).subscribe(result => {
+    this.fileService.createNewFolder({ 'folderName': this.newFolderForm.value['folderName'], 'Id': this.tableRouter.slice(-1)[0].id }).subscribe(result => {
       this.tableData.push(result);
     })
   }
