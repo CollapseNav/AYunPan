@@ -104,16 +104,6 @@ namespace Api.Controllers {
         }
 
         [HttpPost, Route ("[action]")]
-        public IActionResult DownloadFile2 (ReqDownload data) {
-            var file = app.GetFileByFileId (data.Id);
-            var ext = file.FileName.Split ('.') [ ^ 1];
-            return Ok (new {
-                file = new FileStream (DirectoryPath + file.FilePath, FileMode.Open),
-                    ext
-            });
-        }
-
-        [HttpPost, Route ("[action]")]
         public IActionResult CreateNewFolder (ReqNewFolder folder) {
             var root = app.GetFileByFileId (folder.RootId);
             try {
