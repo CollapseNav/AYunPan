@@ -125,35 +125,5 @@ namespace Api.Controllers {
                 return BadRequest (ex.Message);
             }
         }
-
-        #region 此处只是简单的修改一个字段
-
-        [HttpPost, Route ("[action]")]
-        public IActionResult ShareFolder (ReqEditShareFolder data) {
-            return Edit (data);
-        }
-
-        [HttpPost, Route ("[action]")]
-        public IActionResult ShareFile (ReqEditShareFile data) {
-            return Edit (data);
-        }
-
-        [HttpPost, Route ("[action]")]
-        public IActionResult DeleteFolder (ReqEditDeleteFolder data) {
-            return Edit (data);
-        }
-
-        [HttpPost, Route ("[action]")]
-        public IActionResult DeleteFile (ReqEditDeleteFile data) {
-            return Edit (data);
-        }
-
-        private IActionResult Edit (IRequestEditData<Repository.Domain.FileInfo> data) {
-            string mes;
-            if ((mes = app.UpdateFileInfo (data)) == "Success")
-                return Ok (true);
-            return BadRequest (mes);
-        }
-        #endregion
     }
 }

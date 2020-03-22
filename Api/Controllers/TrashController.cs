@@ -17,12 +17,12 @@ namespace Api.Controllers {
 
     [ApiController]
     [Route ("api/[controller]")]
-    public class ShareFileController : ControllerBase {
+    public class TrashController : ControllerBase {
         private readonly UserFileApplication app;
         private readonly UserDataApplication user;
         private readonly IConfiguration config;
         private readonly string DirectoryPath;
-        public ShareFileController (UserFileApplication _app, UserDataApplication _user) {
+        public TrashController (UserFileApplication _app, UserDataApplication _user) {
             user = _user;
             app = _app;
             var builder = new ConfigurationBuilder ().SetBasePath (Directory.GetCurrentDirectory ()).AddJsonFile ("appsettings.json");
@@ -31,18 +31,12 @@ namespace Api.Controllers {
         }
 
         [HttpPost, Route ("[action]")]
-        public IActionResult GetShareFiles (ReqFindShareFiles data) {
-            // var item = app.GetFilesById (id);
-            return Ok (app.GetFilesWithoutFolder (data).ToArray ());
-        }
-
-        [HttpPost, Route ("[action]")]
-        public IActionResult ShareFolder (ReqEditShareFolder data) {
+        public IActionResult DeleteFolder (ReqEditDeleteFolder data) {
             return Edit (data);
         }
 
         [HttpPost, Route ("[action]")]
-        public IActionResult ShareFile (ReqEditShareFile data) {
+        public IActionResult DeleteFile (ReqEditDeleteFile data) {
             return Edit (data);
         }
 
