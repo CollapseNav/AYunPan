@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-22 17:52:23
+ * @LastEditTime: 2020-03-22 18:26:01
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -39,6 +39,43 @@ export class SharedfilesComponent implements OnInit {
 
   constructor(private modalService: NgbModal, private fileService: UserFilesService) { }
 
+
+  searchWaitEnter(event: KeyboardEvent) {
+    if (event.key.toLowerCase() === 'enter') {
+      this.searchFile(event.target);
+    }
+  }
+
+
+  searchFile(control) {
+    if (control.value === '') {
+      this.turnBackTo(this.tableRouter.slice(-1)[0].id);
+      return;
+    }
+    // tslint:disable-next-line:max-line-length
+    const searchlist: UserFile[] = this.filterFile(this.folderList.filter(item => item.id === this.tableRouter.slice(-1)[0].id), control.value);
+    this.tableData = searchlist;
+  }
+
+  clearSearch(control) {
+    control.value = '';
+    this.turnBackTo(this.tableRouter.slice(-1)[0].id);
+  }
+
+  private filterFile(folders: UserFile[], filter: string) {
+    const list = folders.filter(item => item.fileName.toLowerCase().indexOf(filter) >= 0 && item.fileTypes !== FileTypes.folder);
+    folders = folders.filter(item => item.fileTypes === FileTypes.folder);
+    folders.forEach(item => {
+      if (item.fileContains != null) {
+        this.filterFile(item.fileContains, filter).forEach(file => {
+          list.push(file);
+        })
+      }
+    });
+    return list;
+  }
+
+
   downloadFile(id: string) {
     this.fileService.downloadFile(id).subscribe(result => {
       const filename = result.headers.get('filename');
@@ -57,7 +94,7 @@ export class SharedfilesComponent implements OnInit {
     this.tableRouter = this.tableRouter.slice(0, this.tableRouter.findIndex(item => item.id === id) + 1);
   }
 
-  //#region table 方法
+  //#region table
 
   onBe(modal: NgbModal, item: UserFile) {
     this.file = { id: item.id, fileName: item.fileName };
@@ -91,7 +128,6 @@ export class SharedfilesComponent implements OnInit {
     modal.close();
   }
 
-  // ????
   unShare(modal: NgbActiveModal, id: string) {
     const file = this.tableData.filter(item => item.id === id)[0];
     if (file.fileTypes === FileTypes.folder) {
@@ -167,14 +203,16 @@ export class SharedfilesComponent implements OnInit {
         this.tableData = this.storeData.fileContains;
         this.tableRouter = [
           { id: this.storeData.id, folder: 'root' }
-        ]
+        ];
+        this.folderList.push(this.storeData);
       });
     } else {
       this.storeData = this.fileService.getFiles();
       this.tableData = this.storeData.fileContains;
       this.tableRouter = [
         { id: this.storeData.id, folder: 'root' }
-      ]
+      ];
+      this.folderList.push(this.storeData);
     }
   }
 }

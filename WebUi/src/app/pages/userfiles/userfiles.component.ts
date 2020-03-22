@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-22 17:50:53
+ * @LastEditTime: 2020-03-22 18:25:32
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -59,7 +59,10 @@ export class UserfilesComponent implements OnInit {
 
 
   searchFile(control) {
-    if (control.value === '') { return }
+    if (control.value === '') {
+      this.turnBackTo(this.tableRouter.slice(-1)[0].id);
+      return;
+    }
     // tslint:disable-next-line:max-line-length
     const searchlist: UserFile[] = this.filterFile(this.folderList.filter(item => item.id === this.tableRouter.slice(-1)[0].id), control.value);
     this.tableData = searchlist;
