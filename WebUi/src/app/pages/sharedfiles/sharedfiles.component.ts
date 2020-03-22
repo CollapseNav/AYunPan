@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 22:54:35
+ * @LastEditTime: 2020-03-22 17:52:23
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -91,6 +91,7 @@ export class SharedfilesComponent implements OnInit {
     modal.close();
   }
 
+  // ????
   unShare(modal: NgbActiveModal, id: string) {
     const file = this.tableData.filter(item => item.id === id)[0];
     if (file.fileTypes === FileTypes.folder) {

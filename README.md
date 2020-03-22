@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-02-17 17:22:43
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-22 02:00:28
+ * @LastEditTime: 2020-03-22 17:51:44
  * @Description:
  -->
 
@@ -52,6 +52,7 @@
 - [ ] 文件排序
   - 由于一开始就读取了所有的文件信息，所以这部分不需要请求服务器
 - [ ] 用户输入验证
+- [ ] 一些有助于展示数据的charts
 - [ ] 优化后端的实现
 - [ ] 优化前端的实现
 

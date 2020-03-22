@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2019-12-30 22:15:28
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 19:25:54
+ * @LastEditTime: 2020-03-22 16:47:18
  * @Description: 
  */
 using System;
@@ -11,6 +11,9 @@ using Application.Core.BaseRequestData;
 using Repository.Domain;
 
 namespace Application.RequestData {
+    /// <summary>
+    /// 用于用户的 EditUserData 操作
+    /// </summary>
     public class ReqEditUserInfoData : IRequestEditData<UserDataInfo> {
         public string Id { get; set; }
         public string UserName { get; set; }

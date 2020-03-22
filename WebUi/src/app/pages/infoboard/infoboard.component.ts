@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:44:01
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 14:46:55
+ * @LastEditTime: 2020-03-22 17:51:14
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -20,26 +20,6 @@ import { UserFilesService } from 'app/services/userfiles/userFiles.service';
   templateUrl: './infoboard.component.html',
 })
 export class InfoboardComponent implements OnInit {
-  // public pieChartOptions: ChartOptions = {
-  //   responsive: true,
-  //   legend: {
-  //     display: true,
-  //     position: 'left',
-  //     labels: {
-  //       fontSize: 14,
-  //       boxWidth: 14
-  //     }
-  //   }
-  // };
-  // public pieChartLabels: Label[] = [
-  //   ['Download'],
-  //   ['Store'],
-  //   ['Mail Sales'],
-  // ];
-  // public pieChartData: SingleDataSet = [300, 500, 900];
-  // public pieChartType: ChartType = 'pie';
-  // public pieChartLegend = true;
-  // public pieChartPlugins = [];
 
   editForm: FormGroup;
   userData: UserData;

@@ -3,6 +3,9 @@ using Application.Core.BaseResponseData;
 using Repository.Domain;
 
 namespace Application.ResponseData {
+    /// <summary>
+    /// 将 userinfo 转换为 前端 使用的结构
+    /// </summary>
     public class ResUserData : IResponseData<UserDataInfo> {
         public string Id { get; set; }
         public string UserAccount { get; set; }

@@ -3,6 +3,9 @@ using Application.Core;
 using Repository.Domain;
 
 namespace Application.ResponseData {
+    /// <summary>
+    /// 将 fileinfo 转换为 前端 能够使用的 结构
+    /// </summary>
     public class ResUserFiles {
         public string Id { get; set; }
         public string FileName { get; set; }

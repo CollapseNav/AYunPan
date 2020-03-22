@@ -28,11 +28,13 @@ namespace Api.Controllers {
         [HttpPost, Route ("[action]")]
         public IActionResult SignIn (ReqSignData data) {
             var item = app.SignIn (data, out bool isExist);
+            // 先判断账户是否存在
             if (!isExist)
                 return Unauthorized (new { msg = "账户不存在！" });
+            // 如果 item 为 null ，则 password 错误
             if (item == null)
                 return Unauthorized ();
-
+            // 一个大概不是正的 token
             var claims = new [] {
                 new Claim (JwtRegisteredClaimNames.Sub, data.UserAccount)
             };

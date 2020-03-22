@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 22:02:08
+ * @LastEditTime: 2020-03-22 17:50:53
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -50,11 +50,13 @@ export class UserfilesComponent implements OnInit {
   }
 
   //#region  头部工具栏
+
   searchWaitEnter(event: KeyboardEvent) {
     if (event.key.toLowerCase() === 'enter') {
       this.searchFile(event.target);
     }
   }
+
 
   searchFile(control) {
     if (control.value === '') { return }
@@ -108,12 +110,15 @@ export class UserfilesComponent implements OnInit {
 
   downloadFile(id: string) {
     this.fileService.downloadFile(id).subscribe(result => {
+      // 我把文件名放到 header 中了
       const filename = result.headers.get('filename');
       const file: Blob = new Blob([result.body]);
+      // 这 filesaver 还挺好用的
       saveAs(file, filename);
     })
   }
 
+  // 就打开modal用的
   onBe(modal: NgbModal, item: UserFile) {
     this.file = { id: item.id, fileName: item.fileName };
     this.modalService.open(modal, { centered: true });
@@ -121,6 +126,7 @@ export class UserfilesComponent implements OnInit {
 
   deleteFile(modal: NgbActiveModal, id: string) {
     const file = this.tableData.filter(item => item.id === id)[0];
+    // 文件夹和文件 需要有不同的操作
     if (file.fileTypes === FileTypes.folder) {
       let path = '/' + this.storeData.fileName;
       this.tableRouter.forEach(item => {
@@ -148,6 +154,7 @@ export class UserfilesComponent implements OnInit {
 
   shareFile(modal: NgbActiveModal, id: string) {
     const file = this.tableData.filter(item => item.id === id)[0];
+    // 文件夹和文件 需要有不同的操作
     if (file.fileTypes === FileTypes.folder) {
       let path = '/' + this.storeData.fileName;
       this.tableRouter.forEach(item => {
@@ -173,6 +180,7 @@ export class UserfilesComponent implements OnInit {
     modal.close();
   }
 
+  // 将文件夹里的所有文件都设为 share
   private setFolderShare(folder: UserFile) {
     folder.isShared = '1';
     if (folder.fileContains != null) {
@@ -185,6 +193,7 @@ export class UserfilesComponent implements OnInit {
     }
   }
 
+  // 将文件夹里的所有文件都设为 delete
   private setFolderDelete(folder: UserFile) {
     folder.isDeleted = '1';
     if (folder.fileContains != null) {

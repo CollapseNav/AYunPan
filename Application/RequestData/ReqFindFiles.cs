@@ -5,16 +5,13 @@ using Repository.Domain;
 
 namespace Application.RequestData {
     /// <summary>
-    /// 实际上是在新建文件夹时
-    /// find 新文件夹所属 文件夹
-    /// 的 一种 大概比较多余的操作
+    /// 根据文件的 ownerid 查找某用户文件的 find 方法
     /// </summary>
-    public class ReqFindNewFolder : IRequestFindData<FileInfo> {
+    public class ReqFindFiles : IRequestFindData<FileInfo> {
         public string Id { get; set; }
-        public string FolderName { get; set; }
 
         public Expression<Func<FileInfo, bool>> GetWhereExpression () {
-            return model => model.Id == Id;
+            return model => model.OwnerId == Id;
         }
     }
 }
