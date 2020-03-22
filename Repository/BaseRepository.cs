@@ -126,14 +126,14 @@ namespace Repository {
             pageindex = pageindex > 0 ? pageindex : 1;
             if (isAsc) {
                 if (orderBy == null)
-                    return FindAll (exp).OrderBy (m => m.Id).Skip (pageindex * (pageSize - 1)).Take (pageSize);
-                return FindAll (exp).OrderBy (orderBy).Skip (pageindex * (pageSize - 1)).Take (pageSize);
+                    return FindAll (exp).OrderBy (m => m.Id).Skip (pageSize * (pageindex - 1)).Take (pageSize);
+                return FindAll (exp).OrderBy (orderBy).Skip (pageSize * (pageindex - 1)).Take (pageSize);
             }
 
             if (orderBy == null) {
-                return FindAll ().OrderByDescending (m => m.Id).Skip (pageindex * (pageSize - 1)).Take (pageSize);
+                return FindAll ().OrderByDescending (m => m.Id).Skip (pageSize * (pageindex - 1)).Take (pageSize);
             }
-            return FindAll (exp).OrderByDescending (orderBy).Skip (pageindex * (pageSize - 1)).Take (pageSize);
+            return FindAll (exp).OrderByDescending (orderBy).Skip (pageSize * (pageindex - 1)).Take (pageSize);
         }
 
         /// <summary>
