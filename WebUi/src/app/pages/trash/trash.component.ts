@@ -2,14 +2,16 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:30
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 21:44:21
+ * @LastEditTime: 2020-03-23 03:02:03
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserFilesService } from 'app/services/userfiles/userFiles.service';
-import { UserFile } from 'app/unit/userFiles';
+import { UserFile, FileTypes } from 'app/unit/userFiles';
 import { DeleteFile } from 'app/unit/deleteFile';
+import { TrashService } from 'app/services/trash/trash.service';
+import { DeleteFolder } from 'app/unit/deleteFolder';
 declare interface DataItem {
   ID: string;
   FileName: string;
@@ -43,7 +45,42 @@ export class TrashComponent implements OnInit {
 
   tableRouter = [{ id: '', folder: '' }];
 
-  constructor(private modalService: NgbModal, private fileService: UserFilesService) { }
+  constructor(private modalService: NgbModal, private fileService: UserFilesService, private trash: TrashService) { }
+
+  searchWaitEnter(event: KeyboardEvent) {
+    if (event.key.toLowerCase() === 'enter') {
+      this.searchFile(event.target);
+    }
+  }
+
+  searchFile(control) {
+    if (control.value === '') {
+      this.turnBackTo(this.tableRouter.slice(-1)[0].id);
+      return;
+    }
+    // tslint:disable-next-line:max-line-length
+    const searchlist: UserFile[] = this.filterFile(this.folderList.filter(item => item.id === this.tableRouter.slice(-1)[0].id), control.value);
+    this.tableData = searchlist;
+  }
+
+  clearSearch(control) {
+    control.value = '';
+    this.turnBackTo(this.tableRouter.slice(-1)[0].id);
+  }
+
+  private filterFile(folders: UserFile[], filter: string) {
+    const list = folders.filter(item => item.fileName.toLowerCase().indexOf(filter) >= 0 && item.fileTypes !== FileTypes.folder);
+    folders = folders.filter(item => item.fileTypes === FileTypes.folder);
+    folders.forEach(item => {
+      if (item.fileContains != null) {
+        this.filterFile(item.fileContains, filter).forEach(file => {
+          list.push(file);
+        })
+      }
+    });
+    return list;
+  }
+
   turnBackTo(id: string) {
     if (id === this.storeData.id) {
       this.tableData = this.storeData.fileContains;
@@ -60,16 +97,44 @@ export class TrashComponent implements OnInit {
   }
 
   unDelete(modal: NgbActiveModal, id: string) {
-    const file = this.tableData.filter(item => item.id === this.file.id)[0];
-    this.fileService.deleteFile(new DeleteFile(file.id, 0)).subscribe(result => {
-      if (result) {
-        file.isDeleted = '0';
-      } else {
-        console.log(result);
-      }
-    })
+    const file = this.tableData.filter(item => item.id === id)[0];
+    if (file.fileTypes === FileTypes.folder) {
+      let path = '/' + this.storeData.fileName;
+      this.tableRouter.forEach(item => {
+        if (item.folder !== 'root') {
+          path += '/' + item.folder;
+        }
+      })
+      path += '/' + file.fileName;
+      this.trash.deleteFolder(new DeleteFolder(file.id, path, 0)).subscribe(result => {
+        if (result) {
+          this.setFolderUnDelete(file);
+        }
+      })
+    } else {
+      this.trash.deleteFile(new DeleteFile(file.id, 0)).subscribe(result => {
+        if (result) {
+          file.isDeleted = '0';
+        } else {
+          console.log(result);
+        }
+      })
+    }
     modal.close();
   }
+
+  private setFolderUnDelete(folder: UserFile) {
+    folder.isDeleted = '0';
+    if (folder.fileContains != null) {
+      folder.fileContains.forEach(item => {
+        item.isDeleted = '0';
+        if (item.fileTypes === FileTypes.folder) {
+          this.setFolderUnDelete(item);
+        }
+      })
+    }
+  }
+
 
 
   addToFolderList(folder: UserFile) {
@@ -86,22 +151,43 @@ export class TrashComponent implements OnInit {
     this.tableData = folder.fileContains;
   }
 
+  initDeletedFiles(files: UserFile) {
+    const sharedlist: UserFile[] = [];
+    files.fileContains.filter(item => item.isDeleted === '1').forEach(item => {
+      if (item.fileTypes === FileTypes.folder) {
+        item.fileContains = this.initDeletedFiles(item);
+      }
+      sharedlist.push(item);
+    });
+    files.fileContains.filter(item => item.isDeleted === '0' && item.fileTypes === FileTypes.folder)
+      .forEach(item => {
+        if (item.fileContains !== null) {
+          this.initDeletedFiles(item).forEach(f => {
+            sharedlist.push(f);
+          })
+        }
+      })
+    return sharedlist;
+  }
+
   ngOnInit() {
     if (this.fileService.getFiles() == null) {
       this.fileService.getUserFiles().subscribe(item => {
         this.storeData = item;
         this.fileService.files = this.storeData;
-        this.tableData = this.storeData.fileContains;
-        this.tableRouter = [
-          { id: this.storeData.id, folder: 'root' }
-        ]
+        this.initTableData();
       });
     } else {
       this.storeData = this.fileService.getFiles();
-      this.tableData = this.storeData.fileContains;
-      this.tableRouter = [
-        { id: this.storeData.id, folder: 'root' }
-      ]
+      this.initTableData();
     }
+  }
+
+  initTableData() {
+    this.tableData = this.initDeletedFiles(this.storeData);
+    this.tableRouter = [
+      { id: this.storeData.id, folder: 'root' }
+    ];
+    this.folderList.push(this.storeData);
   }
 }
