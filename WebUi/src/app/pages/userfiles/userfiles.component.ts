@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-22 18:25:32
+ * @LastEditTime: 2020-03-22 22:22:29
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -16,6 +16,8 @@ import { ShareFolder } from 'app/unit/shareFolder';
 import { ShareFile } from 'app/unit/shareFile';
 import { DeleteFile } from 'app/unit/deleteFile';
 import { DeleteFolder } from 'app/unit/deleteFolder';
+import { SharefilesService } from 'app/services/sharefiles/sharefiles.service';
+import { TrashService } from 'app/services/trash/trash.service';
 
 @Component({
   selector: 'app-userfiles',
@@ -46,7 +48,9 @@ export class UserfilesComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private fileService: UserFilesService,
-    private build: FormBuilder) {
+    private build: FormBuilder,
+    private trash: TrashService,
+    private share: SharefilesService) {
   }
 
   //#region  头部工具栏
@@ -138,13 +142,13 @@ export class UserfilesComponent implements OnInit {
         }
       })
       path += '/' + file.fileName;
-      this.fileService.deleteFolder(new DeleteFolder(file.id, path, 1)).subscribe(result => {
+      this.trash.deleteFolder(new DeleteFolder(file.id, path, 1)).subscribe(result => {
         if (result) {
           this.setFolderDelete(file);
         }
       })
     } else {
-      this.fileService.deleteFile(new DeleteFile(file.id, 1)).subscribe(result => {
+      this.trash.deleteFile(new DeleteFile(file.id, 1)).subscribe(result => {
         if (result) {
           file.isDeleted = '1';
         } else {
@@ -166,13 +170,13 @@ export class UserfilesComponent implements OnInit {
         }
       })
       path += '/' + file.fileName;
-      this.fileService.shareFolder(new ShareFolder(file.id, path, 1)).subscribe(result => {
+      this.share.shareFolder(new ShareFolder(file.id, path, 1)).subscribe(result => {
         if (result) {
           this.setFolderShare(file);
         }
       })
     } else {
-      this.fileService.shareFile(new ShareFile(file.id, 1)).subscribe(result => {
+      this.share.shareFile(new ShareFile(file.id, 1)).subscribe(result => {
         if (result) {
           file.isShared = '1';
         } else {
@@ -251,32 +255,26 @@ export class UserfilesComponent implements OnInit {
       this.fileService.getUserFiles().subscribe(item => {
         this.storeData = item;
         this.fileService.files = this.storeData;
-        this.tableData = this.storeData.fileContains;
-        this.tableRouter = [
-          { id: this.storeData.id, folder: 'root' }
-        ];
-        this.uploader.options.headers = [
-          { name: 'Id', value: localStorage.getItem('Id') },
-          { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },
-        ];
-        this.folderList.push(this.storeData);
+        this.initTableData();
       });
     } else {// 做这个else主要是为了减少请求的次数，把事情都在客户端做掉
       this.storeData = this.fileService.getFiles();
-      this.tableData = this.storeData.fileContains;
-      this.tableRouter = [
-        { id: this.storeData.id, folder: 'root' }
-      ];
-      this.uploader.options.headers = [
-        { name: 'Id', value: localStorage.getItem('Id') },
-        { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },
-      ];
-      this.folderList.push(this.storeData);
+      this.initTableData();
     }
     // 感觉这个formgroup暂时有点多余
     this.newFolderForm = this.build.group({
       folderName: '',
     });
-
+  }
+  initTableData() {
+    this.tableData = this.storeData.fileContains;
+    this.tableRouter = [
+      { id: this.storeData.id, folder: 'root' }
+    ];
+    this.uploader.options.headers = [
+      { name: 'Id', value: localStorage.getItem('Id') },
+      { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },
+    ];
+    this.folderList.push(this.storeData);
   }
 }
