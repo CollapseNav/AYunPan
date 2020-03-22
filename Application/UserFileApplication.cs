@@ -32,6 +32,14 @@ namespace Application {
             }
             return "Success";
         }
+        public List<ResUserFiles> GetFilesWithoutFolder (IRequestFindData<FileInfo> data) {
+            List<ResUserFiles> list = new List<ResUserFiles> ();
+            var rawlist = rep.FindPage (out int total, 1, 30, true, model => model.Shared == 1 && (model.FileType != EFileType.folder.ToString ()), k => k.Shared).ToList ();
+            foreach (var item in rawlist) {
+                list.Add (new ResUserFiles (item));
+            }
+            return list;
+        }
 
         /// <summary>
         /// 获取用户的所有文件
