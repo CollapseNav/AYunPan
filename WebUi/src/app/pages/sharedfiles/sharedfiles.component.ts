@@ -2,10 +2,10 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-22 18:26:01
+ * @LastEditTime: 2020-03-23 03:02:28
  * @Description:
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, IterableDiffers } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 import { UserFile, FileTypes } from 'app/unit/userFiles';
@@ -14,6 +14,8 @@ import { ShareFile } from 'app/unit/shareFile';
 import { DeleteFile } from 'app/unit/deleteFile';
 import { DeleteFolder } from 'app/unit/deleteFolder';
 import { ShareFolder } from 'app/unit/shareFolder';
+import { SharefilesService } from 'app/services/sharefiles/sharefiles.service';
+import { TrashService } from 'app/services/trash/trash.service';
 
 @Component({
   selector: 'app-sharedfiles',
@@ -33,19 +35,24 @@ export class SharedfilesComponent implements OnInit {
   folderList: UserFile[] = [];
   storeData: UserFile;
 
+  shareFilesData: UserFile[] = [];
+
   tableRouter = [{ id: '', folder: '' }];
 
   file = { id: '', fileName: '' };
 
-  constructor(private modalService: NgbModal, private fileService: UserFilesService) { }
+  sharePage = 1;
 
+  constructor(private modalService: NgbModal,
+    private fileService: UserFilesService,
+    private share: SharefilesService,
+    private trash: TrashService) { }
 
   searchWaitEnter(event: KeyboardEvent) {
     if (event.key.toLowerCase() === 'enter') {
       this.searchFile(event.target);
     }
   }
-
 
   searchFile(control) {
     if (control.value === '') {
@@ -111,13 +118,13 @@ export class SharedfilesComponent implements OnInit {
         }
       })
       path += '/' + file.fileName;
-      this.fileService.deleteFolder(new DeleteFolder(file.id, path, 1)).subscribe(result => {
+      this.trash.deleteFolder(new DeleteFolder(file.id, path, 1)).subscribe(result => {
         if (result) {
           this.setFolderDelete(file);
         }
       })
     } else {
-      this.fileService.deleteFile(new DeleteFile(file.id, 1)).subscribe(result => {
+      this.trash.deleteFile(new DeleteFile(file.id, 1)).subscribe(result => {
         if (result) {
           file.isDeleted = '1';
         } else {
@@ -138,15 +145,15 @@ export class SharedfilesComponent implements OnInit {
         }
       })
       path += '/' + file.fileName;
-      this.fileService.shareFolder(new ShareFolder(file.id, path, 0)).subscribe(result => {
+      this.share.shareFolder(new ShareFolder(file.id, path, 0)).subscribe(result => {
         if (result) {
           this.setFolderUnShare(file);
         }
       })
     } else {
-      this.fileService.shareFile(new ShareFile(file.id, 0)).subscribe(result => {
+      this.share.shareFile(new ShareFile(file.id, 0)).subscribe(result => {
         if (result) {
-          file.isShared = '1';
+          file.isShared = '0';
         } else {
           console.log(result);
         }
@@ -195,24 +202,46 @@ export class SharedfilesComponent implements OnInit {
     this.tableData = folder.fileContains;
   }
 
+  initSharedFiles(files: UserFile) {
+    const sharedlist: UserFile[] = [];
+    files.fileContains.filter(item => item.isShared === '1' && item.isDeleted === '0').forEach(item => {
+      if (item.fileTypes === FileTypes.folder) {
+        item.fileContains = this.initSharedFiles(item);
+      }
+      sharedlist.push(item);
+    });
+    files.fileContains.filter(item => item.isShared === '0' && item.isDeleted === '0' && item.fileTypes === FileTypes.folder)
+      .forEach(item => {
+        if (item.fileContains !== null) {
+          this.initSharedFiles(item).forEach(f => {
+            sharedlist.push(f);
+          })
+        }
+      })
+    return sharedlist;
+  }
+
   ngOnInit() {
     if (this.fileService.getFiles() == null) {
       this.fileService.getUserFiles().subscribe(item => {
         this.storeData = item;
         this.fileService.files = this.storeData;
-        this.tableData = this.storeData.fileContains;
-        this.tableRouter = [
-          { id: this.storeData.id, folder: 'root' }
-        ];
-        this.folderList.push(this.storeData);
+        this.initTableData();
       });
     } else {
       this.storeData = this.fileService.getFiles();
-      this.tableData = this.storeData.fileContains;
-      this.tableRouter = [
-        { id: this.storeData.id, folder: 'root' }
-      ];
-      this.folderList.push(this.storeData);
+      this.initTableData();
     }
+    this.share.getShareFiles().subscribe(result => {
+      this.shareFilesData = result;
+    })
+  }
+
+  initTableData() {
+    this.tableData = this.initSharedFiles(this.storeData);
+    this.tableRouter = [
+      { id: this.storeData.id, folder: 'root' }
+    ];
+    this.folderList.push(this.storeData);
   }
 }
