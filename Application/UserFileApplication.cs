@@ -32,9 +32,9 @@ namespace Application {
             }
             return "Success";
         }
-        public List<ResUserFiles> GetFilesWithoutFolder (IRequestFindData<FileInfo> data) {
+        public List<ResUserFiles> GetFilesWithoutFolder (IRequestFindPageData<FileInfo> data, out int total) {
             List<ResUserFiles> list = new List<ResUserFiles> ();
-            var rawlist = rep.FindPage (out int total, 1, 30, true, model => model.Shared == 1 && (model.FileType != EFileType.folder.ToString ()), k => k.Shared).ToList ();
+            var rawlist = rep.FindPage (out total, data.GetPageIndex (), data.GetPageSize (), data.GetIsAsc (), data.GetWhereExpression (), k => k.Id).ToList ();
             foreach (var item in rawlist) {
                 list.Add (new ResUserFiles (item));
             }

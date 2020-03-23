@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-22 19:14:26
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-22 21:57:40
+ * @LastEditTime: 2020-03-23 22:28:12
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -11,6 +11,7 @@ import { ShareFile } from 'app/unit/shareFile';
 import { ShareFileApi } from './sharefileApi';
 import { ShareFolder } from 'app/unit/shareFolder';
 import { UserFile } from 'app/unit/userFiles';
+import { TableConfig } from 'app/pages/sharedfiles/sharedfiles.component';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,9 @@ export class SharefilesService {
     this.baseUrl = baseurl.replace('4200', '5000');
   }
 
-  getShareFiles() {
-    return this.http.post<UserFile[]>(this.baseUrl + ShareFileApi.GetShareFiles, { id: 'fd' }).pipe();
+  getShareFiles(config: TableConfig) {
+    // tslint:disable-next-line:max-line-length
+    return this.http.post<UserFile[]>(this.baseUrl + ShareFileApi.GetShareFiles, { isAsc: config.asc, isShare: 1, index: config.dataBatch, size: config.size * config.maxSize }).pipe();
   }
 
   shareFile(data: ShareFile) {

@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 16:26:05
+ * @LastEditTime: 2020-03-23 20:48:33
  * @Description:
  -->
 <div class="row">
@@ -175,8 +175,7 @@
       <div style="display: inline-table;overflow: hidden;position: relative;bottom: 0%;">
         <span class="btn btn-warning btn-round">Select</span>
         <input ng2FileSelect [uploader]="uploader"
-          style="position: absolute;right: 0;top: 0;opacity: 0;bottom:0;cursor: pointer;" type="file"
-          id="UploadFiles" />
+          style="position: absolute;right: 0;top: 0;opacity: 0;bottom:0;cursor: pointer;" type="file" multiple />
       </div>
       <button class="btn btn-primary btn-round btn-icon" (click)="uploader.uploadAll()"
         [disabled]="!uploader.getNotUploadedItems().length" ngbTooltip="Upload All">

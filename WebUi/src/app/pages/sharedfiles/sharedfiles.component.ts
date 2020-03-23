@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-23 03:02:28
+ * @LastEditTime: 2020-03-23 22:32:28
  * @Description:
  */
 import { Component, OnInit, IterableDiffers } from '@angular/core';
@@ -17,18 +17,29 @@ import { ShareFolder } from 'app/unit/shareFolder';
 import { SharefilesService } from 'app/services/sharefiles/sharefiles.service';
 import { TrashService } from 'app/services/trash/trash.service';
 
+export class TableConfig {
+  constructor(
+    public total: number,
+    public size: number,
+    public dataBatch: number,
+    public index: number,
+    public maxIndex: number,
+    public asc: boolean,
+    public maxSize: number) { }
+}
 @Component({
   selector: 'app-sharedfiles',
   templateUrl: './sharedfiles.component.html',
 })
 export class SharedfilesComponent implements OnInit {
   tableThead = [
-    { content: 'FileName', per: '25%' },
+    { content: 'FileName', per: '35%' },
     { content: 'FileType', per: '20%' },
-    { content: 'FileSize', per: '20%' },
+    { content: 'FileSize', per: '10%' },
     { content: 'AddDate', per: '20%' },
     { content: 'Be', per: '15%' },
   ];
+  config = new TableConfig(0, 10, 1, 1, 1, true, 5);
   currentJustify = 'fill';
   tableData: UserFile[] = [];
 
@@ -39,14 +50,26 @@ export class SharedfilesComponent implements OnInit {
 
   tableRouter = [{ id: '', folder: '' }];
 
-  file = { id: '', fileName: '' };
+  shareTableData: UserFile[] = [];
 
-  sharePage = 1;
+  file = { id: '', fileName: '' };
 
   constructor(private modalService: NgbModal,
     private fileService: UserFilesService,
     private share: SharefilesService,
     private trash: TrashService) { }
+
+  indexChange() {
+    let maxIndex = this.config.total / this.config.size;
+    if (this.config.total % this.config.size > 0) {
+      maxIndex++;
+    }
+    if (this.config.maxIndex < maxIndex && (this.config.maxIndex - this.config.index) < 2) {
+      this.getShareData();
+    }
+    const startindex = (this.config.index - 1) * this.config.size;
+    this.shareTableData = this.shareFilesData.slice(startindex, startindex + this.config.size);
+  }
 
   searchWaitEnter(event: KeyboardEvent) {
     if (event.key.toLowerCase() === 'enter') {
@@ -232,9 +255,7 @@ export class SharedfilesComponent implements OnInit {
       this.storeData = this.fileService.getFiles();
       this.initTableData();
     }
-    this.share.getShareFiles().subscribe(result => {
-      this.shareFilesData = result;
-    })
+    this.getShareData();
   }
 
   initTableData() {
@@ -243,5 +264,21 @@ export class SharedfilesComponent implements OnInit {
       { id: this.storeData.id, folder: 'root' }
     ];
     this.folderList.push(this.storeData);
+  }
+  getShareData() {
+    this.share.getShareFiles(this.config).subscribe(result => {
+      this.config.total = result['max'];
+      const ls: UserFile[] = result['files'];
+      ls.forEach(item => {
+        this.shareFilesData.push(item);
+      })
+      this.config.maxIndex = this.shareFilesData.length / this.config.size;
+      if (this.shareFilesData.length % this.config.size > 0) {
+        this.config.maxIndex += 1;
+      }
+      this.config.dataBatch += 1;
+      const startindex = (this.config.index - 1) * this.config.size;
+      this.shareTableData = this.shareFilesData.slice(startindex, startindex + this.config.size);
+    })
   }
 }

@@ -31,9 +31,13 @@ namespace Api.Controllers {
         }
 
         [HttpPost, Route ("[action]")]
-        public IActionResult GetShareFiles (ReqFindShareFiles data) {
+        public IActionResult GetShareFiles (ReqFindPageShareFiles data) {
             // var item = app.GetFilesById (id);
-            return Ok (app.GetFilesWithoutFolder (data).ToArray ());
+            var items = app.GetFilesWithoutFolder (data, out int total).ToArray ();
+            return Ok (new {
+                max = total,
+                    files = items
+            });
         }
 
         [HttpPost, Route ("[action]")]
