@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-23 22:32:28
+ * @LastEditTime: 2020-03-24 15:18:51
  * @Description:
  */
 import { Component, OnInit, IterableDiffers } from '@angular/core';
@@ -40,7 +40,7 @@ export class SharedfilesComponent implements OnInit {
     { content: 'Be', per: '15%' },
   ];
   config = new TableConfig(0, 10, 1, 1, 1, true, 5);
-  currentJustify = 'fill';
+  // currentJustify = 'fill';
   tableData: UserFile[] = [];
 
   folderList: UserFile[] = [];
