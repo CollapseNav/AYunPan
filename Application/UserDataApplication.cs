@@ -24,21 +24,20 @@ namespace Application {
             return new ResUserData (item);
         }
 
-        public bool SignUp (ReqSignData sd) {
+        public UserDataInfo SignUp (ReqSignData sd) {
             UserDataInfo u = sd.ConvertData ();
             u.UserName = u.UserAccount;
             if (GetUserDataByASignData (sd) != null)
-                return false;
+                return null;
             u.FolderPath = "/" + u.UserName;
             // 每人默认100mb，我的树莓派比较虚
             u.Cap = (100 * 1024).ToString ();
             try {
                 rep.Add (u);
             } catch {
-                return false;
+                return null;
             }
-            Directory.CreateDirectory (Directory.GetCurrentDirectory () + u.FolderPath);
-            return true;
+            return u;
         }
 
         public ResUserData GetUserdata (IRequestFindData<UserDataInfo> data) => new ResUserData (rep.FindSingle (data.GetWhereExpression ()));

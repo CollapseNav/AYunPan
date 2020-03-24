@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 17:05:48
+ * @LastEditTime: 2020-03-24 18:06:33
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -248,11 +248,7 @@ export class UserfilesComponent implements OnInit {
     // 成功之后直接修改客户端的 files，不需要从服务器请求大量数据(这种事情第一次加载的时候做就好了)
     this.uploader.onSuccessItem = (item, res) => {
       const resfile = JSON.parse(res);
-      if (resfile['rootFolder'] !== '') {
-        this.storeData = resfile['rootFolder'];
-        this.initTableData();
-      }
-      this.tableData.push(resfile['newFile']);
+      this.tableData.push(resfile);
     }
     // 拿到所有的文件目录数据
     if (this.fileService.getFiles() == null) {

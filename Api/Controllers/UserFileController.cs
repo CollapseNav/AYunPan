@@ -39,25 +39,6 @@ namespace Api.Controllers {
             var rootId = Request.Headers["rootId"].ToString ();
             var udata = user.GetFullUserData (new ReqFindUserData { Id = id });
             var rootFolder = app.GetFile (new ReqFindFile { Id = rootId });
-
-            bool isNewRootFolder = false;
-            // 若用户目录不存在，则新建一个
-            if (!Directory.Exists (DirectoryPath + udata.FolderPath)) {
-                rootFolder = new Repository.Domain.FileInfo {
-                    FileName = udata.UserAccount,
-                    FileType = EFileType.folder.ToString (),
-                    FileSize = "0",
-                    OwnerId = udata.Id,
-                    OwnerName = udata.UserName,
-                    FilePath = udata.FolderPath,
-                    MapPath = "",
-                    Shared = 0,
-                    ChangedBy = id,
-                };
-                app.AddFile (rootFolder);
-                Directory.CreateDirectory (DirectoryPath + udata.FolderPath);
-                isNewRootFolder = true;
-            }
             try {
                 var data = new Repository.Domain.FileInfo {
                     FileName = file.FileName,
@@ -78,16 +59,7 @@ namespace Api.Controllers {
                 using FileStream fs = new FileStream (DirectoryPath + "/" + data.FilePath, FileMode.CreateNew);
                 await file.CopyToAsync (fs);
                 app.AddFile (data);
-                if (isNewRootFolder) {
-                    return Ok (new {
-                        rootFolder = new ResUserFiles (rootFolder) { FileContains = new List<ResUserFiles> () },
-                            newFile = new ResUserFiles (data)
-                    });
-                }
-                return Ok (new {
-                    rootFolder = "",
-                        newFile = new ResUserFiles (data)
-                });
+                return Ok (new ResUserFiles (data));
             } catch (Exception ex) {
                 Console.WriteLine (ex.Message);
                 return BadRequest ();

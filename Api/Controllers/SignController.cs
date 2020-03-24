@@ -7,6 +7,7 @@ using Application;
 using Application.Core;
 using Application.RequestData;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Controllers {
@@ -14,14 +15,37 @@ namespace Api.Controllers {
     [Route ("api/[controller]")]
     public class SignController : ControllerBase {
         private readonly UserDataApplication app;
-        public SignController (UserDataApplication _app) => app = _app;
+        private readonly UserFileApplication file;
+        private readonly IConfiguration config;
+        private readonly string DirectoryPath;
+        public SignController (UserDataApplication _app, UserFileApplication _file) {
+            app = _app;
+            file = _file;
+            var builder = new ConfigurationBuilder ().SetBasePath (Directory.GetCurrentDirectory ()).AddJsonFile ("appsettings.json");
+            config = builder.Build ();
+            DirectoryPath = Directory.GetCurrentDirectory () + config["FileStore"];
+        }
 
         [HttpPost, Route ("[action]")]
         public IActionResult SignUp (ReqSignData data) {
             if (string.IsNullOrEmpty (data.UserAccount) && string.IsNullOrEmpty (data.PassWord))
                 return BadRequest ();
-            if (!app.SignUp (data))
+            var item = app.SignUp (data);
+            if (item == null)
                 return BadRequest ();
+            var rootFolder = new Repository.Domain.FileInfo {
+                FileName = item.UserAccount,
+                FileType = EFileType.folder.ToString (),
+                FileSize = "0",
+                OwnerId = item.Id,
+                OwnerName = item.UserName,
+                FilePath = item.FolderPath,
+                MapPath = "",
+                Shared = 0,
+                ChangedBy = item.Id,
+            };
+            file.AddFile (rootFolder);
+            Directory.CreateDirectory (DirectoryPath + item.FolderPath);
             return Ok (true);
         }
 

@@ -75,6 +75,8 @@ namespace Application {
             }
             if (folderlist.Count < 1)
                 return null;
+            if (folderlist.First ().Value.FileContains == null)
+                folderlist.First ().Value.FileContains = new List<ResUserFiles> ();
             return folderlist.First ().Value;
         }
     }
