@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 16:37:45
+ * @LastEditTime: 2020-03-24 18:34:38
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -16,6 +16,7 @@ import { DeleteFolder } from 'app/unit/deleteFolder';
 import { ShareFolder } from 'app/unit/shareFolder';
 import { SharefilesService } from 'app/services/sharefiles/sharefiles.service';
 import { TrashService } from 'app/services/trash/trash.service';
+import { AddShareFile } from 'app/unit/addShareFile';
 
 export class TableConfig {
   constructor(
@@ -58,6 +59,13 @@ export class SharedfilesComponent implements OnInit {
     private fileService: UserFilesService,
     private share: SharefilesService,
     private trash: TrashService) { }
+
+  addToMyFile(modal: NgbActiveModal, id: string) {
+    this.share.addToMyFile(new AddShareFile(id, localStorage.getItem('Id'))).subscribe(result => {
+      this.storeData.fileContains.push(result);
+    });
+    modal.close();
+  }
 
   indexChange() {
     let maxIndex = this.config.total / this.config.size;
@@ -104,7 +112,6 @@ export class SharedfilesComponent implements OnInit {
     });
     return list;
   }
-
 
   downloadFile(id: string) {
     this.fileService.downloadFile(id).subscribe(result => {
@@ -227,6 +234,9 @@ export class SharedfilesComponent implements OnInit {
 
   initSharedFiles(files: UserFile) {
     const sharedlist: UserFile[] = [];
+    if (files.fileContains == null) {
+      return null;
+    }
     files.fileContains.filter(item => item.isShared === '1' && item.isDeleted === '0').forEach(item => {
       if (item.fileTypes === FileTypes.folder) {
         item.fileContains = this.initSharedFiles(item);

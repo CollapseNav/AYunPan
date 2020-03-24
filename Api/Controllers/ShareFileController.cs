@@ -32,12 +32,24 @@ namespace Api.Controllers {
 
         [HttpPost, Route ("[action]")]
         public IActionResult GetShareFiles (ReqFindPageShareFiles data) {
-            // var item = app.GetFilesById (id);
             var items = app.GetFilesWithoutFolder (data, out int total).ToArray ();
             return Ok (new {
                 max = total,
                     files = items
             });
+        }
+
+        [HttpPost, Route ("[action]")]
+        public IActionResult AddToMyFile (ReqFindAddShareFile data) {
+            var item = app.GetFile (data);
+            var userdata = user.GetFullUserData (new ReqFindUserData { Id = data.OwnerId });
+            item.Id = null;
+            item.OwnerId = userdata.Id;
+            item.OwnerName = userdata.UserName;
+            item.MapPath = userdata.FolderPath;
+            item.Shared = 0;
+            app.AddFile (item);
+            return Ok (new ResUserFiles (item));
         }
 
         [HttpPost, Route ("[action]")]

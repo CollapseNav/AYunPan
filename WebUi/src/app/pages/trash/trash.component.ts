@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:30
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-23 03:02:03
+ * @LastEditTime: 2020-03-24 17:53:48
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -153,6 +153,9 @@ export class TrashComponent implements OnInit {
 
   initDeletedFiles(files: UserFile) {
     const sharedlist: UserFile[] = [];
+    if (files.fileContains == null) {
+      return null;
+    }
     files.fileContains.filter(item => item.isDeleted === '1').forEach(item => {
       if (item.fileTypes === FileTypes.folder) {
         item.fileContains = this.initDeletedFiles(item);

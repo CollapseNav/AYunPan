@@ -9,4 +9,5 @@ export const ShareFileApi = {
   GetShareFiles: 'api/ShareFile/GetShareFiles',
   ShareFile: 'api/ShareFile/ShareFile',
   ShareFolder: 'api/ShareFile/ShareFolder',
+  AddToMyFile: 'api/ShareFile/AddToMyFile',
 }

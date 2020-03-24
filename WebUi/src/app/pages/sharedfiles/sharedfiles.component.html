@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 15:36:30
+ * @LastEditTime: 2020-03-24 18:33:26
  * @Description:
  -->
 <div class="row">
@@ -119,10 +119,14 @@
                           ngbTooltip="Download" triggers="hover">
                           <i class="nc-icon nc-cloud-download-93"></i>
                         </button>
-                        <button class="btn  btn-round btn-primary btn-icon " (click)="onBe(unshare,item)"
-                          ngbTooltip="UnShare" triggers="hover">
+                        <button class="btn  btn-round btn-primary btn-icon " (click)="onBe(addtomyfile,item)"
+                          ngbTooltip="Add To My File" triggers="hover">
                           <i class="nc-icon nc-simple-add"></i>
                         </button>
+                        <!-- <button class="btn  btn-round btn-primary btn-icon " (click)="addToMyFile(item)"
+                          ngbTooltip="UnShare" triggers="hover">
+                          <i class="nc-icon nc-simple-add"></i>
+                        </button> -->
                       </td>
                     </ng-container>
 
@@ -219,5 +223,15 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-warning" (click)="unShare(unshare,file.id)">Yes</button>
     <button type="button" class="btn btn-primary" (click)="unshare.close()">No</button>
+  </div>
+</ng-template>
+
+<ng-template #addtomyfile let-addtomyfile>
+  <div class="modal-body">
+    <p>{{file.fileName}}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warning" (click)="addToMyFile(addtomyfile,file.id)">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="addtomyfile.close()">No</button>
   </div>
 </ng-template>

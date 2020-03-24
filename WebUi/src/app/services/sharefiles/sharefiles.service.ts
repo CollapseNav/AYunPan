@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-22 19:14:26
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 16:24:48
+ * @LastEditTime: 2020-03-24 18:22:01
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -12,6 +12,7 @@ import { ShareFileApi } from './sharefileApi';
 import { ShareFolder } from 'app/unit/shareFolder';
 import { UserFile } from 'app/unit/userFiles';
 import { TableConfig } from 'app/pages/sharedfiles/sharedfiles.component';
+import { AddShareFile } from 'app/unit/addShareFile';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,10 @@ export class SharefilesService {
 
   shareFolder(data: ShareFolder) {
     return this.http.post(this.baseUrl + ShareFileApi.ShareFolder, data).pipe();
+  }
+
+  addToMyFile(data: AddShareFile) {
+    return this.http.post<UserFile>(this.baseUrl + ShareFileApi.AddToMyFile, data).pipe();
   }
 
 }
