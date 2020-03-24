@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 15:57:08
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-09 00:19:03
+ * @LastEditTime: 2020-03-24 23:22:55
  * @Description:
  */
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

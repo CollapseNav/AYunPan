@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 18:27:25
+ * @LastEditTime: 2020-03-24 23:21:53
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -100,6 +100,7 @@ export class UserfilesComponent implements OnInit {
 
   // 文件上传部分
   uploadFile(file: FileItem) {
+    file.withCredentials = true;
     file.upload();
   }
 
@@ -249,6 +250,18 @@ export class UserfilesComponent implements OnInit {
     this.uploader.onSuccessItem = (item, res) => {
       const resfile = JSON.parse(res);
       this.tableData.push(resfile);
+    }
+
+    this.uploader.onBeforeUploadItem = () => {
+      let flag = true;
+      this.uploader.options.headers.filter(item => {
+        if (item.name === 'Authorization') {
+          flag = false;
+        }
+      })
+      if (flag) {
+        this.fileService.pushToken();
+      }
     }
     // 拿到所有的文件目录数据
     if (this.fileService.getFiles() == null) {
