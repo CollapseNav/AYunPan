@@ -2,17 +2,21 @@
  * @Author: CollapseNav
  * @Date: 2020-03-08 23:23:02
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-08 23:30:09
+ * @LastEditTime: 2020-03-24 19:53:19
  * @Description:
  */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SignComponent } from './sign/sign.component';
+import { SignGuard } from './guards/sign.guard';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'index', pathMatch: 'full' },
-  { path: 'index', component: SignComponent },
+  {
+    path: 'index', component: SignComponent,
+    canActivate: [SignGuard]
+  },
   { path: '**', component: PageNotFoundComponent },
 ];
 

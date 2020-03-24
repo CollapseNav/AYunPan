@@ -1,21 +1,17 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 using Application;
-using Application.Core;
 using Application.Core.BaseRequestData;
 using Application.RequestData;
 using Application.ResponseData;
-using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 
-namespace Api.Controllers {
+namespace Api.Controllers
+{
 
     [ApiController]
+    [Authorize]
     [Route ("api/[controller]")]
     public class ShareFileController : ControllerBase {
         private readonly UserFileApplication app;

@@ -64,8 +64,8 @@ namespace Api.Controllers {
             };
             var key = new SymmetricSecurityKey (Encoding.UTF8.GetBytes ("It's a .net core spa test."));
             var tokens = new JwtSecurityToken (
-                issuer: "DotnetTest",
-                audience: "AngualrApp",
+                issuer: "Dotnet+Angular",
+                audience: "AYunPan",
                 claims : claims,
                 notBefore : DateTime.Now,
                 expires : DateTime.Now.AddDays (20),

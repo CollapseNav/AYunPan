@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:47:05
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-19 23:55:54
+ * @LastEditTime: 2020-03-24 19:53:59
  * @Description: 
  */
 using System.Text;
@@ -27,7 +27,6 @@ namespace Api {
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
             services.AddAuthentication (options => {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -39,9 +38,9 @@ namespace Api {
 
                 options.TokenValidationParameters = new TokenValidationParameters () {
                     ValidateIssuer = true,
-                    ValidIssuer = "DotnetTest",
+                    ValidIssuer = "Dotnet+Angular",
                     ValidateAudience = true,
-                    ValidAudience = "AngualrApp",
+                    ValidAudience = "AYunPan",
                     IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes ("It's a .net core spa test."))
                 };
             });
@@ -83,6 +82,8 @@ namespace Api {
             app.UseRouting ();
 
             app.UseCors ("Base");
+
+            app.UseAuthorization ();
 
             app.UseAuthorization ();
 

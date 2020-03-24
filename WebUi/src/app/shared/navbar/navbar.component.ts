@@ -2,13 +2,14 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 15:57:08
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 17:54:56
+ * @LastEditTime: 2020-03-24 19:43:16
  * @Description:
  */
 import { Component, OnInit, Renderer, ViewChild, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { SignService } from 'app/services/sign/sign.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -26,10 +27,18 @@ export class NavbarComponent implements OnInit {
   public isCollapsed = true;
   @ViewChild('navbar-cmp', { static: false }) button;
 
-  constructor(location: Location, private renderer: Renderer, private element: ElementRef, private router: Router) {
+  constructor(location: Location,
+    private renderer: Renderer,
+    private element: ElementRef,
+    private router: Router,
+    private signService: SignService) {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
+  }
+
+  signOut() {
+    this.signService.removeToken();
   }
 
   ngOnInit() {

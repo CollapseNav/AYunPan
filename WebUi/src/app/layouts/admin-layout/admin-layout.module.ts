@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 15:57:08
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-13 21:47:22
+ * @LastEditTime: 2020-03-24 19:52:31
  * @Description:
  */
 import { NgModule } from '@angular/core';
@@ -19,6 +19,9 @@ import { TrashComponent } from 'app/pages/trash/trash.component';
 import { AdminRoutingModule } from './admin.routing.module';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxUploaderModule } from 'ngx-uploader';
+import { MainGuard } from 'app/guards/main.guard';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from 'app/interceptors/token.interceptor';
 
 @NgModule({
   imports: [
@@ -37,6 +40,13 @@ import { NgxUploaderModule } from 'ngx-uploader';
     TrashComponent,
     InfoboardComponent,
 
+  ],
+  providers: [
+    MainGuard, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    }
   ]
 })
 export class AdminLayoutModule { }

@@ -16,16 +16,6 @@ namespace Repository {
             modelBuilder.Entity<FileInfo> (entity => {
                 entity.HasIndex (m => m.Id).IsUnique ();
             });
-
-            modelBuilder.Entity<UserDataInfo> ().HasData (new UserDataInfo {
-                Id = Guid.NewGuid ().ToString (),
-                    CreateDate = DateTime.Now,
-                    IsDeleted = 0,
-                    UserAccount = "123456@123",
-                    UserName = "123456@123",
-                    PassWord = "123456",
-                    FolderPath = "/123456@123",
-            });
         }
 
         public DbSet<SharedFileInfo> SharedFileInfos { get; set; }

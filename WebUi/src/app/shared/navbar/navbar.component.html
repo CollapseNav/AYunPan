@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 15:57:08
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-05 21:57:53
+ * @LastEditTime: 2020-03-24 19:45:26
  * @Description:
  -->
 
@@ -18,8 +18,8 @@
       </div>
       <a class="navbar-brand" href="javascript:void(0)">{{getTitle()}}</a>
     </div>
-    <button class="navbar-toggler" type="button" (click)="collapse()"
-      [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+    <button class="navbar-toggler" type="button" (click)="collapse()" [attr.aria-expanded]="!isCollapsed"
+      aria-controls="collapseExample">
       <span class="navbar-toggler-bar navbar-kebab"></span>
       <span class="navbar-toggler-bar navbar-kebab"></span>
       <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -36,7 +36,7 @@
         </li>
 
         <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">
-          <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" >
+          <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink">
             <i class="nc-icon nc-circle-10"></i>
             <p>
               <span class="d-lg-none d-md-block">User Actions</span>
@@ -44,8 +44,8 @@
           </a>
           <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-right">
             <a ngbDropdownItem routerLink="/infoBoard">User Profile</a>
-            <a ngbDropdownItem href="javascript:void(0)">Another action</a>
-            <a ngbDropdownItem href="javascript:void(0)">Log Out</a>
+            <!-- <a ngbDropdownItem href="javascript:void(0)">Another action</a> -->
+            <a ngbDropdownItem routerLink="../index" (click)="signOut()">Sign Out</a>
           </div>
         </li>
         <!-- <li class="nav-item">

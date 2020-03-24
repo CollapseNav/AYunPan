@@ -1,9 +1,11 @@
 using Application;
 using Application.RequestData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers {
     [ApiController]
+    [Authorize]
     [Route ("api/[controller]")]
     public class UserDataController : ControllerBase {
         private readonly UserDataApplication app;
