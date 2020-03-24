@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-02-17 17:22:43
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 16:18:40
+ * @LastEditTime: 2020-03-24 16:34:35
  * @Description:
  -->
 
@@ -33,6 +33,7 @@
   - [ ] token的发放
   - [ ] 使用token验证
 - [X] Update用户数据
+  - [ ] 同时 updata 一些文件相关的数据
 - [X] 文件目录获取
   - 直接把文件的目录结构读出来了
   - 主要是为了方便后续的使用

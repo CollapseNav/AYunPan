@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 15:57:09
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-08 23:31:59
+ * @LastEditTime: 2020-03-24 16:24:13
  * @Description:
  */
 /*!
@@ -29,7 +29,8 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
-  return document.getElementsByTagName('base')[0].href;
+  // return document.getElementsByTagName('base')[0].href;
+  return 'http://localhost:5000/';
 }
 
 const providers = [

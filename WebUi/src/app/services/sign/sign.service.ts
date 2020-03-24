@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2019-12-30 20:18:00
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 14:49:04
+ * @LastEditTime: 2020-03-24 16:20:55
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -22,7 +22,7 @@ export class SignService {
   jwt: string;
 
   constructor(private http: HttpClient, private userDataService: UserdataService, @Inject('BASE_URL') baseurl: string) {
-    this.baseUrl = baseurl.replace('4200', '5000');
+    this.baseUrl = baseurl;
   }
 
   getJwtToken(): string {

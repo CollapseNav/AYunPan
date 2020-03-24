@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-22 22:22:29
+ * @LastEditTime: 2020-03-24 16:37:59
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -10,7 +10,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserFile, FileTypes } from 'app/unit/userFiles';
 import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 import { FileUploader, FileItem } from 'ng2-file-upload';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { saveAs } from 'file-saver';
 import { ShareFolder } from 'app/unit/shareFolder';
 import { ShareFile } from 'app/unit/shareFile';

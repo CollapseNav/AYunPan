@@ -2,22 +2,15 @@
  * @Author: CollapseNav
  * @Date: 2020-03-07 13:45:37
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-22 19:29:42
+ * @LastEditTime: 2020-03-24 16:36:19
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
-import { UserFile, FileTypes } from 'app/unit/userFiles';
-import { MockUserFiles } from 'app/mock/mock_userfiles';
+import { UserFile } from 'app/unit/userFiles';
 import { FileUploader } from 'ng2-file-upload';
-import { HttpClient, HttpResponseBase } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { UserFileApi } from './userfileApi';
-import { tap, map } from 'rxjs/operators';
-import { Observable, observable, of, from } from 'rxjs';
 import { NewFolderData } from '../../unit/newFolderData';
-import { ShareFolder } from 'app/unit/shareFolder';
-import { ShareFile } from 'app/unit/shareFile';
-import { DeleteFile } from 'app/unit/deleteFile';
-import { DeleteFolder } from 'app/unit/deleteFolder';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,7 +21,7 @@ export class UserFilesService {
   uploader: FileUploader;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseurl: string) {
-    this.baseUrl = baseurl.replace('4200', '5000');
+    this.baseUrl = baseurl;
     this.uploader = new FileUploader({
       url: this.baseUrl + UserFileApi.UploadFile,
       method: 'POST',

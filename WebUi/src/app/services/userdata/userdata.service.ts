@@ -2,14 +2,14 @@
  * @Author: CollapseNav
  * @Date: 2020-03-11 17:28:28
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-21 19:31:36
+ * @LastEditTime: 2020-03-24 16:36:40
  * @Description:
  */
-import { Injectable, Inject, OnInit } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserData } from 'app/unit/userData';
 import { UserDataApi } from './userdataapi';
-import { retry, mapTo, catchError } from 'rxjs/operators';
+import { retry, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class UserdataService {
   userData: UserData;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseurl: string) {
-    this.baseUrl = baseurl.replace('4200', '5000');
+    this.baseUrl = baseurl;
   }
 
   getUserData(id: string) {

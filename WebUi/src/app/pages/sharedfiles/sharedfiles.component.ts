@@ -2,10 +2,10 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 15:18:51
+ * @LastEditTime: 2020-03-24 16:37:45
  * @Description:
  */
-import { Component, OnInit, IterableDiffers } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 import { UserFile, FileTypes } from 'app/unit/userFiles';

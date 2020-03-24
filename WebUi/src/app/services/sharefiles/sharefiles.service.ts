@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-22 19:14:26
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 16:09:50
+ * @LastEditTime: 2020-03-24 16:24:48
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -19,7 +19,7 @@ import { TableConfig } from 'app/pages/sharedfiles/sharedfiles.component';
 export class SharefilesService {
   baseUrl: string;
   constructor(private http: HttpClient, @Inject('BASE_URL') baseurl: string) {
-    this.baseUrl = baseurl.replace('4200', '5000');
+    this.baseUrl = baseurl;
   }
 
   getShareFiles(config: TableConfig) {

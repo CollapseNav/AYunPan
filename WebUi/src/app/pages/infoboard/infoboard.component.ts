@@ -2,18 +2,14 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:44:01
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-22 17:51:14
+ * @LastEditTime: 2020-03-24 16:37:27
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MockUserData } from 'app/mock/mock_userdata';
 import { UserData } from 'app/unit/userData';
-import { ChartOptions, ChartType } from 'chart.js'
-import { Label, SingleDataSet } from 'ng2-charts/lib/base-chart.directive';
 import { UserdataService } from 'app/services/userdata/userdata.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 
 @Component({
   selector: 'app-infoboard',
@@ -28,7 +24,6 @@ export class InfoboardComponent implements OnInit {
   fileNum: number;
   constructor(private builder: FormBuilder,
     private userDataService: UserdataService,
-    private userFileService: UserFilesService,
     private modalService: NgbModal) { }
   initModal(modal: NgbModal) {
     this.infoModal = modal;
