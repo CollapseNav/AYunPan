@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-22 18:29:25
+ * @LastEditTime: 2020-03-24 19:05:47
  * @Description:
  -->
 <div class="row">
@@ -61,7 +61,7 @@
                   <td>{{item.fileSize}}</td>
                   <td>{{item.addDate}}</td>
                   <td>
-                    <button class="btn  btn-round btn-danger btn-icon" (click)="onBe(undel,item)" ngbTooltip="Delete"
+                    <button class="btn  btn-round btn-danger btn-icon" (click)="onBe(truedel,item)" ngbTooltip="Delete"
                       triggers="hover">
                       <i class="nc-icon nc-simple-remove"></i>
                     </button>
@@ -87,5 +87,14 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-warning" (click)="unDelete(undel,file.id)">Yes</button>
     <button type="button" class="btn btn-primary" (click)="undel.close()">No</button>
+  </div>
+</ng-template>
+<ng-template #truedel let-truedel>
+  <div class="modal-body">
+    <p>{{file.fileName}}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warning" (click)="trueDeleteFile(truedel,file.id)">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="truedel.close()">No</button>
   </div>
 </ng-template>

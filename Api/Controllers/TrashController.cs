@@ -40,6 +40,18 @@ namespace Api.Controllers {
             return Edit (data);
         }
 
+        [HttpPost, Route ("[action]")]
+        public IActionResult TrueDeleteFile (ReqFindFile data) {
+            var item = app.GetFile (data);
+            if (app.CountFile (new ReqFindCountFileByPath { Path = item.FilePath }) == 1) {
+                if (System.IO.File.Exists (DirectoryPath + item.FilePath)) {
+                    System.IO.File.Delete (DirectoryPath + item.FilePath);
+                }
+            }
+            app.DeleteFile (data);
+            return Ok (true);
+        }
+
         private IActionResult Edit (IRequestEditData<Repository.Domain.FileInfo> data) {
             string mes;
             if ((mes = app.UpdateFileInfo (data)) == "Success")

@@ -21,6 +21,16 @@ namespace Application {
 
         public FileInfo GetFile (IRequestFindData<FileInfo> data) => rep.FindSingle (data.GetWhereExpression ());
 
+        public int CountFile (IRequestFindData<FileInfo> data) => rep.Count (data.GetWhereExpression ());
+        public bool DeleteFile (IRequestFindData<FileInfo> data) {
+            try {
+                rep.Delete (data.GetWhereExpression ());
+            } catch {
+                return false;
+            }
+            return true;
+        }
+
         /// <summary>
         /// 大概还需要多加点什么东西
         /// </summary>

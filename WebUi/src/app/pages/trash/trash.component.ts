@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:30
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 17:53:48
+ * @LastEditTime: 2020-03-24 19:14:56
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -12,6 +12,7 @@ import { UserFile, FileTypes } from 'app/unit/userFiles';
 import { DeleteFile } from 'app/unit/deleteFile';
 import { TrashService } from 'app/services/trash/trash.service';
 import { DeleteFolder } from 'app/unit/deleteFolder';
+import { iif } from 'rxjs';
 declare interface DataItem {
   ID: string;
   FileName: string;
@@ -46,6 +47,16 @@ export class TrashComponent implements OnInit {
   tableRouter = [{ id: '', folder: '' }];
 
   constructor(private modalService: NgbModal, private fileService: UserFilesService, private trash: TrashService) { }
+
+  trueDeleteFile(modal: NgbActiveModal, id: string) {
+    this.trash.trueDeleteFile({ id: id }).subscribe(result => {
+      if (result) {
+        const index = this.tableData.findIndex(item => item.id === id);
+        this.tableData.splice(index, 1);
+      }
+    });
+    modal.close();
+  }
 
   searchWaitEnter(event: KeyboardEvent) {
     if (event.key.toLowerCase() === 'enter') {
@@ -134,8 +145,6 @@ export class TrashComponent implements OnInit {
       })
     }
   }
-
-
 
   addToFolderList(folder: UserFile) {
     if (this.folderList.filter(item => item.id === folder.id).length > 0) {
