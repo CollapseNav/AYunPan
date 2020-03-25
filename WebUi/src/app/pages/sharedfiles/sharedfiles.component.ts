@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 18:34:38
+ * @LastEditTime: 2020-03-25 02:55:55
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -34,9 +34,9 @@ export class TableConfig {
 })
 export class SharedfilesComponent implements OnInit {
   tableThead = [
-    { content: 'FileName', per: '35%' },
-    { content: 'FileType', per: '20%' },
-    { content: 'FileSize', per: '10%' },
+    { content: 'Name', per: '35%' },
+    { content: 'Type', per: '20%' },
+    { content: 'Size', per: '10%' },
     { content: 'AddDate', per: '20%' },
     { content: 'Be', per: '15%' },
   ];

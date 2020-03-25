@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 23:21:53
+ * @LastEditTime: 2020-03-25 03:11:16
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -26,10 +26,10 @@ import { TrashService } from 'app/services/trash/trash.service';
 export class UserfilesComponent implements OnInit {
   // 主要定一下table各个col的占比
   tableThead = [
-    { content: 'FileName', per: '25%' },
-    { content: 'FileType', per: '20%' },
-    { content: 'FileSize', per: '20%' },
-    { content: 'AddDate', per: '20%' },
+    { content: 'Name', per: '35%' },
+    { content: 'Type', per: '15%' },
+    { content: 'Size', per: '20%' },
+    { content: 'AddDate', per: '15%' },
     { content: 'Be', per: '15%' },
   ];
   // 可能有点多余的一个formgroup，主要是存一下新建文件夹时输入的名称，后面可能会加点什么东西吧

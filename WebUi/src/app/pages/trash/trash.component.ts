@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:30
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 19:14:56
+ * @LastEditTime: 2020-03-25 02:55:44
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -31,9 +31,9 @@ declare interface TheadPercent {
 })
 export class TrashComponent implements OnInit {
   tableThead = [
-    { content: 'FileName', per: '25%' },
-    { content: 'FileType', per: '20%' },
-    { content: 'FileSize', per: '20%' },
+    { content: 'Name', per: '25%' },
+    { content: 'Type', per: '20%' },
+    { content: 'Size', per: '20%' },
     { content: 'AddDate', per: '20%' },
     { content: 'Be', per: '15%' },
   ];
