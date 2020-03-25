@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2019-12-30 20:18:00
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 16:20:55
+ * @LastEditTime: 2020-03-25 19:55:33
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -26,6 +26,12 @@ export class SignService {
   }
 
   getJwtToken(): string {
+    const date: Date = new Date(localStorage.getItem('expiration'));
+    const now = new Date();
+    if (date < now) {
+      this.removeToken();
+      return null;
+    }
     return localStorage.getItem('jwt');
   }
 
@@ -42,6 +48,7 @@ export class SignService {
   removeToken() {
     localStorage.removeItem('jwt');
     localStorage.removeItem('Id');
+    localStorage.removeItem('expiration');
   }
 
   signIn(data: SignData): Observable<boolean> {
@@ -52,6 +59,7 @@ export class SignService {
         localStorage.setItem('jwt', tokens['token']);
         this.userDataService.userData = tokens['userData'];
         localStorage.setItem('Id', this.userDataService.userData.id);
+        localStorage.setItem('expiration', tokens['expiration']);
       }),
       mapTo(true),
       catchError(error => {
