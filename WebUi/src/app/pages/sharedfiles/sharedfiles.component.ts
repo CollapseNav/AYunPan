@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-25 02:55:55
+ * @LastEditTime: 2020-03-26 02:21:37
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -79,19 +79,17 @@ export class SharedfilesComponent implements OnInit {
     this.shareTableData = this.shareFilesData.slice(startindex, startindex + this.config.size);
   }
 
-  searchWaitEnter(event: KeyboardEvent) {
-    if (event.key.toLowerCase() === 'enter') {
-      this.searchFile(event.target);
-    }
+  searchWaitEnter(value: string) {
+    this.searchFile(value);
   }
 
-  searchFile(control) {
-    if (control.value === '') {
+  searchFile(value: string) {
+    if (value === '') {
       this.turnBackTo(this.tableRouter.slice(-1)[0].id);
       return;
     }
     // tslint:disable-next-line:max-line-length
-    const searchlist: UserFile[] = this.filterFile(this.folderList.filter(item => item.id === this.tableRouter.slice(-1)[0].id), control.value);
+    const searchlist: UserFile[] = this.filterFile(this.folderList.filter(item => item.id === this.tableRouter.slice(-1)[0].id), value);
     this.tableData = searchlist;
   }
 
