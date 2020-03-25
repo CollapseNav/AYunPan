@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-08 22:43:03
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-15 21:31:10
+ * @LastEditTime: 2020-03-25 21:49:37
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -19,8 +19,7 @@ export class SignComponent implements OnInit {
 
   signForm: FormGroup;
 
-  flipStyle = 'middle logreg-body ';
-  middleFlip = 'middle-flip';
+  isFlip = false;
 
   signIn() {
     this.signService.signIn(this.signForm.value).subscribe(result => {
@@ -31,11 +30,7 @@ export class SignComponent implements OnInit {
   }
   flipForm() {
     this.signForm.reset();
-    if (this.flipStyle.indexOf(this.middleFlip) < 0) {
-      this.flipStyle += this.middleFlip;
-    } else {
-      this.flipStyle = this.flipStyle.replace(this.middleFlip, '');
-    }
+    this.isFlip = !this.isFlip;
   }
   signUp() {
     this.signService.signUp(this.signForm.value).subscribe(result => {

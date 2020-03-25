@@ -2,11 +2,11 @@
  * @Author: CollapseNav
  * @Date: 2020-03-08 22:43:03
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-12 21:16:09
+ * @LastEditTime: 2020-03-25 21:49:30
  * @Description:
  -->
 
-<div [class]="flipStyle">
+<div [class.middle-flip]="isFlip" class="middle logreg-body">
   <form (ngSubmit)="signIn()" class="form-box front" [formGroup]="signForm">
     <div>
       <h1 class="weight-h1" style="margin-top: 20px;">
