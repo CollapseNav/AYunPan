@@ -1,0 +1,59 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-04-03 02:09:54
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-05 13:02:40
+ * @Description:
+ -->
+
+ <div class="table-responsive-md">
+  <table class="table">
+    <thead class=" text-primary">
+      <th *ngFor="let item of tableThead" scope="col" width="{{item.per}}">{{item.content}}</th>
+    </thead>
+    <tbody *ngIf="tableData">
+      <tr *ngFor="let item of tableData" scope="row">
+        <ng-container *ngIf="item.isDeleted==='0'">
+          <ng-container *ngIf="checkThead('Name')">
+            <ng-container *ngIf="item.fileExt=='folder';else notFolder">
+              <td style="-webkit-user-select:none;" #folder>
+                <span class="h6" style="cursor: pointer;" (dblclick)="dbClick(item)">
+                  {{item.fileName}}
+                </span>
+              </td>
+            </ng-container>
+            <ng-template #notFolder>
+              <td style="-webkit-user-select:none;">{{item.fileName}}</td>
+            </ng-template>
+          </ng-container>
+          <td *ngIf="checkThead('Type')">{{item.fileExt}}</td>
+          <td *ngIf="checkThead('Size')">{{item.fileSize}}</td>
+          <td *ngIf="checkThead('AddDate')">{{item.addDate}}</td>
+          <td *ngIf="checkThead('Be')">
+            <ng-container *ngFor="let btn of btnGroup">
+              <ng-container [ngSwitch]="btn">
+                <ng-container *ngSwitchCase="'del'">
+                  <app-btndel [item]="item"></app-btndel>
+                </ng-container>
+                <ng-container *ngSwitchCase="'udel'">
+                  <app-btnudel [item]="item"></app-btnudel>
+                </ng-container>
+                <ng-container *ngSwitchCase="'download'">
+                  <app-btndownload [item]="item"></app-btndownload>
+                </ng-container>
+                <ng-container *ngSwitchCase="'share'">
+                  <app-btnshare [item]="item"></app-btnshare>
+                </ng-container>
+                <ng-container *ngSwitchCase="'ushare'">
+                  <app-btnushare [item]="item"></app-btnushare>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+          </td>
+        </ng-container>
+
+      </tr>
+    </tbody>
+  </table>
+</div>

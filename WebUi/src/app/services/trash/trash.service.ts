@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-22 19:18:44
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 18:56:25
+ * @LastEditTime: 2020-04-04 18:25:19
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -29,7 +29,7 @@ export class TrashService {
     return this.http.post(this.baseUrl + TrashApi.DeleteFile, data).pipe();
   }
 
-  deleteFolder(data: DeleteFolder) {
+  deleteFolder(data: DeleteFile) {
     return this.http.post(this.baseUrl + TrashApi.DeleteFolder, data).pipe();
   }
 }

@@ -107,14 +107,10 @@
           Email : {{userData.email}}
           <br>Phone : {{userData.phone}}
           <br>Gender :
-          <ng-container *ngIf="userData.gender === '0'">
-            Female
-          </ng-container>
-          <ng-container *ngIf="userData.gender === '1'">
-            Male
-          </ng-container>
-          <ng-container *ngIf="userData.gender == null">
-            NaN
+          <ng-container [ngSwitch]="userData.gender">
+            <ng-container *ngSwitchCase="0">Female</ng-container>
+            <ng-container *ngSwitchCase="1">Male</ng-container>
+            <ng-container *ngSwitchDefault>NaN</ng-container>
           </ng-container>
           <br>Age : {{userData.age}}
           <br>{{userData.remark}}

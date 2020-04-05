@@ -1,0 +1,21 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-04-02 21:52:29
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-03 00:33:57
+ * @Description:
+ -->
+<nav aria-label="breadcrumb" role="navigation">
+  <ol class="breadcrumb">
+    <ng-container *ngIf="tableRouter[0];else emptyRouter">
+      <li class="breadcrumb-item" *ngFor="let item of tableRouter">
+        <a href="javascript:void(0)" (click)="turnBackTo(item)">{{item.fileName}}</a>
+      </li>
+    </ng-container>
+    <ng-template #emptyRouter>
+      <li class="breadcrumb-item">
+        <a href="javascript:void(0)">Empty</a>
+      </li>
+    </ng-template>
+  </ol>
+</nav>

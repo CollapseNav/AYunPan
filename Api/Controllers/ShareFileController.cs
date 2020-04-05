@@ -49,8 +49,9 @@ namespace Api.Controllers
         }
 
         [HttpPost, Route ("[action]")]
-        public IActionResult ShareFolder (ReqEditShareFolder data) {
-            return Edit (data);
+        public IActionResult ShareFolder (ReqEditShareFile data) {
+            var item = app.GetFile (new ReqFindFile { Id = data.Id });
+            return Edit (new ReqEditShareFolder { Id = item.Id, IsShare = data.IsShare, Path = $"{item.MapPath}/{item.FileName}" });
         }
 
         [HttpPost, Route ("[action]")]

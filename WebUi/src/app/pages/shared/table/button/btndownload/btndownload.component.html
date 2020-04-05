@@ -1,0 +1,14 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-04-04 18:49:14
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-04 20:01:38
+ * @Description:
+ -->
+<button class="btn  btn-round btn-primary btn-icon " (click)="onBe(download)" ngbTooltip="Download" triggers="hover">
+  <i class="nc-icon nc-cloud-download-93"></i>
+</button>
+
+<ng-template #download let-download>
+  <app-checkmodal [file]="item" (check)="check($event,download)"></app-checkmodal>
+</ng-template>

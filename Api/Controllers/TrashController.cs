@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-namespace Api.Controllers
-{
+namespace Api.Controllers {
 
     [ApiController]
     [Authorize]
@@ -26,8 +25,9 @@ namespace Api.Controllers
         }
 
         [HttpPost, Route ("[action]")]
-        public IActionResult DeleteFolder (ReqEditDeleteFolder data) {
-            return Edit (data);
+        public IActionResult DeleteFolder (ReqEditDeleteFile data) {
+            var item = app.GetFile (new ReqFindFile { Id = data.Id });
+            return Edit (new ReqEditDeleteFolder { Id = item.Id, IsDelete = data.IsDelete, Path = $"{item.MapPath}/{item.FileName}" });
         }
 
         [HttpPost, Route ("[action]")]

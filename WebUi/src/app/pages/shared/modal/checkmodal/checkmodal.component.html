@@ -1,0 +1,14 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-04-03 21:17:10
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-04 13:45:01
+ * @Description:
+ -->
+<div class="modal-body">
+  <p>{{file.fileName}}</p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-warning" (click)="check.emit(true)">Yes</button>
+  <button type="button" class="btn btn-primary" (click)="check.emit(false)">No</button>
+</div>

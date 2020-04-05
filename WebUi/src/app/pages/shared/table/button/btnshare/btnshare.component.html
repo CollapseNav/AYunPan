@@ -1,0 +1,20 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-04-04 18:46:43
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-04 18:52:36
+ * @Description:
+ -->
+<ng-container *ngIf="item.isShared==='1';else notShared">
+  <button class="btn  btn-round btn-warning btn-icon" disabled>
+    <i class="nc-icon nc-share-66"></i>
+  </button>
+</ng-container>
+<ng-template #notShared>
+  <button class="btn  btn-round btn-warning btn-icon " (click)="onBe(share)" ngbTooltip="Share" triggers="hover">
+    <i class="nc-icon nc-share-66"></i>
+  </button>
+</ng-template>
+<ng-template #share let-share>
+  <app-checkmodal [file]="item" (check)="check($event,share)"></app-checkmodal>
+</ng-template>

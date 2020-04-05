@@ -78,6 +78,8 @@ namespace Application {
             }
             // 最终 "拼接" 所有文件夹
             foreach (var item in folderlist) {
+                if (item.Value.FileContains == null)
+                    item.Value.FileContains = new List<ResUserFiles> ();
                 // 排除用户的 root 文件夹
                 if (item.Key.LastIndexOf ('/' + item.Value.FileName) > 0) {
                     folderlist[item.Key.Substring (0, item.Key.LastIndexOf ('/' + item.Value.FileName))].FileContains.Add (item.Value);

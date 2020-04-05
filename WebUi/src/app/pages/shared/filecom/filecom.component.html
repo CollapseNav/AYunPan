@@ -1,0 +1,17 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-04-03 15:05:12
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-04 22:15:22
+ * @Description:
+ -->
+ <div class="card-header">
+  <app-tooltip [hasBreadCrumb]="mainConfig.head.hasBreadCrumb" [hasNewFileTools]="mainConfig.head.hasNewFileTools"
+    [hasSearch]="mainConfig.head.hasSearch" [tableRouter]="storeData" (turnBack)="turnBackTo($event)"
+    (search)="search($event)" #tooltip>
+  </app-tooltip>
+</div>
+<div class="card-body">
+  <app-table [tableData]="tableData" [tableThead]="mainConfig.body.tableThead" [btnGroup]="mainConfig.body.btnGroup"
+    (doubleClick)="onDbClick($event);tooltip.addNewRouterPoint($event)"></app-table>
+</div>

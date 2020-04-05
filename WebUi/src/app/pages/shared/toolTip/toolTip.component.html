@@ -1,0 +1,43 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-04-02 22:45:43
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-04 21:49:25
+ * @Description:
+ -->
+<div *ngIf="hasBreadCrumb">
+  <app-breadcrumb [tableRouter]="_tableRouter" (turnBack)="turnBackTo($event)"></app-breadcrumb>
+</div>
+<div class="row">
+  <div class="col-md-2" *ngIf="hasNewFileTools">
+    <button class="btn btn-warning btn-round btn-icon" (click)="openUploadModal(upload)" ngbTooltip="OpenUpload"
+      triggers="hover">
+      <i class="nc-icon nc-cloud-upload-94"></i></button>
+    <button class="btn btn-primary btn-round btn-icon" (click)="openNewFolder(newfolder)" ngbTooltip="CreateNewFolder"
+      triggers="hover">
+      <i class="nc-icon nc-simple-add"></i></button>
+  </div>
+  <div class="col-md-3" *ngIf="hasSearch">
+    <div class="input-group no-border">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <i class="nc-icon nc-zoom-split " style="cursor: pointer;" (click)="searchFile(searchvalue.value)"></i>
+        </div>
+      </div>
+      <input type="text" class="form-control" (keyup.enter)="searchFile(searchvalue.value)" #searchvalue />
+      <div class="input-group-append no-border">
+        <div class="input-group-text no-border">
+          <i class="nc-icon nc-simple-remove " style="cursor: pointer;" (click)="clearSearch(searchvalue)"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #upload>
+  <app-uploadmodal [rootFolder]="getThisFolder()"></app-uploadmodal>
+</ng-template>
+
+<ng-template #newfolder>
+  <app-newfoldermodal [rootFolder]="getThisFolder()"></app-newfoldermodal>
+</ng-template>

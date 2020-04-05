@@ -1,0 +1,29 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-04-03 00:05:34
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-03 00:54:58
+ * @Description:
+ -->
+<div class="card card-stats pm-1" style="margin-bottom: 0;">
+  <h3 class="card-header">Create New Folder</h3>
+  <div class="card-body">
+    <form [formGroup]="newFolderForm" (submit)="createNewFolder()" class="form-group">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Folder Name</label>
+            <input type="text" class="form-control form-control-lg " formControlName="folderName" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <button class="btn btn-primary btn-round" [disabled]="!newFolderForm.value['folderName']">Create</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

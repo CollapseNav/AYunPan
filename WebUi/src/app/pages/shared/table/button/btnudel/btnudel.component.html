@@ -1,0 +1,13 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-04-04 18:48:53
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-04 19:51:46
+ * @Description:
+ -->
+<button class="btn  btn-round btn-primary btn-icon" (click)="onBe(udel)" ngbTooltip="UnDelete" triggers="hover">
+  <i class="nc-icon nc-refresh-69"></i>
+</button>
+<ng-template #udel let-udel>
+  <app-checkmodal [file]="item" (check)="check($event,udel)"></app-checkmodal>
+</ng-template>

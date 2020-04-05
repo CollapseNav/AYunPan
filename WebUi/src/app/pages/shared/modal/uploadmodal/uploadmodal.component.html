@@ -1,0 +1,68 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-04-03 00:05:18
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-03 00:06:16
+ * @Description:
+ -->
+<div class="card card-stats" style="margin-bottom: 0;">
+  <div class="card-body">
+    <div class="table-responsive-md">
+      <table class="table">
+        <thead>
+          <tr>
+            <th width="50%">Name</th>
+            <th>Size</th>
+            <th>Progress</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of uploader.queue">
+            <td><strong>{{ item?.file?.name }}</strong></td>
+            <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+            <td *ngIf="uploader.options.isHTML5">
+              <div class="progress" style="margin-bottom: 0;">
+                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+              </div>
+            </td>
+            <td class="text-center">
+              <span *ngIf="item.isSuccess"><i class="nc-icon nc-check-2"></i></span>
+              <span *ngIf="item.isCancel"><i class="nc-icon nc-simple-remove"></i></span>
+              <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+            </td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-round btn-icon" (click)="uploadFile(item)"
+                [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                <i class="nc-icon nc-button-play"></i>
+              </button>
+              <!-- <button type="button" class="btn btn-warning btn-round btn-icon" (click)="item.cancel()"
+                [disabled]="!item.isUploading">
+                <i class="nc-icon nc-button-pause"></i>
+              </button> -->
+              <button type="button" class="btn btn-danger btn-round btn-icon" (click)="item.remove()">
+                <i class="nc-icon nc-simple-remove"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div style="display: inline-table;overflow: hidden;position: relative;bottom: 0%;">
+      <span class="btn btn-warning btn-round">Select</span>
+      <input ng2FileSelect [uploader]="uploader"
+        style="position: absolute;right: 0;top: 0;opacity: 0;bottom:0;cursor: pointer;" type="file" multiple />
+    </div>
+    <button class="btn btn-primary btn-round btn-icon" (click)="uploader.uploadAll()"
+      [disabled]="!uploader.getNotUploadedItems().length" ngbTooltip="Upload All">
+      <i class="nc-icon nc-button-play"></i>
+    </button>
+    <button class="btn btn-danger btn-round btn-icon" (click)="uploader.clearQueue()"
+      [disabled]="!uploader.queue.length" ngbTooltip="Remove all">
+      <i class="nc-icon nc-simple-remove"></i>
+    </button>
+  </div>
+</div>

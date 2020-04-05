@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 16:40:22
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-26 02:18:29
+ * @LastEditTime: 2020-04-02 22:29:38
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -41,7 +41,7 @@ export class UserfilesComponent implements OnInit {
   // 所有文件
   storeData: UserFile;
   // 面包屑导航需要用
-  tableRouter = [{ id: '', folder: '' }];
+  tableRouter: UserFile[] = [];
   file = { id: '', fileName: '' };
   uploader: FileUploader;
 
@@ -136,8 +136,8 @@ export class UserfilesComponent implements OnInit {
     if (file.fileTypes === FileTypes.folder) {
       let path = '/' + this.storeData.fileName;
       this.tableRouter.forEach(item => {
-        if (item.folder !== 'root') {
-          path += '/' + item.folder;
+        if (item.fileName !== 'root') {
+          path += '/' + item.fileName;
         }
       })
       path += '/' + file.fileName;
@@ -164,8 +164,8 @@ export class UserfilesComponent implements OnInit {
     if (file.fileTypes === FileTypes.folder) {
       let path = '/' + this.storeData.fileName;
       this.tableRouter.forEach(item => {
-        if (item.folder !== 'root') {
-          path += '/' + item.folder;
+        if (item.fileName !== 'root') {
+          path += '/' + item.fileName;
         }
       })
       path += '/' + file.fileName;
@@ -224,7 +224,7 @@ export class UserfilesComponent implements OnInit {
   onDbClick(id: string) {// 找到对应的文件夹并且添加到folderlist中
     const folder = this.tableData.filter(val => val.id === id)[0];
     this.addToFolderList(folder);
-    this.tableRouter.push({ id: folder.id, folder: folder.fileName });
+    this.tableRouter.push(folder);
     this.tableData = folder.fileContains;
     this.uploader.options.headers = [
       { name: 'Id', value: localStorage.getItem('Id') },
@@ -240,6 +240,11 @@ export class UserfilesComponent implements OnInit {
     const folder = this.folderList.filter(item => item.id === id)[0];
     this.tableData = folder.fileContains;
     this.tableRouter = this.tableRouter.slice(0, this.tableRouter.findIndex(item => item.id === id) + 1);
+  }
+
+  // 面包屑导航
+  turnBackTo2(item: UserFile) {
+    this.tableData = item.fileContains;
   }
 
   ngOnInit() {
@@ -279,9 +284,8 @@ export class UserfilesComponent implements OnInit {
   }
   initTableData() {
     this.tableData = this.storeData.fileContains;
-    this.tableRouter = [
-      { id: this.storeData.id, folder: 'root' }
-    ];
+    this.storeData.fileName = 'root';
+    this.tableRouter.push(this.storeData);
     this.uploader.options.headers = [
       { name: 'Id', value: localStorage.getItem('Id') },
       { name: 'rootId', value: this.tableRouter.slice(-1)[0].id },

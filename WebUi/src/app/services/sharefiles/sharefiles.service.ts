@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-22 19:14:26
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 18:22:01
+ * @LastEditTime: 2020-04-04 18:58:31
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -32,7 +32,7 @@ export class SharefilesService {
     return this.http.post(this.baseUrl + ShareFileApi.ShareFile, data).pipe();
   }
 
-  shareFolder(data: ShareFolder) {
+  shareFolder(data: ShareFile) {
     return this.http.post(this.baseUrl + ShareFileApi.ShareFolder, data).pipe();
   }
 
