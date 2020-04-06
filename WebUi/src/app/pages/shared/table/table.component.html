@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-03 02:09:54
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-05 19:21:07
+ * @LastEditTime: 2020-04-06 15:24:46
  * @Description:
  -->
 
@@ -56,4 +56,10 @@
       </tr>
     </tbody>
   </table>
+  <ng-container *ngIf="usePage">
+    <ngb-pagination class="d-flex justify-content-center" [collectionSize]="pageConfig.total" [pageSize]="pageConfig.size"
+      [rotate]="true" [boundaryLinks]="true" [ellipses]="false" [(page)]="pageConfig.index" [maxSize]="pageConfig.maxSize"
+      (pageChange)="indexChange()">
+    </ngb-pagination>
+  </ng-container>
 </div>

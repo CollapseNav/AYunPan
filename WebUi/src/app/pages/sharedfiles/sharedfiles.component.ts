@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-06 19:23:19
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-26 02:21:37
+ * @LastEditTime: 2020-04-06 16:40:40
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -274,19 +274,19 @@ export class SharedfilesComponent implements OnInit {
     this.folderList.push(this.storeData);
   }
   getShareData() {
-    this.share.getShareFiles(this.config).subscribe(result => {
-      this.config.total = result['max'];
-      const ls: UserFile[] = result['files'];
-      ls.forEach(item => {
-        this.shareFilesData.push(item);
-      })
-      this.config.maxIndex = this.shareFilesData.length / this.config.size;
-      if (this.shareFilesData.length % this.config.size > 0) {
-        this.config.maxIndex += 1;
-      }
-      this.config.dataBatch += 1;
-      const startindex = (this.config.index - 1) * this.config.size;
-      this.shareTableData = this.shareFilesData.slice(startindex, startindex + this.config.size);
-    })
+    // this.share.getShareFiles(this.config).subscribe(result => {
+    //   this.config.total = result['max'];
+    //   const ls: UserFile[] = result['files'];
+    //   ls.forEach(item => {
+    //     this.shareFilesData.push(item);
+    //   })
+    //   this.config.maxIndex = this.shareFilesData.length / this.config.size;
+    //   if (this.shareFilesData.length % this.config.size > 0) {
+    //     this.config.maxIndex += 1;
+    //   }
+    //   this.config.dataBatch += 1;
+    //   const startindex = (this.config.index - 1) * this.config.size;
+    //   this.shareTableData = this.shareFilesData.slice(startindex, startindex + this.config.size);
+    // })
   }
 }

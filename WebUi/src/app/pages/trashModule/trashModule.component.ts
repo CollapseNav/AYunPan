@@ -2,11 +2,11 @@
  * @Author: CollapseNav
  * @Date: 2020-04-05 19:23:20
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-05 19:29:04
+ * @LastEditTime: 2020-04-06 15:19:12
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
-import { FileConfig } from '../shared/filecom/filecom.component';
+import { FileConfig } from '../shared/filecom/fileconfig';
 
 @Component({
   selector: 'app-trashmodule',
@@ -28,7 +28,9 @@ export class TrashModuleComponent implements OnInit {
         { content: 'AddDate', per: '15%' },
         { content: 'Be', per: '15%' },
       ],
-      btnGroup: ['del', 'udel']
+      btnGroup: ['del', 'udel'],
+      usePage: false,
+      pageConfig: null
     }
   }
   constructor() { }
