@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-04 22:25:31
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-04 22:26:36
+ * @LastEditTime: 2020-04-05 19:20:49
  * @Description:
  */
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
@@ -18,12 +18,13 @@ export interface TheadItem {
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit {
   @Input() tableThead: TheadItem[];
   @Input() tableData: UserFile[];
   @Input() btnGroup: string[];
+
+  @Input() tableType: string;
 
   @Output() doubleClick = new EventEmitter<UserFile>();
 
@@ -38,6 +39,25 @@ export class TableComponent implements OnInit {
 
   check(value: boolean, modal: NgbActiveModal) {
     modal.close();
+  }
+
+  checkItem(file: UserFile) {
+    let result = false;
+    switch (this.tableType) {
+      case 'userfile': {
+        result = file.isDeleted === '0';
+        break;
+      }
+      case 'sharefile': {
+        result = (file.isDeleted === '0' && file.isShared === '1');
+        break;
+      }
+      case 'trashfile': {
+        result = file.isDeleted === '1';
+        break;
+      }
+    }
+    return result;
   }
 
   dbClick(item: UserFile) {

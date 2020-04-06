@@ -2,18 +2,18 @@
  * @Author: CollapseNav
  * @Date: 2020-04-03 02:09:54
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-05 13:02:40
+ * @LastEditTime: 2020-04-05 19:21:07
  * @Description:
  -->
 
- <div class="table-responsive-md">
+<div class="table-responsive-md">
   <table class="table">
     <thead class=" text-primary">
       <th *ngFor="let item of tableThead" scope="col" width="{{item.per}}">{{item.content}}</th>
     </thead>
-    <tbody *ngIf="tableData">
+    <tbody *ngIf="!!tableData">
       <tr *ngFor="let item of tableData" scope="row">
-        <ng-container *ngIf="item.isDeleted==='0'">
+        <ng-container *ngIf="checkItem(item)">
           <ng-container *ngIf="checkThead('Name')">
             <ng-container *ngIf="item.fileExt=='folder';else notFolder">
               <td style="-webkit-user-select:none;" #folder>

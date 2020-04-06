@@ -9,7 +9,6 @@ import { DeleteFile } from 'app/unit/deleteFile';
 @Component({
   selector: 'app-btnudel',
   templateUrl: './btnudel.component.html',
-  styleUrls: ['./btnudel.component.scss']
 })
 export class BtnudelComponent implements OnInit {
 

@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-04 18:46:43
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-04 18:59:55
+ * @LastEditTime: 2020-04-05 18:54:27
  * @Description:
  */
 import { Component, OnInit, Input } from '@angular/core';
@@ -14,7 +14,6 @@ import { ShareFile } from 'app/unit/shareFile';
 @Component({
   selector: 'app-btnshare',
   templateUrl: './btnshare.component.html',
-  styleUrls: ['./btnshare.component.scss']
 })
 export class BtnshareComponent implements OnInit {
 

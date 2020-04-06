@@ -1,0 +1,149 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-03-01 16:40:22
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-05 19:04:24
+ * @Description:
+ -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <ul ngbNav #nav="ngbNav" class="card-header nav-pills nav-fill">
+        <li [ngbNavItem]="1">
+          <a ngbNavLink class="btn btn-info btn-round">Private Share</a>
+          <ng-template ngbNavContent>
+            <!-- <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <ng-container *ngIf="tableRouter.length>0;else emptyRouter">
+                  <li class="breadcrumb-item" *ngFor="let item of tableRouter">
+                    <a href="javascript:void(0)" (click)="turnBackTo(item.id)">{{item.folder}}</a>
+                  </li>
+                </ng-container>
+                <ng-template #emptyRouter>
+                  <li class="breadcrumb-item">
+                    <a href="javascript:void(0)">Empty</a>
+                  </li>
+                </ng-template>
+              </ol>
+            </nav>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="input-group no-border">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="nc-icon nc-zoom-split " style="cursor: pointer;" (click)="searchFile(searchvalue)"></i>
+                    </div>
+                  </div>
+                  <input type="text" class="form-control" (keyup.enter)="searchWaitEnter(searchvalue.value)"
+                    #searchvalue />
+                  <div class="input-group-append no-border">
+                    <div class="input-group-text no-border">
+                      <i class="nc-icon nc-simple-remove " style="cursor: pointer;"
+                        (click)="clearSearch(searchvalue)"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive-md">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th *ngFor="let item of tableThead" scope="col" width="{{item.per}}">{{item.content}}</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of tableData" scope="row">
+
+                    <ng-container *ngIf="item.isShared==='1'&&item.isDeleted==='0'">
+                      <ng-container *ngIf="item.fileExt=='folder';else notFolder">
+                        <td style="-webkit-user-select:none;" #folder>
+                          <span class="h6" style="cursor: pointer;" (dblclick)="onDbClick(item.id)">
+                            {{item.fileName}}
+                          </span>
+                        </td>
+                      </ng-container>
+                      <ng-template #notFolder>
+                        <td style="-webkit-user-select:none;">{{item.fileName}}</td>
+                      </ng-template>
+                      <td>{{item.fileExt}}</td>
+                      <td>{{item.fileSize}}</td>
+                      <td>{{item.addDate}}</td>
+                      <td>
+                        <button class="btn  btn-round btn-danger btn-icon " (click)="onBe(del,item)" ngbTooltip="Delete"
+                          triggers="hover">
+                          <i class="nc-icon nc-simple-remove"></i>
+                        </button>
+                        <button class="btn  btn-round btn-primary btn-icon " (click)="downloadFile(item.id)"
+                          ngbTooltip="Download" triggers="hover">
+                          <i class="nc-icon nc-cloud-download-93"></i>
+                        </button>
+                        <button class="btn  btn-round btn-primary btn-icon " (click)="onBe(unshare,item)"
+                          ngbTooltip="UnShare" triggers="hover">
+                          <i class="nc-icon nc-refresh-69"></i>
+                        </button>
+                      </td>
+                    </ng-container>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div> -->
+            <app-filecom [mainConfig]="privateConfig"></app-filecom>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="2">
+          <a ngbNavLink class="btn btn-info btn-round">Public Share</a>
+          <ng-template ngbNavContent>
+            <div class="table-responsive-md">
+              <!-- <table class="table">
+                <thead class=" text-primary">
+                  <th *ngFor="let item of tableThead" scope="col" width="{{item.per}}">{{item.content}}</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of shareTableData" scope="row">
+
+                    <ng-container *ngIf="item.isShared==='1'&&item.isDeleted==='0'">
+                      <ng-container *ngIf="item.fileExt=='folder';else notFolder">
+                        <td style="-webkit-user-select:none;" #folder>
+                          <span class="h6" style="cursor: pointer;" (dblclick)="onDbClick(item.id)">
+                            {{item.fileName}}
+                          </span>
+                        </td>
+                      </ng-container>
+                      <ng-template #notFolder>
+                        <td style="-webkit-user-select:none;">{{item.fileName}}</td>
+                      </ng-template>
+                      <td>{{item.fileExt}}</td>
+                      <td>{{item.fileSize}}</td>
+                      <td>{{item.addDate}}</td>
+                      <td>
+                        <button class="btn  btn-round btn-primary btn-icon " (click)="downloadFile(item.id)"
+                          ngbTooltip="Download" triggers="hover">
+                          <i class="nc-icon nc-cloud-download-93"></i>
+                        </button>
+                        <button class="btn  btn-round btn-primary btn-icon " (click)="onBe(addtomyfile,item)"
+                          ngbTooltip="Add To My File" triggers="hover">
+                          <i class="nc-icon nc-simple-add"></i>
+                        </button>
+                        <button class="btn  btn-round btn-primary btn-icon " (click)="addToMyFile(item)"
+                          ngbTooltip="UnShare" triggers="hover">
+                          <i class="nc-icon nc-simple-add"></i>
+                        </button>
+                      </td>
+                    </ng-container>
+
+                  </tr>
+                </tbody>
+              </table> -->
+              <!-- <ngb-pagination class="d-flex justify-content-center" [collectionSize]="config.total"
+                [pageSize]="config.size" [rotate]="true" [boundaryLinks]="true" [ellipses]="false"
+                [(page)]="config.index" [maxSize]="config.maxSize" (pageChange)="indexChange()">
+              </ngb-pagination> -->
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav" class="card-body"></div>
+    </div>
+
+  </div>
+</div>

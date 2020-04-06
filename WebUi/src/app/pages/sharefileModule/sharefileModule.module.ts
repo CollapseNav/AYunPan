@@ -1,25 +1,19 @@
 /*
  * @Author: CollapseNav
- * @Date: 2020-04-02 22:30:37
+ * @Date: 2020-04-05 18:52:29
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-05 18:58:19
+ * @LastEditTime: 2020-04-05 18:59:46
  * @Description:
  */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   imports: [
     CommonModule,
     NgbModule,
-    FileUploadModule,
   ],
-  declarations: [
-  ],
+  declarations: []
 })
-export class UserfileModuleModule {
-}
+export class SharefileModuleModule { }

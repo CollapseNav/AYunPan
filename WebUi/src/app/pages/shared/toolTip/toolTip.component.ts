@@ -12,7 +12,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-tooltip',
   templateUrl: './toolTip.component.html',
-  styleUrls: ['./toolTip.component.scss']
 })
 export class ToolTipComponent implements OnInit {
 

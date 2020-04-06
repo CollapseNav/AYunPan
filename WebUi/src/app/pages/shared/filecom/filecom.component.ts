@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-04 22:15:13
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-05 12:57:32
+ * @LastEditTime: 2020-04-05 19:23:06
  * @Description:
  */
 import { Component, OnInit, Input } from '@angular/core';
@@ -26,7 +26,6 @@ export interface FileConfig {
 @Component({
   selector: 'app-filecom',
   templateUrl: './filecom.component.html',
-  styleUrls: ['./filecom.component.scss']
 })
 export class FilecomComponent implements OnInit {
 
@@ -47,10 +46,7 @@ export class FilecomComponent implements OnInit {
   }
 
   // 双击文件夹事件
-  onDbClick(item: UserFile) {// 找到对应的文件夹并且添加到folderlist中
-    // const folder = this.tableData.filter(val => val.id === id)[0];
-    // this.addToFolderList(folder);
-    // this.tableRouter.push(folder);
+  onDbClick(item: UserFile) {
     this.tableData = item.fileContains;
   }
 

@@ -15,7 +15,6 @@ import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-btndownload',
   templateUrl: './btndownload.component.html',
-  styleUrls: ['./btndownload.component.scss']
 })
 export class BtndownloadComponent implements OnInit {
   @Input() item: UserFile;

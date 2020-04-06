@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-03 21:48:02
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-04 19:44:53
+ * @LastEditTime: 2020-04-05 18:54:17
  * @Description:
  */
 import { Component, OnInit, Input } from '@angular/core';
@@ -14,7 +14,6 @@ import { DeleteFile } from 'app/unit/deleteFile';
 @Component({
   selector: 'app-btndel',
   templateUrl: './btndel.component.html',
-  styleUrls: ['./btndel.component.scss']
 })
 export class BtndelComponent implements OnInit {
 

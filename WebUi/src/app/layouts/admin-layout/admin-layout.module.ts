@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 15:57:08
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-05 12:58:52
+ * @LastEditTime: 2020-04-05 19:24:36
  * @Description:
  */
 import { NgModule } from '@angular/core';
@@ -34,6 +34,10 @@ import { TableComponent } from 'app/pages/shared/table/table.component';
 import { CheckmodalComponent } from 'app/pages/shared/modal/checkmodal/checkmodal.component';
 import { UserfileModuleModule } from 'app/pages/userfileModule/userfileModule.module';
 import { UserfileModuleComponent } from 'app/pages/userfileModule/userfileModule.component';
+import { SharefileModuleComponent } from 'app/pages/sharefileModule/sharefileModule.component';
+import { SharefileModuleModule } from 'app/pages/sharefileModule/sharefileModule.module';
+import { TrashModuleComponent } from 'app/pages/trashModule/trashModule.component';
+import { TrashModuleModule } from 'app/pages/trashModule/trashModule.module';
 
 @NgModule({
   imports: [
@@ -44,16 +48,22 @@ import { UserfileModuleComponent } from 'app/pages/userfileModule/userfileModule
     FileUploadModule,
     AdminRoutingModule,
     UserfileModuleModule,
+    SharefileModuleModule,
+    TrashModuleModule,
   ],
   declarations: [
     InfoboardComponent,
     UserfilesComponent,
     SharedfilesComponent,
     TrashComponent,
+
+    UserfileModuleComponent,
+    SharefileModuleComponent,
+    TrashModuleComponent,
+
     FilecomComponent,
     TableComponent,
     ToolTipComponent,
-    UserfileModuleComponent,
 
     UploadmodalComponent,
     NewfoldermodalComponent,

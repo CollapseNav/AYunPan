@@ -13,7 +13,6 @@ import { UserFile } from 'app/unit/userFiles';
 @Component({
   selector: 'app-uploadmodal',
   templateUrl: './uploadmodal.component.html',
-  styleUrls: ['./uploadmodal.component.scss']
 })
 export class UploadmodalComponent implements OnInit {
   uploader: FileUploader;

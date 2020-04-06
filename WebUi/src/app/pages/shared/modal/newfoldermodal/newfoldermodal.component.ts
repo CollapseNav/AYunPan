@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-03 00:05:34
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-03 00:54:14
+ * @LastEditTime: 2020-04-05 18:53:59
  * @Description:
  */
 import { Component, OnInit, Input } from '@angular/core';
@@ -13,7 +13,6 @@ import { UserFile } from 'app/unit/userFiles';
 @Component({
   selector: 'app-newfoldermodal',
   templateUrl: './newfoldermodal.component.html',
-  styleUrls: ['./newfoldermodal.component.scss']
 })
 export class NewfoldermodalComponent implements OnInit {
   @Input() rootFolder: UserFile;

@@ -11,7 +11,6 @@ import { UserFile } from 'app/unit/userFiles';
 @Component({
   selector: 'app-checkmodal',
   templateUrl: './checkmodal.component.html',
-  styleUrls: ['./checkmodal.component.scss']
 })
 export class CheckmodalComponent implements OnInit {
 
