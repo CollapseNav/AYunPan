@@ -13,7 +13,7 @@ import { ShareFolder } from 'app/unit/shareFolder';
 import { UserFile } from 'app/unit/userFiles';
 import { TableConfig } from 'app/pages/sharedfiles/sharedfiles.component';
 import { AddShareFile } from 'app/unit/addShareFile';
-import { PageConfig } from 'app/pages/shared/filecom/fileconfig';
+import { PageConfig } from 'app/shared/filecom/fileconfig';
 
 @Injectable({
   providedIn: 'root'

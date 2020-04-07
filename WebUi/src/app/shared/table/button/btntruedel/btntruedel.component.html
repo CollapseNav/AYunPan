@@ -1,0 +1,14 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-04-03 21:48:02
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-07 20:33:12
+ * @Description:
+ -->
+ <button class="btn btn-round btn-danger btn-icon" (click)="onBe(del)" ngbTooltip="Delete" triggers="hover">
+  <i class="nc-icon nc-simple-remove"></i>
+</button>
+
+<ng-template #del let-del>
+  <app-checkmodal [file]="item" (check)="check($event,del)"></app-checkmodal>
+</ng-template>

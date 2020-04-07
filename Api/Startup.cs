@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:47:05
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 23:27:50
+ * @LastEditTime: 2020-04-07 19:08:40
  * @Description: 
  */
 using System.Text;
@@ -19,76 +19,80 @@ using Microsoft.IdentityModel.Tokens;
 using Repository;
 using Repository.Interface;
 
-namespace Api {
-    public class Startup {
-        public Startup (IConfiguration configuration) {
+namespace Api
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices (IServiceCollection services) {
-            services.AddAuthentication (options => {
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddAuthentication(options =>
+            {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer (options => {
+            }).AddJwtBearer(options =>
+            {
                 options.SaveToken = true;
                 options.RequireHttpsMetadata = false;
 
-                options.TokenValidationParameters = new TokenValidationParameters () {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
                     ValidateIssuer = true,
                     ValidIssuer = "Dotnet+Angular",
                     ValidateAudience = true,
                     ValidAudience = "AYunPan",
-                    IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes ("It's a .net core spa test."))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("It's a .net core spa test."))
                 };
             });
 
-            services.AddCors (options => {
-                options.AddPolicy ("Base",
-                    builder => builder.WithOrigins ("http://localhost:4200")
-                    .AllowAnyHeader ().AllowAnyMethod ().AllowCredentials ());
-                options.AddPolicy ("File",
-                    builder => builder.WithOrigins ("http://localhost:4200")
-                    .AllowAnyHeader ().AllowAnyMethod ().AllowCredentials ().WithExposedHeaders ("FileName"));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Base",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+                options.AddPolicy("File",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithExposedHeaders("FileName"));
+            });
+            services.AddControllers().AddControllersAsServices();
+            services.AddDbContext<BaseContext>(options =>
+            {
+                options.UseSqlite(Configuration.GetConnectionString("SQlite"), m => m.MigrationsAssembly("Api"));
             });
 
-            services.AddControllers ().AddControllersAsServices ();
-
-            services.AddDbContext<BaseContext> (options => {
-                options.UseSqlite (Configuration.GetConnectionString ("SQlite"), m => m.MigrationsAssembly ("Api"));
-            });
-
-            services.AddScoped (typeof (IRepository<>), typeof (BaseRepository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
         }
-        public void ConfigureContainer (ContainerBuilder builder) {
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
             // Register your own things directly with Autofac, like:
-            builder.RegisterModule (new AutofacModule ());
+            builder.RegisterModule(new AutofacModule());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
-            if (env.IsDevelopment ()) {
-                app.UseDeveloperExceptionPage ();
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles ();
+            app.UseStaticFiles();
+            app.UseAuthentication();
+            app.UseRouting();
+            app.UseCors("Base");
+            app.UseAuthorization();
+            app.UseAuthorization();
 
-            app.UseAuthentication ();
-
-            // app.UseHttpsRedirection ();
-
-            app.UseRouting ();
-
-            app.UseCors ("Base");
-
-            app.UseAuthorization ();
-
-            app.UseAuthorization ();
-
-            app.UseEndpoints (endpoints => {
-                endpoints.MapControllers ();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
             });
         }
     }
