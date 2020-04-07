@@ -7,8 +7,8 @@
  */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { SignComponent } from './sign/sign.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { SignComponent } from './pages/sign/sign.component';
 import { SignGuard } from './guards/sign.guard';
 
 const appRoutes: Routes = [

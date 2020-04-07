@@ -2,15 +2,14 @@
  * @Author: CollapseNav
  * @Date: 2020-04-05 18:52:29
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-06 17:32:12
+ * @LastEditTime: 2020-04-07 20:31:06
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
-import { FileConfig, PageConfig } from '../shared/filecom/fileconfig';
+import { FileConfig, PageConfig } from '../../shared/filecom/fileconfig';
 import { SharefilesService } from 'app/services/sharefiles/sharefiles.service';
 import { Observable } from 'rxjs';
 import { UserFile } from 'app/unit/userFiles';
-import { TableConfig } from '../sharedfiles/sharedfiles.component';
 
 @Component({
   selector: 'app-sharefilemodule',

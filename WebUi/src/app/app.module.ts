@@ -12,10 +12,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app.component';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { SignComponent } from './sign/sign.component';
+import { SignComponent } from './pages/sign/sign.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app.routing.module';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AdminLayoutModule } from './layouts/admin-layout/admin-layout.module';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';

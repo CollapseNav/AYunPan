@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-02-17 17:22:43
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-26 02:26:01
+ * @LastEditTime: 2020-04-07 19:01:48
  * @Description:
  -->
 
@@ -19,7 +19,7 @@
 
 ### 正在做的
 
-长草
+写注释
 
 ### 功能
 
@@ -70,9 +70,9 @@
   - [ ] 根据文件类型排序
   - [ ] 根据添加时间排序(这个大概是默认的排序方式)
 - [ ] 优化后端的实现
-  - [ ] 任重而道远......
+  - [X] 任重而道远......
 - [ ] 优化前端的实现
-  - [ ] 做点 component 还有 directive
+  - [X] 做点 component 还有 directive
 
 ## Init
 

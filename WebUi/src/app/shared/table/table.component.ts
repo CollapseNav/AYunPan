@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-04 22:25:31
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-07 14:40:36
+ * @LastEditTime: 2020-04-07 20:52:15
  * @Description:
  */
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
@@ -38,6 +38,11 @@ export class TableComponent implements OnInit {
 
   check(value: boolean, modal: NgbActiveModal) {
     modal.close();
+  }
+
+  trueDelete(file: UserFile) {
+    const index = this.tableData.findIndex(item => item.id === file.id);
+    this.tableData.splice(index, 1);
   }
 
   checkItem(file: UserFile) {

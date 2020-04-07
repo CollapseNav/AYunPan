@@ -2,14 +2,11 @@
  * @Author: CollapseNav
  * @Date: 2020-04-02 22:30:37
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-06 15:51:59
+ * @LastEditTime: 2020-04-07 21:00:19
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
-import { UserFile } from 'app/unit/userFiles';
-import { UserFilesService } from 'app/services/userfiles/userFiles.service';
-import { saveAs } from 'file-saver';
-import { FileConfig } from '../shared/filecom/fileconfig';
+import { FileConfig } from '../../shared/filecom/fileconfig';
 
 @Component({
   selector: 'app-userfile',

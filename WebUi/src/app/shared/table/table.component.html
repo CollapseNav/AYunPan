@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-03 02:09:54
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-06 15:24:46
+ * @LastEditTime: 2020-04-07 20:54:07
  * @Description:
  -->
 
@@ -47,6 +47,9 @@
                 <ng-container *ngSwitchCase="'ushare'">
                   <app-btnushare [item]="item"></app-btnushare>
                 </ng-container>
+                <ng-container *ngSwitchCase="'truedel'">
+                  <app-btntruedel [item]="item" (truedel)="trueDelete($event)"></app-btntruedel>
+                </ng-container>
               </ng-container>
             </ng-container>
 
@@ -57,9 +60,9 @@
     </tbody>
   </table>
   <ng-container *ngIf="usePage">
-    <ngb-pagination class="d-flex justify-content-center" [collectionSize]="pageConfig.total" [pageSize]="pageConfig.size"
-      [rotate]="true" [boundaryLinks]="true" [ellipses]="false" [(page)]="pageConfig.index" [maxSize]="pageConfig.maxSize"
-      (pageChange)="indexChange()">
+    <ngb-pagination class="d-flex justify-content-center" [collectionSize]="pageConfig.total"
+      [pageSize]="pageConfig.size" [rotate]="true" [boundaryLinks]="true" [ellipses]="false" [(page)]="pageConfig.index"
+      [maxSize]="pageConfig.maxSize" (pageChange)="indexChange()">
     </ngb-pagination>
   </ng-container>
 </div>
