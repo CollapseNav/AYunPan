@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-04 22:25:31
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-06 17:15:03
+ * @LastEditTime: 2020-04-07 14:40:36
  * @Description:
  */
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
@@ -10,7 +10,6 @@ import { UserFile } from 'app/unit/userFiles';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 import { TheadItem, PageConfig } from '../filecom/fileconfig';
-
 
 @Component({
   selector: 'app-table',

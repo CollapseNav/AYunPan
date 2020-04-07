@@ -2,10 +2,10 @@
  * @Author: CollapseNav
  * @Date: 2020-04-04 22:15:13
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-06 17:30:12
+ * @LastEditTime: 2020-04-06 21:07:38
  * @Description:
  */
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { UserFile } from 'app/unit/userFiles';
 import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 import { FileConfig } from './fileconfig';
@@ -15,7 +15,7 @@ import { SharefilesService } from 'app/services/sharefiles/sharefiles.service';
   selector: 'app-filecom',
   templateUrl: './filecom.component.html',
 })
-export class FilecomComponent implements OnInit {
+export class FilecomComponent implements OnInit, OnDestroy {
 
   @Input() mainConfig: FileConfig;
   // 当前显示的table中的数据，基本上是取自上一个文件夹的filecontains
@@ -44,6 +44,21 @@ export class FilecomComponent implements OnInit {
   // 面包屑导航
   turnBackTo(item: UserFile) {
     this.tableData = item.fileContains;
+  }
+
+  ngOnDestroy() {
+    if (this.mainConfig.body.usePage) {
+      this.mainConfig.body.pageConfig = {
+        total: 0,
+        index: 1,
+        size: 10,
+        maxSize: 5,
+        maxIndex: 1,
+        asc: true,
+        batch: 1,
+        pageData: this.mainConfig.body.pageConfig.pageData
+      }
+    }
   }
 
   ngOnInit() {
