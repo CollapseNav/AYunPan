@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:47:05
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-07 19:08:40
+ * @LastEditTime: 2020-04-08 18:56:22
  * @Description: 
  */
 using System.Text;
@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Repository;
 using Repository.Interface;
@@ -67,6 +68,8 @@ namespace Api
                 options.UseSqlite(Configuration.GetConnectionString("SQlite"), m => m.MigrationsAssembly("Api"));
             });
 
+            services.AddSwaggerDocument();
+
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
         }
         public void ConfigureContainer(ContainerBuilder builder)
@@ -89,6 +92,8 @@ namespace Api
             app.UseCors("Base");
             app.UseAuthorization();
             app.UseAuthorization();
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseEndpoints(endpoints =>
             {

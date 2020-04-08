@@ -28,7 +28,11 @@ namespace Api.Controllers
             config = builder.Build();
             DirectoryPath = Directory.GetCurrentDirectory() + config["FileStore"];
         }
-
+        /// <summary>
+        /// 注册
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [HttpPost, Route("[action]")]
         public IActionResult SignUp(ReqSignData data)
         {
@@ -53,7 +57,11 @@ namespace Api.Controllers
             Directory.CreateDirectory(DirectoryPath + item.FolderPath);
             return Ok(true);
         }
-
+        /// <summary>
+        /// 登陆
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [HttpPost, Route("[action]")]
         public IActionResult SignIn(ReqSignData data)
         {

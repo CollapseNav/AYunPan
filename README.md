@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-02-17 17:22:43
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-07 19:01:48
+ * @LastEditTime: 2020-04-08 19:09:03
  * @Description:
  -->
 
@@ -28,6 +28,7 @@
   - [X] 登陆注册的翻转效果
   - [X] token的发放
   - [X] 使用token验证
+- [X] swagger
 - [X] Update用户数据
   - [ ] 同时 updata 一些文件相关的数据
 - [X] 文件目录获取
@@ -44,6 +45,7 @@
   - [X] 单文件上传
   - [X] 多文件上传
   - [ ] 文件夹上传
+  - [ ] 上传后修改容量
 - [X] 文件下载
   - [X] 单文件下载
   - [ ] 多文件下载
