@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-05 18:52:29
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-07 20:31:06
+ * @LastEditTime: 2020-04-08 15:20:24
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -52,7 +52,7 @@ export class SharefileModuleComponent implements OnInit {
         { content: 'AddDate', per: '15%' },
         { content: 'Be', per: '15%' },
       ],
-      btnGroup: ['del', 'download'],
+      btnGroup: ['del', 'download', 'addfile'],
       usePage: true,
       pageConfig: {
         total: 0,
@@ -62,16 +62,16 @@ export class SharefileModuleComponent implements OnInit {
         maxIndex: 1,
         asc: true,
         batch: 1,
-        pageData: this.test
+        pageData: this.getShareData
       }
     }
   }
 
-  test(config: PageConfig, service: SharefilesService): Observable<UserFile[]> {
+  getShareData(config: PageConfig, service: SharefilesService): Observable<UserFile[]> {
     return service.getShareFiles(config);
   }
 
-  constructor(private share: SharefilesService) { }
+  constructor() { }
 
   ngOnInit() {
   }

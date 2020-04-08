@@ -1,0 +1,14 @@
+<!--
+ * @Author: CollapseNav
+ * @Date: 2020-04-08 14:55:21
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-08 14:58:59
+ * @Description:
+ -->
+<button class="btn  btn-round btn-primary btn-icon " (click)="onBe(addfile)" ngbTooltip="Add To My File"
+  triggers="hover">
+  <i class="nc-icon nc-simple-add"></i>
+</button>
+<ng-template #addfile let-addfile>
+  <app-checkmodal [file]="item" (check)="check($event,addfile)"></app-checkmodal>
+</ng-template>

@@ -2,13 +2,12 @@
  * @Author: CollapseNav
  * @Date: 2020-04-07 20:32:44
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-07 20:55:42
+ * @LastEditTime: 2020-04-08 15:22:58
  * @Description:
  */
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FileTypes, UserFile } from 'app/unit/userFiles';
-import { DeleteFile } from 'app/unit/deleteFile';
 import { TrashService } from 'app/services/trash/trash.service';
 
 @Component({

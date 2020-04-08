@@ -2,11 +2,11 @@
  * @Author: CollapseNav
  * @Date: 2020-04-04 22:15:13
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-06 21:07:38
+ * @LastEditTime: 2020-04-08 15:34:31
  * @Description:
  */
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { UserFile } from 'app/unit/userFiles';
+import { UserFile, FileTypes } from 'app/unit/userFiles';
 import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 import { FileConfig } from './fileconfig';
 import { SharefilesService } from 'app/services/sharefiles/sharefiles.service';
@@ -59,6 +59,55 @@ export class FilecomComponent implements OnInit, OnDestroy {
         pageData: this.mainConfig.body.pageConfig.pageData
       }
     }
+    console.log('destory')
+  }
+
+  initShareData(files: UserFile[]) {
+    const sharedlist: UserFile[] = [];
+    if (files == null) {
+      return null;
+    }
+    files.filter(item => item.isShared === '1' && item.isDeleted === '0').forEach(item => {
+      if (item.fileTypes === FileTypes.folder) {
+        item.fileContains = this.initShareData(item.fileContains);
+      }
+      sharedlist.push(item);
+    });
+    files.filter(item => item.isShared === '0' && item.isDeleted === '0' && item.fileTypes === FileTypes.folder)
+      .forEach(item => {
+        if (item.fileContains !== null) {
+          this.initShareData(item.fileContains).forEach(f => {
+            sharedlist.push(f);
+          })
+        }
+      })
+    return sharedlist;
+  }
+
+  initTrashData(files: UserFile[]) {
+    const trashlist: UserFile[] = [];
+    if (files == null) {
+      return null;
+    }
+    files.filter(item => item.isDeleted === '1').forEach(item => {
+      if (item.fileTypes === FileTypes.folder) {
+        item.fileContains = this.initTrashData(item.fileContains);
+      }
+      trashlist.push(item);
+    });
+    files.filter(item => item.isDeleted === '0' && item.fileTypes === FileTypes.folder)
+      .forEach(item => {
+        if (item.fileContains !== null) {
+          this.initTrashData(item.fileContains).forEach(f => {
+            trashlist.push(f);
+          })
+        }
+      })
+    return trashlist;
+  }
+
+  addToMyFile(file: UserFile) {
+    this.fileService.files.fileContains.push(file);
   }
 
   ngOnInit() {
@@ -78,8 +127,34 @@ export class FilecomComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  initStoreData() {
+    // 拿到所有的文件目录数据
+    if (this.fileService.getFiles() == null) {
+      this.fileService.getUserFiles().subscribe(item => {
+        this.storeData = item;
+        this.fileService.files = this.storeData;
+      });
+    } else {// 做这个else主要是为了减少请求的次数，把事情都在客户端做掉
+      this.storeData = this.fileService.getFiles();
+    }
+  }
+
   initTableData() {
-    this.tableData = this.storeData.fileContains;
+    switch (this.mainConfig.body.usd) {
+      case 'userfile': {
+        this.tableData = this.storeData.fileContains;
+        break;
+      }
+      case 'sharefile': {
+        this.tableData = this.initShareData(this.storeData.fileContains);
+        break;
+      }
+      case 'trashfile': {
+        this.tableData = this.initTrashData(this.storeData.fileContains);
+        break;
+      }
+    }
     this.storeData.fileName = 'root';
     this.tableRouter.push(this.storeData);
   }

@@ -1,8 +1,13 @@
+/*
+ * @Author: CollapseNav
+ * @Date: 2020-04-04 22:25:39
+ * @LastEditors: CollapseNav
+ * @LastEditTime: 2020-04-08 14:53:00
+ * @Description:
+ */
 import { Component, OnInit, Input } from '@angular/core';
-import { SharefilesService } from 'app/services/sharefiles/sharefiles.service';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FileTypes, UserFile } from 'app/unit/userFiles';
-import { ShareFile } from 'app/unit/shareFile';
 import { TrashService } from 'app/services/trash/trash.service';
 import { DeleteFile } from 'app/unit/deleteFile';
 
@@ -28,7 +33,7 @@ export class BtnudelComponent implements OnInit {
       } else {
         this.trash.deleteFile(new DeleteFile(this.item.id, 0)).subscribe(result => {
           if (result) {
-            this.item.isShared = '0';
+            this.item.isDeleted = '0';
           }
         })
       }

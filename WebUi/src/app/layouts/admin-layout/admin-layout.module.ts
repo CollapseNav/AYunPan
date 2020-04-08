@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 15:57:08
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-07 20:33:26
+ * @LastEditTime: 2020-04-08 14:55:51
  * @Description:
  */
 import { NgModule } from '@angular/core';
@@ -39,6 +39,7 @@ import { BtndownloadComponent } from 'app/shared/table/button/btndownload/btndow
 import { BtnudelComponent } from 'app/shared/table/button/btnudel/btnudel.component';
 import { BtnushareComponent } from 'app/shared/table/button/btnushare/btnushare.component';
 import { BtntruedelComponent } from 'app/shared/table/button/btntruedel/btntruedel.component';
+import { BtnaddfileComponent } from 'app/shared/table/button/btnaddfile/btnaddfile.component';
 
 @NgModule({
   imports: [
@@ -77,6 +78,7 @@ import { BtntruedelComponent } from 'app/shared/table/button/btntruedel/btntrued
     BtnudelComponent,
     BtnushareComponent,
     BtntruedelComponent,
+    BtnaddfileComponent,
   ],
   providers: [
     MainGuard, {

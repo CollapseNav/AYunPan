@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-03 15:05:12
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-06 16:49:49
+ * @LastEditTime: 2020-04-08 15:33:31
  * @Description:
  -->
 <div class="card-header">
@@ -15,6 +15,6 @@
   <app-table [tableData]="tableData" [tableThead]="mainConfig.body.tableThead" [btnGroup]="mainConfig.body.btnGroup"
     [usePage]="mainConfig.body.usePage" [pageConfig]="mainConfig.body.pageConfig" [tableType]="mainConfig.body.usd"
     (doubleClick)="onDbClick($event);tooltip.addNewRouterPoint($event)" (getPageData)="indexChange()"
-    (getBatchData)="initPageDate()">
+    (getBatchData)="initPageDate()" (addToMyFile)="addToMyFile($event)">
   </app-table>
 </div>

@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-01-08 16:50:42
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-24 19:52:45
+ * @LastEditTime: 2020-04-08 15:18:33
  * @Description:
  */
 import { Injectable } from '@angular/core';
@@ -12,8 +12,6 @@ import { SignService } from 'app/services/sign/sign.service';
 
 @Injectable({ providedIn: 'root' })
 export class TokenInterceptor implements HttpInterceptor {
-  private isRefreshing = false;
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(public signService: SignService) { }
 

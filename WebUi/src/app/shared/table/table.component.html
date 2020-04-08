@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-03 02:09:54
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-07 20:54:07
+ * @LastEditTime: 2020-04-08 15:06:32
  * @Description:
  -->
 
@@ -49,6 +49,9 @@
                 </ng-container>
                 <ng-container *ngSwitchCase="'truedel'">
                   <app-btntruedel [item]="item" (truedel)="trueDelete($event)"></app-btntruedel>
+                </ng-container>
+                <ng-container *ngSwitchCase="'addfile'">
+                  <app-btnaddfile [item]="item" (addToMyFile)="addFile($event)"></app-btnaddfile>
                 </ng-container>
               </ng-container>
             </ng-container>

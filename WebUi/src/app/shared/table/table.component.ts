@@ -2,13 +2,12 @@
  * @Author: CollapseNav
  * @Date: 2020-04-04 22:25:31
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-07 20:52:15
+ * @LastEditTime: 2020-04-08 15:33:40
  * @Description:
  */
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UserFile } from 'app/unit/userFiles';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserFilesService } from 'app/services/userfiles/userFiles.service';
 import { TheadItem, PageConfig } from '../filecom/fileconfig';
 
 @Component({
@@ -26,23 +25,23 @@ export class TableComponent implements OnInit {
   @Output() doubleClick = new EventEmitter<UserFile>();
   @Output() getPageData = new EventEmitter();
   @Output() getBatchData = new EventEmitter();
+  @Output() addToMyFile = new EventEmitter<UserFile>();
 
   checkThead(value: string) {
     return this.tableThead.findIndex(item => item.content === value) >= 0;
   }
 
   // 就打开modal用的
-  onBe(modal: NgbModal, item: UserFile) {
+  onBe(modal: NgbModal) {
     this.modalService.open(modal, { centered: true });
   }
 
-  check(value: boolean, modal: NgbActiveModal) {
+  check(modal: NgbActiveModal) {
     modal.close();
   }
 
   trueDelete(file: UserFile) {
-    const index = this.tableData.findIndex(item => item.id === file.id);
-    this.tableData.splice(index, 1);
+    file.isDeleted = '-1';
   }
 
   checkItem(file: UserFile) {
@@ -64,6 +63,10 @@ export class TableComponent implements OnInit {
     return result;
   }
 
+  addFile(file: UserFile) {
+    this.addToMyFile.emit(file);
+  }
+
   dbClick(item: UserFile) {
     this.doubleClick.emit(item);
   }
@@ -80,8 +83,7 @@ export class TableComponent implements OnInit {
   }
 
   constructor(
-    private modalService: NgbModal,
-    private fileService: UserFilesService, ) { }
+    private modalService: NgbModal, ) { }
 
   ngOnInit() {
   }
