@@ -2,16 +2,14 @@
  * @Author: CollapseNav
  * @Date: 2020-03-22 19:14:26
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-06 16:27:52
+ * @LastEditTime: 2020-05-06 12:02:19
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ShareFile } from 'app/unit/shareFile';
 import { ShareFileApi } from './sharefileApi';
-import { ShareFolder } from 'app/unit/shareFolder';
 import { UserFile } from 'app/unit/userFiles';
-import { TableConfig } from 'app/pages/sharedfiles/sharedfiles.component';
 import { AddShareFile } from 'app/unit/addShareFile';
 import { PageConfig } from 'app/shared/filecom/fileconfig';
 

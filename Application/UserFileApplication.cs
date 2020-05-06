@@ -7,25 +7,32 @@ using Application.RequestData;
 using Application.ResponseData;
 using Repository.Domain;
 using Repository.Interface;
-namespace Application {
-    public class UserFileApplication : BaseApplication<FileInfo> {
+namespace Application
+{
+    public class UserFileApplication : BaseApplication<FileInfo>
+    {
 
-        public UserFileApplication (IRepository<FileInfo> re) : base (re) { }
+        public UserFileApplication(IRepository<FileInfo> re) : base(re) { }
 
-        public void AddFile (FileInfo file) {
+        public void AddFile(FileInfo file)
+        {
             // 就……一个简单的 add 操作
             // 大概需要多做点什么事情
             // 但仔细想想现在还是不管了
-            rep.Add (file);
+            rep.Add(file);
         }
 
-        public FileInfo GetFile (IRequestFindData<FileInfo> data) => rep.FindSingle (data.GetWhereExpression ());
+        public FileInfo GetFile(IRequestFindData<FileInfo> data) => rep.FindSingle(data.GetWhereExpression());
 
-        public int CountFile (IRequestFindData<FileInfo> data) => rep.Count (data.GetWhereExpression ());
-        public bool DeleteFile (IRequestFindData<FileInfo> data) {
-            try {
-                rep.Delete (data.GetWhereExpression ());
-            } catch {
+        public int CountFile(IRequestFindData<FileInfo> data) => rep.Count(data.GetWhereExpression());
+        public bool DeleteFile(IRequestFindData<FileInfo> data)
+        {
+            try
+            {
+                rep.Delete(data.GetWhereExpression());
+            }
+            catch
+            {
                 return false;
             }
             return true;
@@ -34,19 +41,25 @@ namespace Application {
         /// <summary>
         /// 大概还需要多加点什么东西
         /// </summary>
-        public string UpdateFileInfo (IRequestEditData<FileInfo> data) {
-            try {
-                rep.Update (data.GetWhereExpression (), data.GetConvertExpressions ());
-            } catch (Exception ex) {
+        public string UpdateFileInfo(IRequestEditData<FileInfo> data)
+        {
+            try
+            {
+                rep.Update(data.GetWhereExpression(), data.GetConvertExpressions());
+            }
+            catch (Exception ex)
+            {
                 return ex.Message;
             }
             return "Success";
         }
-        public List<ResUserFiles> GetFilesWithoutFolder (IRequestFindPageData<FileInfo> data, out int total) {
-            List<ResUserFiles> list = new List<ResUserFiles> ();
-            var rawlist = rep.FindPage (out total, data.GetPageIndex (), data.GetPageSize (), data.GetIsAsc (), data.GetWhereExpression (), k => k.Id).ToList ();
-            foreach (var item in rawlist) {
-                list.Add (new ResUserFiles (item));
+        public List<ResUserFiles> GetFilesWithoutFolder(IRequestFindPageData<FileInfo> data, out int total)
+        {
+            List<ResUserFiles> list = new List<ResUserFiles>();
+            var rawlist = rep.FindPage(out total, data.GetPageIndex(), data.GetPageSize(), data.GetIsAsc(), data.GetWhereExpression(), k => k.Id).ToList();
+            foreach (var item in rawlist)
+            {
+                list.Add(new ResUserFiles(item));
             }
             return list;
         }
@@ -57,39 +70,45 @@ namespace Application {
         /// 性能大概很差
         /// 后续再来改进吧
         /// </summary>
-        public ResUserFiles GetFiles (IRequestFindData<FileInfo> data) {
+        public ResUserFiles GetFiles(IRequestFindData<FileInfo> data)
+        {
             // 首先获取该用户所有文件
-            var filelist = rep.FindAll (data.GetWhereExpression ()).ToList ();
+            var filelist = rep.FindAll(data.GetWhereExpression()).ToList();
             // 有关于目录结构，最重要的大概就是搞清楚每个文件的 "所属"
-            Dictionary<string, ResUserFiles> folderlist = new Dictionary<string, ResUserFiles> ();
+            Dictionary<string, ResUserFiles> folderlist = new Dictionary<string, ResUserFiles>();
             // 筛出所有的 "文件夹"
-            foreach (var item in filelist.Where (model => FileType.ValueMapToType (model.FileType) == EFileType.folder)) {
+            foreach (var item in filelist.Where(model => FileType.ValueMapToType(model.FileType) == EFileType.folder))
+            {
                 // 将文件夹的 path 作为 key ，该 key 与该文件夹下文件的 MapPath 相同
-                folderlist.Add (item.FilePath, new ResUserFiles (item));
+                folderlist.Add(item.FilePath, new ResUserFiles(item));
             }
 
             // 循环遍历所有的文件(非文件夹的那种)
-            foreach (var item in filelist.Where (model => FileType.ValueMapToType (model.FileType) != EFileType.folder)) {
-                if (folderlist[item.MapPath].FileContains == null) {
-                    folderlist[item.MapPath].FileContains = new List<ResUserFiles> ();
+            foreach (var item in filelist.Where(model => FileType.ValueMapToType(model.FileType) != EFileType.folder))
+            {
+                if (folderlist[item.MapPath].FileContains == null)
+                {
+                    folderlist[item.MapPath].FileContains = new List<ResUserFiles>();
                 }
                 // 直接使用文件的 MapPath 查找自己的所属文件夹
-                folderlist[item.MapPath].FileContains.Add (new ResUserFiles (item));
+                folderlist[item.MapPath].FileContains.Add(new ResUserFiles(item));
             }
             // 最终 "拼接" 所有文件夹
-            foreach (var item in folderlist) {
+            foreach (var item in folderlist)
+            {
                 if (item.Value.FileContains == null)
-                    item.Value.FileContains = new List<ResUserFiles> ();
+                    item.Value.FileContains = new List<ResUserFiles>();
                 // 排除用户的 root 文件夹
-                if (item.Key.LastIndexOf ('/' + item.Value.FileName) > 0) {
-                    folderlist[item.Key.Substring (0, item.Key.LastIndexOf ('/' + item.Value.FileName))].FileContains.Add (item.Value);
+                if (item.Key.LastIndexOf('/' + item.Value.FileName) > 0)
+                {
+                    folderlist[item.Key.Substring(0, item.Key.LastIndexOf('/' + item.Value.FileName))].FileContains.Add(item.Value);
                 }
             }
             if (folderlist.Count < 1)
                 return null;
-            if (folderlist.First ().Value.FileContains == null)
-                folderlist.First ().Value.FileContains = new List<ResUserFiles> ();
-            return folderlist.First ().Value;
+            if (folderlist.First().Value.FileContains == null)
+                folderlist.First().Value.FileContains = new List<ResUserFiles>();
+            return folderlist.First().Value;
         }
     }
 }

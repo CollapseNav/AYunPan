@@ -74,7 +74,7 @@ namespace Api.Controllers
                 return Unauthorized();
             // 一个大概不是正的 token
             var claims = new[] {
-                new Claim (JwtRegisteredClaimNames.Sub, data.UserAccount)
+                new Claim (ClaimTypes.Name, data.UserAccount),
             };
             // 我觉得key的部分可以尝试放到 appsetting 里面
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("It's a .net core spa test."));
@@ -86,6 +86,7 @@ namespace Api.Controllers
                 expires: DateTime.Now.AddDays(20),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
             );
+
             // 我觉得这边返回的数据应该做一些修改
             return Ok(new
             {

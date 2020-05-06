@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 15:57:08
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-08 14:55:51
+ * @LastEditTime: 2020-05-06 12:00:34
  * @Description:
  */
 import { NgModule } from '@angular/core';
@@ -10,10 +10,7 @@ import { CommonModule } from '@angular/common';
 
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { UserfilesComponent } from 'app/pages/userfiles/userfiles.component';
 import { InfoboardComponent } from 'app/pages/infoboard/infoboard.component';
-import { SharedfilesComponent } from 'app/pages/sharedfiles/sharedfiles.component';
-import { TrashComponent } from 'app/pages/trash/trash.component';
 import { AdminRoutingModule } from './admin.routing.module';
 import { MainGuard } from 'app/guards/main.guard';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -55,9 +52,6 @@ import { BtnaddfileComponent } from 'app/shared/table/button/btnaddfile/btnaddfi
   ],
   declarations: [
     InfoboardComponent,
-    UserfilesComponent,
-    SharedfilesComponent,
-    TrashComponent,
 
     UserfileModuleComponent,
     SharefileModuleComponent,
@@ -85,7 +79,7 @@ import { BtnaddfileComponent } from 'app/shared/table/button/btnaddfile/btnaddfi
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true,
-    }
+    },
   ]
 })
 export class AdminLayoutModule { }

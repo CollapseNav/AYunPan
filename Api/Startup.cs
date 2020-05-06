@@ -2,9 +2,12 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:47:05
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-08 18:56:22
+ * @LastEditTime: 2020-04-24 00:14:09
  * @Description: 
  */
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Text;
 using Application;
 using Autofac;
@@ -15,7 +18,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Repository;
 using Repository.Interface;
@@ -27,6 +29,7 @@ namespace Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         public IConfiguration Configuration { get; }
@@ -45,11 +48,12 @@ namespace Api
 
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidateIssuer = true,
+                    ValidateIssuer = false,
                     ValidIssuer = "Dotnet+Angular",
                     ValidateAudience = true,
                     ValidAudience = "AYunPan",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("It's a .net core spa test."))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("It's a .net core spa test.")),
+                    ValidateIssuerSigningKey = true
                 };
             });
 
@@ -91,7 +95,7 @@ namespace Api
             app.UseRouting();
             app.UseCors("Base");
             app.UseAuthorization();
-            app.UseAuthorization();
+
             app.UseOpenApi();
             app.UseSwaggerUi3();
 

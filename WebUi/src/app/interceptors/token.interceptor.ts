@@ -2,12 +2,12 @@
  * @Author: CollapseNav
  * @Date: 2020-01-08 16:50:42
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-08 15:18:33
+ * @LastEditTime: 2020-04-14 17:42:58
  * @Description:
  */
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SignService } from 'app/services/sign/sign.service';
 
 @Injectable({ providedIn: 'root' })
