@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:47:05
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-24 00:14:09
+ * @LastEditTime: 2020-05-06 12:39:58
  * @Description: 
  */
 using System;
@@ -52,7 +52,7 @@ namespace Api
                     ValidIssuer = "Dotnet+Angular",
                     ValidateAudience = true,
                     ValidAudience = "AYunPan",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("It's a .net core spa test.")),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("It's a .net core spa .")),
                     ValidateIssuerSigningKey = true
                 };
             });
