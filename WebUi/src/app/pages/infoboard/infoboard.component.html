@@ -108,8 +108,8 @@
           <br>Phone : {{userData.phone}}
           <br>Gender :
           <ng-container [ngSwitch]="userData.gender">
-            <ng-container *ngSwitchCase="0">Female</ng-container>
-            <ng-container *ngSwitchCase="1">Male</ng-container>
+            <ng-container *ngSwitchCase="'0'">Female</ng-container>
+            <ng-container *ngSwitchCase="'1'">Male</ng-container>
             <ng-container *ngSwitchDefault>NaN</ng-container>
           </ng-container>
           <br>Age : {{userData.age}}
@@ -199,11 +199,11 @@
                 <label>Gender</label>
                 <div ngbRadioGroup formControlName="gender" class="btn-group btn-group-toggle btn-block">
                   <label ngbButtonLabel class="btn-success " style="margin-top: 0;">
-                    <input type="radio" ngbButton [value]="1">
+                    <input type="radio" formControlName="gender" ngbButton [value]="1">
                     male
                   </label>
                   <label ngbButtonLabel class="btn-success " style="margin-top: 0;">
-                    <input type="radio" ngbButton [value]="0">
+                    <input type="radio" formControlName="gender" ngbButton [value]="0">
                     female
                   </label>
                 </div>

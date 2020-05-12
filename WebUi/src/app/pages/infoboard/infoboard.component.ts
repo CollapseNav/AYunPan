@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:44:01
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-05-05 20:11:09
+ * @LastEditTime: 2020-05-12 12:21:07
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -38,15 +38,16 @@ export class InfoboardComponent implements OnInit {
       this.modalService.open(this.infoModal, { centered: true });
     });
   }
+
   ngOnInit() {
     this.userDataService.getUserData(localStorage.getItem('Id')).subscribe(user => {
       this.userData = user['userData'];
+      console.log(this.userData);
       this.editForm = this.builder.group({
         id: [this.userData.id],
         userName: [this.userData.userName],
         email: [this.userData.email, [Validators.required, Validators.email]],
         phone: [this.userData.phone, [Validators.maxLength(11), Validators.minLength(11)]],
-        // tslint:disable-next-line:radix
         gender: [Number.parseInt(this.userData.gender)],
         age: [this.userData.age],
         joinDate: [{ value: this.userData.createDate, disabled: true }],

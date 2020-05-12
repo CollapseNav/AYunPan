@@ -20,8 +20,11 @@ namespace Api.Controllers
         private readonly UserFileApplication file;
         private readonly IConfiguration config;
         private readonly string DirectoryPath;
-        public SignController(UserDataApplication _app, UserFileApplication _file)
+
+        private readonly TokenInfo _token;
+        public SignController(UserDataApplication _app, UserFileApplication _file, TokenInfo tokeninfo)
         {
+            _token = tokeninfo;
             app = _app;
             file = _file;
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
@@ -77,13 +80,13 @@ namespace Api.Controllers
                 new Claim (ClaimTypes.Name, data.UserAccount),
             };
             // 我觉得key的部分可以尝试放到 appsetting 里面
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("It's a .net core spa test."));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_token.Secret));
             var tokens = new JwtSecurityToken(
-                issuer: "Dotnet+Angular",
-                audience: "AYunPan",
+                issuer: _token.Issuer,
+                audience: _token.Audience,
                 claims: claims,
                 notBefore: DateTime.Now,
-                expires: DateTime.Now.AddDays(20),
+                expires: DateTime.Now.AddDays(_token.Expriation),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
             );
 

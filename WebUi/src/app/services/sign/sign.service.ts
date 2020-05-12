@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2019-12-30 20:18:00
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-25 19:55:33
+ * @LastEditTime: 2020-05-12 12:18:59
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -12,6 +12,7 @@ import { catchError, retry, tap, mapTo } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { SignData } from '../../unit/signData';
 import { UserdataService } from '../userdata/userdata.service';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class SignService {
   isSignIn: boolean;
   jwt: string;
 
-  constructor(private http: HttpClient, private userDataService: UserdataService, @Inject('BASE_URL') baseurl: string) {
-    this.baseUrl = baseurl;
+  constructor(private http: HttpClient, private userDataService: UserdataService) {
+    this.baseUrl = environment.Base_URL;
   }
 
   getJwtToken(): string {

@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:47:05
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-05-06 12:39:58
+ * @LastEditTime: 2020-05-06 12:51:55
  * @Description: 
  */
 using System;
@@ -36,6 +36,8 @@ namespace Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var tokeninfo = Configuration.GetSection("tokenInfo").Get<TokenInfo>();
+            services.AddSingleton(tokeninfo);
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -49,10 +51,10 @@ namespace Api
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = false,
-                    ValidIssuer = "Dotnet+Angular",
+                    ValidIssuer = tokeninfo.Issuer,
                     ValidateAudience = true,
-                    ValidAudience = "AYunPan",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("It's a .net core spa .")),
+                    ValidAudience = tokeninfo.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokeninfo.Secret)),
                     ValidateIssuerSigningKey = true
                 };
             });

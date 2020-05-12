@@ -2,15 +2,16 @@
  * @Author: CollapseNav
  * @Date: 2020-03-11 17:28:28
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-05-06 12:09:26
+ * @LastEditTime: 2020-05-12 12:19:56
  * @Description:
  */
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserData } from 'app/unit/userData';
 import { UserDataApi } from './userdataapi';
 import { retry, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class UserdataService {
   baseUrl: string;
   userData: UserData;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseurl: string) {
-    this.baseUrl = baseurl;
+  constructor(private http: HttpClient) {
+    this.baseUrl = environment.Base_URL;
   }
 
   getUserData(id: string) {

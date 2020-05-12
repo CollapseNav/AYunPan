@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-22 19:14:26
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-05-06 12:02:19
+ * @LastEditTime: 2020-05-12 12:17:47
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -12,14 +12,15 @@ import { ShareFileApi } from './sharefileApi';
 import { UserFile } from 'app/unit/userFiles';
 import { AddShareFile } from 'app/unit/addShareFile';
 import { PageConfig } from 'app/shared/filecom/fileconfig';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharefilesService {
   baseUrl: string;
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseurl: string) {
-    this.baseUrl = baseurl;
+  constructor(private http: HttpClient) {
+    this.baseUrl = environment.Base_URL;
   }
 
   getShareFiles(config: PageConfig) {

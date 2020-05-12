@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-22 19:18:44
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-04 18:25:19
+ * @LastEditTime: 2020-05-12 12:19:19
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { DeleteFile } from 'app/unit/deleteFile';
 import { TrashApi } from './trashApi';
 import { DeleteFolder } from 'app/unit/deleteFolder';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ import { DeleteFolder } from 'app/unit/deleteFolder';
 export class TrashService {
   baseUrl: string;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseurl: string) {
-    this.baseUrl = baseurl;
+  constructor(private http: HttpClient) {
+    this.baseUrl = environment.Base_URL;
   }
 
   trueDeleteFile(data) {
