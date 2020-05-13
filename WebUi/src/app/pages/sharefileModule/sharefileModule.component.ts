@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-05 18:52:29
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-08 15:20:24
+ * @LastEditTime: 2020-05-12 12:39:21
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -17,6 +17,9 @@ import { UserFile } from 'app/unit/userFiles';
 })
 export class SharefileModuleComponent implements OnInit {
 
+  /**
+   * 个人私有分享文件的表格设置
+   */
   privateConfig: FileConfig = {
     head: {
       hasBreadCrumb: true,
@@ -37,6 +40,9 @@ export class SharefileModuleComponent implements OnInit {
       pageConfig: null
     }
   }
+  /**
+   *共有分享文件的表格设置
+   */
   publicConfig: FileConfig = {
     head: {
       hasBreadCrumb: false,
@@ -66,7 +72,12 @@ export class SharefileModuleComponent implements OnInit {
       }
     }
   }
-
+  /**
+   * 大概是一种比较 hard code 的写法
+   * 传递一个 observable 对象
+   * 如果统一了 service 的各个接口
+   * 大概可以把table做的更加 "内聚" 一点
+   */
   getShareData(config: PageConfig, service: SharefilesService): Observable<UserFile[]> {
     return service.getShareFiles(config);
   }

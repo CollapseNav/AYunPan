@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-01-08 16:50:42
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-05-06 12:36:43
+ * @LastEditTime: 2020-05-12 12:27:42
  * @Description:
  */
 import { Injectable } from '@angular/core';
@@ -24,6 +24,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error) => {
+        // 当发生401错误的时候重新登陆获取新的token
         if (error.status == 401) {
           this.signService.removeToken();
           this.router.navigate(['index']);
@@ -33,6 +34,9 @@ export class TokenInterceptor implements HttpInterceptor {
     );
   }
 
+  /**
+   * 把 token 添加到header里
+   */
   private addToken(request: HttpRequest<any>, token: string) {
     return request.clone({
       setHeaders: {

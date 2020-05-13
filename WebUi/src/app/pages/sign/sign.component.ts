@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-08 22:43:03
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-03-25 21:49:37
+ * @LastEditTime: 2020-05-12 12:43:12
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -28,6 +28,9 @@ export class SignComponent implements OnInit {
       }
     })
   }
+  /**
+   * 翻转效果
+   */
   flipForm() {
     this.signForm.reset();
     this.isFlip = !this.isFlip;

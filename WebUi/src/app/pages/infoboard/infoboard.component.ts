@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:44:01
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-05-12 12:21:07
+ * @LastEditTime: 2020-05-12 12:33:50
  * @Description:
  */
 import { Component, OnInit } from '@angular/core';
@@ -11,12 +11,13 @@ import { UserData } from 'app/unit/userData';
 import { UserdataService } from 'app/services/userdata/userdata.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+
 @Component({
   selector: 'app-infoboard',
   templateUrl: './infoboard.component.html',
 })
 export class InfoboardComponent implements OnInit {
-
+  // TODO:添加charts数据显示
   editForm: FormGroup;
   userData: UserData;
   infoModal: NgbModal;
@@ -42,7 +43,6 @@ export class InfoboardComponent implements OnInit {
   ngOnInit() {
     this.userDataService.getUserData(localStorage.getItem('Id')).subscribe(user => {
       this.userData = user['userData'];
-      console.log(this.userData);
       this.editForm = this.builder.group({
         id: [this.userData.id],
         userName: [this.userData.userName],

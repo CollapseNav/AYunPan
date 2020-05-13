@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-02-17 17:22:43
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-08 19:09:03
+ * @LastEditTime: 2020-05-12 12:42:44
  * @Description:
  -->
 
@@ -65,6 +65,7 @@
   - [ ] edit 的验证
   - [ ] 同名文件夹的验证
   - [ ] ......
+- [ ] 将 table 部分做成一个模块
 - [ ] 修改头像
 - [ ] 文件分类
   - [ ] 多选分类

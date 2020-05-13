@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-04-04 22:15:13
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-04-08 15:34:31
+ * @LastEditTime: 2020-05-12 13:00:14
  * @Description:
  */
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
@@ -20,7 +20,7 @@ export class FilecomComponent implements OnInit, OnDestroy {
   @Input() mainConfig: FileConfig;
   // 当前显示的table中的数据，基本上是取自上一个文件夹的filecontains
   tableData: UserFile[] = [];
-
+  /** 类似缓存 */
   pageData: UserFile[] = [];
   // 所有文件
   storeData: UserFile;
@@ -31,17 +31,20 @@ export class FilecomComponent implements OnInit, OnDestroy {
     private fileService: UserFilesService,
     private shareService: SharefilesService) {
   }
-
+  /** 搜索文件(前端搜索) */
   search(files: UserFile[]) {
     this.tableData = files;
   }
-
-  // 双击文件夹事件
+  /**
+   * 双击文件夹事件
+   */
   onDbClick(item: UserFile) {
     this.tableData = item.fileContains;
   }
 
-  // 面包屑导航
+  /**
+   * 面包屑导航
+   */
   turnBackTo(item: UserFile) {
     this.tableData = item.fileContains;
   }
@@ -59,9 +62,11 @@ export class FilecomComponent implements OnInit, OnDestroy {
         pageData: this.mainConfig.body.pageConfig.pageData
       }
     }
-    console.log('destory')
   }
 
+  /**
+   * share 的展示逻辑和其他的不一样
+   */
   initShareData(files: UserFile[]) {
     const sharedlist: UserFile[] = [];
     if (files == null) {
@@ -83,7 +88,9 @@ export class FilecomComponent implements OnInit, OnDestroy {
       })
     return sharedlist;
   }
-
+  /**
+   * trash 的展示逻辑和其他的不一样
+   */
   initTrashData(files: UserFile[]) {
     const trashlist: UserFile[] = [];
     if (files == null) {
@@ -106,6 +113,9 @@ export class FilecomComponent implements OnInit, OnDestroy {
     return trashlist;
   }
 
+  /**
+   * 添加到我的文件
+   */
   addToMyFile(file: UserFile) {
     this.fileService.files.fileContains.push(file);
   }
@@ -158,6 +168,9 @@ export class FilecomComponent implements OnInit, OnDestroy {
     this.storeData.fileName = 'root';
     this.tableRouter.push(this.storeData);
   }
+  /**
+   * pagedata 是一种类似于 缓存 一样的东西
+   */
   initPageDate() {
     const config = this.mainConfig.body.pageConfig;
     config.pageData(config, this.shareService).subscribe(result => {
@@ -174,6 +187,9 @@ export class FilecomComponent implements OnInit, OnDestroy {
       this.indexChange();
     })
   }
+  /**
+   * 每次页码改变的时候从 pagedata 中读取数据
+   */
   indexChange() {
     const config = this.mainConfig.body.pageConfig;
     const startindex = (config.index - 1) * config.size;
