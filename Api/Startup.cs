@@ -2,11 +2,12 @@
  * @Author: CollapseNav
  * @Date: 2020-03-01 22:47:05
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-05-06 12:51:55
+ * @LastEditTime: 2020-05-31 18:00:12
  * @Description: 
  */
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Application;
@@ -14,9 +15,11 @@ using Autofac;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Repository;
@@ -91,13 +94,19 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            string filepath = Configuration.GetSection("FileStore").Get<string>();
+            string curpath = Directory.GetCurrentDirectory();
 
-            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseRouting();
             app.UseCors("Base");
             app.UseAuthorization();
 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider($"{Directory.GetCurrentDirectory()}/{filepath}"),
+                RequestPath = new PathString("/staticfiles")
+            });
             app.UseOpenApi();
             app.UseSwaggerUi3();
 

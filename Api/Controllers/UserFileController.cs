@@ -23,6 +23,7 @@ namespace Api.Controllers
         private readonly UserFileApplication app;
         private readonly UserDataApplication user;
         private readonly IConfiguration config;
+        private readonly string DownloadMapPath;
         private readonly string DirectoryPath;
         public UserFileController(UserFileApplication _app, UserDataApplication _user)
         {
@@ -32,6 +33,7 @@ namespace Api.Controllers
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
             config = builder.Build();
             DirectoryPath = Directory.GetCurrentDirectory() + config["FileStore"];
+            DownloadMapPath = "http://localhost:5000/staticfiles";
         }
 
         [HttpPost, Route("[action]")]
@@ -89,12 +91,14 @@ namespace Api.Controllers
         [HttpPost, Route("[action]"), EnableCors("File")]
         public IActionResult DownloadFile(ReqFindDownload data)
         {
+            var t = $"{Request.Scheme}://{Request.Host.Value}/staticfiles";
             var file = app.GetFile(data);
             var ext = file.FileName.Split('.')[^1];
             // 不转码的话，碰到中文会有编码问题
             Response.Headers.Add("FileName",
                 System.Web.HttpUtility.UrlEncode(file.FileName, Encoding.UTF8));
-            return File(new FileStream(DirectoryPath + file.FilePath, FileMode.Open), new FileExtensionContentTypeProvider().Mappings['.' + ext], file.FileName);
+            return Ok(new { FilePath = t + file.FilePath });
+            // return File(new FileStream(DirectoryPath + file.FilePath, FileMode.Open), new FileExtensionContentTypeProvider().Mappings['.' + ext], file.FileName);
         }
 
         [HttpPost, Route("[action]")]
@@ -104,7 +108,7 @@ namespace Api.Controllers
             try
             {
                 string folderpath = root.FilePath + '/' + folder.FolderName;
-                string truepath = DirectoryPath + folderpath;
+                string truepath = DownloadMapPath + folderpath;
                 // 感觉同名文件夹这事情可以在前端就做掉
                 if (Directory.Exists(truepath))
                 {

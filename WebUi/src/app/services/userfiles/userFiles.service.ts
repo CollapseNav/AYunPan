@@ -2,7 +2,7 @@
  * @Author: CollapseNav
  * @Date: 2020-03-07 13:45:37
  * @LastEditors: CollapseNav
- * @LastEditTime: 2020-05-12 12:20:22
+ * @LastEditTime: 2020-05-31 17:52:15
  * @Description:
  */
 import { Injectable, Inject } from '@angular/core';
@@ -57,7 +57,9 @@ export class UserFilesService {
   }
 
   downloadFile(id: string) {
-    return this.http.post(this.baseUrl + UserFileApi.DownloadFile, { id: id }, { responseType: 'blob', observe: 'response' })
+    // return this.http.post(this.baseUrl + UserFileApi.DownloadFile, { id: id }, { responseType: 'blob', observe: 'response' })
+    //   .pipe();
+    return this.http.post(this.baseUrl + UserFileApi.DownloadFile, { id: id })
       .pipe();
   }
 }
