@@ -19,7 +19,7 @@ namespace Api
                 {
                     // 上传的文件上限不到100M
                     options.Limits.MaxRequestBodySize = 100000000;
-                }).UseStartup<Startup>().UseUrls("http://localhost:5000");
+                }).UseStartup<Startup>();
             }).UseServiceProviderFactory(new AutofacServiceProviderFactory());
     }
 }

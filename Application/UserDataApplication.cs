@@ -6,58 +6,72 @@ using Application.ResponseData;
 using Repository.Domain;
 using Repository.Interface;
 
-namespace Application {
-    public class UserDataApplication : BaseApplication<UserDataInfo> {
-        public UserDataApplication (IRepository<UserDataInfo> user) : base (user) { }
+namespace Application
+{
+    public class UserDataApplication : BaseApplication<UserDataInfo>
+    {
+        public UserDataApplication(IRepository<UserDataInfo> user) : base(user) { }
 
-        public ResUserData SignIn (ReqSignData sd, out bool IsExist) {
+        public ResUserData SignIn(ReqSignData sd, out bool IsExist)
+        {
             IsExist = true;
             // 先通过account尝试获取userdatainfo，用于判断是否存在用户
-            var item = GetUserDataByASignData (sd);
-            if (item == null) {
+            var item = GetUserDataByASignData(sd);
+            if (item == null)
+            {
                 IsExist = false;
                 return null;
             } // 如果存在，则判断password
-            else if (item.PassWord != sd.PassWord) {
+            else if (item.PassWord != sd.PassWord)
+            {
                 return null;
             }
-            return new ResUserData (item);
+            return new ResUserData(item);
         }
 
-        public UserDataInfo SignUp (ReqSignData sd) {
-            UserDataInfo u = sd.ConvertData ();
+        public UserDataInfo SignUp(ReqSignData sd)
+        {
+            UserDataInfo u = sd.ConvertData();
             u.UserName = u.UserAccount;
-            if (GetUserDataByASignData (sd) != null)
+            if (GetUserDataByASignData(sd) != null)
                 return null;
             u.FolderPath = "/" + u.UserName;
             // 每人默认100mb，我的树莓派比较虚
-            u.Cap = (100 * 1024).ToString ();
-            try {
-                rep.Add (u);
-            } catch {
+            u.Cap = (100 * 1024).ToString();
+            try
+            {
+                rep.Add(u);
+            }
+            catch
+            {
                 return null;
             }
             return u;
         }
 
-        public ResUserData GetUserdata (IRequestFindData<UserDataInfo> data) => new ResUserData (rep.FindSingle (data.GetWhereExpression ()));
+        public ResUserData GetUserdata(IRequestFindData<UserDataInfo> data) => new ResUserData(rep.FindSingle(data.GetWhereExpression()));
 
-        public UserDataInfo GetFullUserData (IRequestFindData<UserDataInfo> data) => rep.FindSingle (data.GetWhereExpression ());
+        public UserDataInfo GetFullUserData(IRequestFindData<UserDataInfo> data) => rep.FindSingle(data.GetWhereExpression());
 
-        private UserDataInfo GetUserDataByASignData (ReqSignData sd) {
+        private UserDataInfo GetUserDataByASignData(ReqSignData sd)
+        {
             UserDataInfo item = null;
-            if (!string.IsNullOrEmpty (sd.UserName))
-                item = rep.FindSingle (m => m.UserName == sd.UserName);
-            else if (!string.IsNullOrEmpty (sd.UserAccount))
-                item = rep.FindSingle (m => m.UserAccount == sd.UserAccount);
+            if (!string.IsNullOrEmpty(sd.UserName))
+                item = rep.FindSingle(m => m.UserName == sd.UserName);
+            else if (!string.IsNullOrEmpty(sd.UserAccount))
+                item = rep.FindSingle(m => m.UserAccount == sd.UserAccount);
             return item;
         }
 
-        public bool EditUserData (IRequestEditData<UserDataInfo> data) {
-            try {
-                rep.Update (data.GetWhereExpression (), data.GetConvertExpressions ());
-            } catch (Exception ex) {
-                Console.WriteLine (ex.Message);
+        public bool EditUserData(IRequestEditData<UserDataInfo> data)
+        {
+            try
+            {
+                rep.Update(data.GetWhereExpression(), data.GetConvertExpressions());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
                 return false;
             }
             return true;

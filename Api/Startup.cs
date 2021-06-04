@@ -3,12 +3,11 @@
  * @Date: 2020-03-01 22:47:05
  * @LastEditors: CollapseNav
  * @LastEditTime: 2020-05-31 18:00:12
- * @Description: 
+ * @Description:
  */
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Application;
 using Autofac;
@@ -22,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Repository;
 using Repository.Interface;
 
@@ -70,14 +70,42 @@ namespace Api
                 options.AddPolicy("File",
                     builder => builder.WithOrigins("http://localhost:4200")
                     .AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithExposedHeaders("FileName"));
+                options.AddPolicy("any",
+                    builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
             services.AddControllers().AddControllersAsServices();
             services.AddDbContext<BaseContext>(options =>
             {
-                options.UseSqlite(Configuration.GetConnectionString("SQlite"), m => m.MigrationsAssembly("Api"));
+                options.UseSqlite(Configuration.GetConnectionString("SQlite"));
             });
 
-            services.AddSwaggerDocument();
+            services.AddSwaggerGen(
+                options =>
+                {
+                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Educational API", Version = "v1" });
+                    options.DocInclusionPredicate((docName, description) => true);
+                    DirectoryInfo d = new DirectoryInfo(AppContext.BaseDirectory);
+                    FileInfo[] files = d.GetFiles("*.xml");
+                    foreach (var item in files)
+                    {
+                        options.IncludeXmlComments(item.FullName, true);
+                    }
+                    options.AddSecurityDefinition("token", new OpenApiSecurityScheme
+                    {
+                        Description = "JWT授权(数据将在请求头中进行传输) 在下方输入Bearer {token} 即可，注意两者之间有空格",
+                        Name = "Authorization",//jwt默认的参数名称
+                        In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
+                        Type = SecuritySchemeType.ApiKey
+                    });
+
+                    options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                        { new OpenApiSecurityScheme{
+                            Reference = new OpenApiReference(){
+                                Id = "token",
+                                Type = ReferenceType.SecurityScheme } },
+                                Array.Empty<string>() } });
+                }
+            );
 
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
         }
@@ -94,6 +122,12 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Educational API");
+            });
             string filepath = Configuration.GetSection("FileStore").Get<string>();
             string curpath = Directory.GetCurrentDirectory();
 
@@ -102,13 +136,14 @@ namespace Api
             app.UseCors("Base");
             app.UseAuthorization();
 
+            if (!Directory.Exists($"{Directory.GetCurrentDirectory()}/{filepath}"))
+                Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}/{filepath}");
+
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider($"{Directory.GetCurrentDirectory()}/{filepath}"),
                 RequestPath = new PathString("/staticfiles")
             });
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
 
             app.UseEndpoints(endpoints =>
             {
